@@ -2,9 +2,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import Nav from "../Nav/Nav";
 import { shoes } from "../Shopping/productInfo";
 import Button from "@mui/material/Button";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart";
+import { useState } from "react";
 
 const ProductDetail = () => {
   const { id, productId } = useParams();
@@ -12,82 +12,125 @@ const ProductDetail = () => {
   const dispatch = useDispatch();
   const product = shoes[parseInt(productId, 10)];
 
-  //   if (!product) {
-  //     return (
-  //       <div className="min-h-screen bg-gray-50">
-  //         <Nav />
-  //         <Button
-  //           variant="outlined"
-  //           onClick={() => navigate(-1)}
-  //           className="!absolute top-6 left-6 z-10"
-  //           startIcon={<ArrowBackIcon />}
-  //         >
-  //           返回
-  //         </Button>
-  //         <div className="flex flex-col items-center justify-center h-96">
-  //           <p className="text-xl text-gray-500">商品未找到</p>
-  //         </div>
-  //       </div>
-  //     );
-  //   }
+  // 新增：数量状态
+  const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className="min-h-screen bg-gray-50 relative">
+    <div className="min-h-screen bg-white">
       <Nav />
-      <Button
-        // variant="outlined"
-        onClick={() => navigate(-1)}
-        // className="!absolute top-6 left-6 z-10"
-        startIcon={<ArrowBackIcon />}
-      >
-        Return
-      </Button>
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-64 h-64 object-contain rounded mb-6 border"
-        />
-        <div className="w-full flex flex-col items-start">
-          <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
-          <p className="text-xl text-blue-600 font-semibold mb-4">
-            ${product.price}
-          </p>
-          <span
-            style={{
-              cursor: "pointer",
-              marginBottom: 16,
-              textTransform: "none",
-              color: "#1976d2",
-              display: "inline-block",
-            }}
-            onClick={() => navigate(`/task/${id}/store/${product.store}`)}
-            onMouseOver={(e) =>
-              (e.currentTarget.style.textDecoration = "underline")
-            }
-            onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
-          >
-            Visit the store
-          </span>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            className="w-full"
-            style={{ marginBottom: 16 }}
-            onClick={() =>
-              dispatch(
-                addToCart({
-                  id: parseInt(productId, 10),
-                  name: product.name,
-                  price: product.price,
-                  image: product.image,
-                })
-              )
-            }
-          >
-            Add to Cart
-          </Button>
+      <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mt-16">
+          {/* 左侧：商品大图 */}
+          <div className="md:col-span-5 flex justify-center">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full max-w-md object-contain border rounded"
+            />
+          </div>
+
+          {/* 中间：商品信息 */}
+          <div className="md:col-span-5 space-y-3">
+            <a
+              href="#"
+              className="text-sm text-blue-600 hover:underline"
+              onClick={() => navigate(`/task/${id}/store/${product.store}`)}
+            >
+              Visit the {product.store} Store
+            </a>
+            <h1 className="text-2xl font-semibold text-[#0f1111]">
+              {product.name}
+            </h1>
+            <div className="border-t my-2"></div>
+            <div>
+              <span className="text-3xl font-bold">${product.price}</span>
+            </div>
+            <div className="mt-16">
+              <p className="font-semibold text-lg mb-1">Product details</p>
+              <ul className="text-sm text-gray-700 list-disc pl-5">
+                <li>Origin: Imported</li>
+                <li>Sole material: Rubber</li>
+                <li>Outer material: Polyester</li>
+                <li>Closure type: Lace-Up</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* 右侧：购买栏 */}
+          <div className="md:col-span-2 border rounded p-4 space-y-3">
+            <p className="text-2xl font-bold">${product.price}</p>
+            <p className="text-green-600 font-semibold">In Stock</p>
+            <div>
+              <label className="block text-sm mb-1">Quantity:</label>
+              <select
+                className="border rounded px-2 py-1 w-full"
+                value={quantity}
+                onChange={(e) => setQuantity(parseInt(e.target.value))}
+              >
+                {[1, 2, 3, 4, 5].map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <Button
+              variant="contained"
+              fullWidth
+              style={{
+                backgroundColor: "#ffd814",
+                color: "#000",
+                borderRadius: "9999px",
+                border: "1px solid #fcd200",
+                textTransform: "none",
+                fontWeight: 500,
+                fontSize: "14px",
+              }}
+              onClick={() => {
+                for (let i = 0; i < quantity; i++) {
+                  dispatch(
+                    addToCart({
+                      id: parseInt(productId, 10),
+                      name: product.name,
+                      price: product.price,
+                      image: product.image,
+                    })
+                  );
+                }
+              }}
+            >
+              Add to Cart
+            </Button>
+            <Button
+              variant="contained"
+              fullWidth
+              style={{
+                backgroundColor: "#ffd814",
+                color: "#000",
+                borderRadius: "9999px",
+                border: "1px solid #ffd814",
+                textTransform: "none",
+                fontWeight: 500,
+                marginTop: "10px",
+                fontSize: "14px",
+              }}
+              onClick={() => {
+                navigate(`/task/${id}/checkout`, {
+                  state: {
+                    product: {
+                      id: parseInt(productId, 10),
+                      name: product.name,
+                      price: product.price,
+                      image: product.image,
+                      quantity: quantity, // Pass the selected quantity
+                    },
+                  },
+                });
+              }}
+            >
+              Buy Now
+            </Button>
+          </div>
         </div>
       </div>
     </div>

@@ -61,7 +61,7 @@ const Nav = () => {
   };
 
   return (
-    <nav className="flex items-center justify-end bg-white px-4 py-2 shadow-md">
+    <nav className="flex items-center justify-end bg-[#141921] px-4 py-2 shadow-md">
       {/* Search Box */}
       {/* <div className="flex items-center bg-gray-100 rounded px-2 py-1 w-2/3">
         <SearchIcon className="text-gray-500 mr-2" />
@@ -76,13 +76,13 @@ const Nav = () => {
         <div onClick={() => navigate(`/task/${id}/cart`)}>
           <Badge
             badgeContent={cartCount}
-            color="primary"
+            color="amazon"
             overlap="circular"
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
             classes={{ badge: "bg-blue-600 text-white text-xs font-bold" }}
           >
             <ShoppingCartIcon
-              className="text-gray-700 cursor-pointer"
+              className="text-white cursor-pointer"
               fontSize="medium"
             />
           </Badge>
@@ -95,7 +95,7 @@ const Nav = () => {
           }`}
           onClick={handleClick}
         >
-          <AccountCircleIcon className="text-gray-700" fontSize="medium" />
+          <AccountCircleIcon className="text-white" fontSize="medium" />
         </div>
         <Menu
           anchorEl={anchorEl}
