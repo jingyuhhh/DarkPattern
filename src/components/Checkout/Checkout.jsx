@@ -120,45 +120,80 @@ const Checkout = () => {
               <FormLabel component="legend" className="font-semibold mb-2">
                 Shipping Method
               </FormLabel>
-              <div className="grid gap-3">
-                {sortedShippingOptions.map((opt) => (
-                  <div
-                    key={opt.value}
-                    className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all
-                      ${
-                        shipping === opt.value
-                          ? "border-blue-500 bg-blue-50 shadow-md"
-                          : "border-gray-200 hover:border-gray-300 bg-white"
-                      }`}
-                    onClick={() => setShipping(opt.value)}
+              {/* 仅在 id === 6 时显示鼓励提示 */}
+              {parseInt(id) === 6 && (
+                <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 shadow-sm">
+                  <Typography
+                    variant="subtitle1"
+                    className="font-semibold text-orange-700"
                   >
-                    <div className="flex items-center gap-3">
-                      <Radio
-                        checked={shipping === opt.value}
-                        value={opt.value}
-                      />
-                      <div>
-                        <Typography
-                          variant="subtitle1"
-                          className="font-semibold text-gray-800"
-                        >
-                          {opt.label}
-                        </Typography>
-                        <Typography variant="body2" className="text-gray-500">
-                          {opt.value === "premium"
-                            ? "Faster delivery (1-2 days)"
-                            : "Standard shipping (3-5 days)"}
-                        </Typography>
-                      </div>
-                    </div>
-                    <Typography
-                      variant="subtitle1"
-                      className="font-bold text-gray-700"
+                    Treat yourself to express shipping!
+                  </Typography>
+                  <Typography variant="body2" className="text-orange-600">
+                    You deserve to enjoy your purchase as soon as possible.
+                  </Typography>
+                </div>
+              )}
+
+              <div className="grid gap-3">
+                {sortedShippingOptions.map((opt) => {
+                  const isPremium = opt.value === "premium";
+                  const highlightPremium =
+                    (parseInt(id) === 4 && isPremium) ||
+                    (parseInt(id) === 5 && isPremium);
+                  return (
+                    <div
+                      key={opt.value}
+                      className={`relative flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all
+            ${
+              highlightPremium
+                ? "border-blue-500 bg-blue-50 shadow-md"
+                : "border-gray-200 hover:border-gray-300 bg-white"
+            }`}
+                      onClick={() => setShipping(opt.value)}
                     >
-                      {opt.price === 0 ? "Free" : `+$${opt.price}`}
-                    </Typography>
-                  </div>
-                ))}
+                      {/* 推荐徽标 */}
+                      {highlightPremium && (
+                        <div className="absolute -top-2 right-2">
+                          <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full shadow">
+                            Recommended
+                          </span>
+                        </div>
+                      )}
+                      <div className="flex items-center gap-3">
+                        <Radio
+                          checked={shipping === opt.value}
+                          value={opt.value}
+                        />
+                        <div>
+                          <Typography
+                            variant="subtitle1"
+                            className={`font-semibold ${
+                              highlightPremium
+                                ? "text-blue-700"
+                                : "text-gray-800"
+                            }`}
+                          >
+                            {opt.label}
+                          </Typography>
+                          <Typography variant="body2" className="text-gray-500">
+                            {isPremium
+                              ? "Faster delivery (1-2 days)"
+                              : "Standard shipping (3-5 days)"}
+                          </Typography>
+                        </div>
+                      </div>
+                      <Typography
+                        variant="subtitle1"
+                        className={`font-bold ${
+                          highlightPremium ? "text-blue-600" : "text-gray-700"
+                        }`}
+                      >
+                        {opt.price === 0 ? "Free" : `+$${opt.price}`}
+                      </Typography>
+                    </div>
+                  );
+                })}
               </div>
             </FormControl>
           </Paper>
