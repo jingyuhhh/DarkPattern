@@ -7,6 +7,7 @@ function Product({ onClick, product, ad = false }) {
   const handleClick = ad
     ? () =>
         window.open(
+          // TODO ads link
           "https://www.amazon.com/s?k=shoes&crid=1QJ4Y7GQYFZ2T&sprefix=shoes%2Caps%2C283&ref=nb_sb_noss_2"
         )
     : onClick;
@@ -75,23 +76,25 @@ function Product({ onClick, product, ad = false }) {
       </p> */}
 
       {/* Add to cart 按钮 */}
-      <div
-        className="mt-3"
-        onClick={() =>
-          dispatch(
-            addToCart({
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              image: product.image,
-            })
-          )
-        }
-      >
-        <button className="w-full bg-[#ffd814] hover:bg-[#f7ca00] text-black text-sm font-medium rounded-full py-2 shadow-sm border border-[#fcd200] transition">
-          Add to cart
-        </button>
-      </div>
+      {!ad && (
+        <div
+          className="mt-3"
+          onClick={() =>
+            dispatch(
+              addToCart({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+              })
+            )
+          }
+        >
+          <button className="w-full bg-[#ffd814] hover:bg-[#f7ca00] text-black text-sm font-medium rounded-full py-2 shadow-sm border border-[#fcd200] transition">
+            Add to cart
+          </button>
+        </div>
+      )}
     </div>
   );
 }

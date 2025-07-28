@@ -135,7 +135,7 @@ const CartDetail = () => {
                 <div className="text-lg font-semibold">${item.price}</div>
               </div>
             ))}
-            {hiddenItem && hiddenItemQuantity > 0 && (
+            {/* {hiddenItem && hiddenItemQuantity > 0 && (
               <div className="flex py-4 border-b items-start space-x-4">
                 <Checkbox
                   checked={hiddenItemSelected}
@@ -186,7 +186,7 @@ const CartDetail = () => {
                 </div>
                 <div className="text-lg font-semibold">${hiddenItem.price}</div>
               </div>
-            )}
+            )} */}
           </div>
 
           {/* 右侧结算框 */}
@@ -199,12 +199,12 @@ const CartDetail = () => {
                 Subtotal ({totalItems} items):{" "}
                 <span className="font-bold">${total.toFixed(2)}</span>
               </p>
-              <div className="flex items-center space-x-2">
+              {/* <div className="flex items-center space-x-2">
                 <Checkbox />
                 <p className="text-sm text-gray-700">
                   This order contains a gift
                 </p>
-              </div>
+              </div> */}
               <Button
                 variant="contained"
                 fullWidth
@@ -218,7 +218,15 @@ const CartDetail = () => {
                   fontSize: "16px",
                   padding: "10px 0",
                 }}
-                onClick={() => navigate(`/task/${id}/checkout`)}
+                onClick={() =>
+                  navigate(`/task/${id}/checkout`, {
+                    state: {
+                      selectedItems: items.filter(
+                        (item) => selectedItems[item.id]
+                      ),
+                    },
+                  })
+                }
               >
                 Proceed to checkout
               </Button>

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-// import { IconSearch } from "@arco-design/web-react/icon";
-import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Badge from "@mui/material/Badge";
 import Menu from "@mui/material/Menu";
@@ -10,7 +8,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import PersonIcon from "@mui/icons-material/Person";
 import WorkspacePremium from "@mui/icons-material/WorkspacePremium";
-import LogoutIcon from "@mui/icons-material/Logout";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -18,61 +15,82 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { tasks, TaskType } from "../TaskEntry/tasks";
+import { resetCart } from "../../store/cart";
+import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
+import { RadioGroup, FormControlLabel, Radio, TextField } from "@mui/material";
 
 const Nav = () => {
   const cartCount = useSelector((state) => state.cart.number);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { id } = useParams();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [membershipDialogOpen, setMembershipDialogOpen] = useState(false);
   const [isPremiumMember, setIsPremiumMember] = useState(true);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // 多步骤取消弹窗
+  const [cancelFlowOpen, setCancelFlowOpen] = useState(false);
+  const [cancelStep, setCancelStep] = useState(0);
+  const [cancelReason, setCancelReason] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
 
   const handleMembershipClick = () => {
     setMembershipDialogOpen(true);
     handleClose();
   };
+  const handleMembershipDialogClose = () => setMembershipDialogOpen(false);
 
-  const handleMembershipDialogClose = () => {
+  const handleOpenCancelFlow = () => {
+    setCancelFlowOpen(true);
+    setCancelStep(0);
+    setCancelReason("");
+    setPassword("");
+  };
+
+  const handleCancelSuccess = () => {
+    setIsPremiumMember(false);
+    setSnackbarOpen(true);
+    setCancelFlowOpen(false);
     setMembershipDialogOpen(false);
   };
 
-  const handleCancelMembership = () => {
-    setIsPremiumMember(false);
-    setSnackbarOpen(true);
-    handleMembershipDialogClose();
+  const handleSnackbarClose = () => {
+    dispatch(resetCart());
+    const currentTaskIndex = tasks.findIndex(
+      (task) => task.id === parseInt(id)
+    );
+    if (tasks[currentTaskIndex].taskType === TaskType.CancelMembership) {
+      const nextTask = tasks[currentTaskIndex + 1];
+      if (nextTask) navigate(`/task/${nextTask.id}`);
+    }
   };
 
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
+  const handleNextStep = () => {
+    if (cancelStep < 4) {
+      setCancelStep(cancelStep + 1);
+    } else {
+      // TODO 密码校验
+      if (password.length >= 4) {
+        handleCancelSuccess();
+      } else {
+        alert("Please enter a valid password (min 4 characters)");
+      }
+    }
   };
 
   return (
     <nav className="flex items-center justify-end bg-[#141921] px-4 py-2 shadow-md">
-      {/* Search Box */}
-      {/* <div className="flex items-center bg-gray-100 rounded px-2 py-1 w-2/3">
-        <SearchIcon className="text-gray-500 mr-2" />
-        <input
-          type="text"
-          placeholder="Search..."
-          className="bg-transparent outline-none w-full text-sm"
-        />
-      </div> */}
-      {/* Icons */}
       <div className="flex items-center space-x-6">
+        {/* 购物车 */}
         <div onClick={() => navigate(`/task/${id}/cart`)}>
           <Badge
             badgeContent={cartCount}
@@ -87,9 +105,11 @@ const Nav = () => {
             />
           </Badge>
         </div>
+
+        {/* 用户菜单 */}
         <div
           className={`p-1 rounded-full border-2 cursor-pointer transition-colors ${
-            isPremiumMember
+            isPremiumMember && id == 1
               ? "border-yellow-400 hover:border-yellow-500"
               : "border-gray-300 hover:border-gray-400"
           }`}
@@ -101,21 +121,7 @@ const Nav = () => {
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
-          onClick={handleClose}
-          PaperProps={{
-            elevation: 3,
-            sx: {
-              overflow: "visible",
-              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-              mt: 1.5,
-              "& .MuiAvatar-root": {
-                width: 32,
-                height: 32,
-                ml: -0.5,
-                mr: 1,
-              },
-            },
-          }}
+          PaperProps={{ elevation: 3, sx: { mt: 1.5 } }}
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
@@ -130,7 +136,7 @@ const Nav = () => {
               secondaryTypographyProps={{ fontSize: "0.75rem" }}
             />
           </MenuItem>
-          {isPremiumMember ? (
+          {isPremiumMember && id == 1 ? (
             <MenuItem onClick={handleMembershipClick}>
               <ListItemIcon>
                 <WorkspacePremium
@@ -141,15 +147,6 @@ const Nav = () => {
               <ListItemText
                 primary="Premium Member"
                 secondary="Valid until Dec 2024"
-                primaryTypographyProps={{
-                  fontSize: "0.875rem",
-                  fontWeight: 600,
-                  color: "text.primary",
-                }}
-                secondaryTypographyProps={{
-                  fontSize: "0.75rem",
-                  color: "text.secondary",
-                }}
               />
             </MenuItem>
           ) : (
@@ -160,27 +157,12 @@ const Nav = () => {
               <ListItemText
                 primary="Regular User"
                 secondary="Upgrade to Premium"
-                primaryTypographyProps={{
-                  fontSize: "0.875rem",
-                  fontWeight: 600,
-                  color: "text.primary",
-                }}
-                secondaryTypographyProps={{
-                  fontSize: "0.75rem",
-                  color: "text.secondary",
-                }}
               />
             </MenuItem>
           )}
-          {/* <MenuItem onClick={handleClose}>
-            <ListItemIcon>
-              <LogoutIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </MenuItem> */}
         </Menu>
 
-        {/* Membership Dialog */}
+        {/* 会员信息 Dialog */}
         <Dialog
           open={membershipDialogOpen}
           onClose={handleMembershipDialogClose}
@@ -188,7 +170,7 @@ const Nav = () => {
           fullWidth
         >
           <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            {isPremiumMember ? (
+            {isPremiumMember && id == 1 ? (
               <>
                 <WorkspacePremium className="text-yellow-600" />
                 <Typography variant="h6">Premium Membership</Typography>
@@ -201,7 +183,7 @@ const Nav = () => {
             )}
           </DialogTitle>
           <DialogContent>
-            {isPremiumMember ? (
+            {isPremiumMember && id == 1 ? (
               <>
                 <Box sx={{ mb: 3 }}>
                   <Typography variant="h6" color="primary" gutterBottom>
@@ -211,90 +193,37 @@ const Nav = () => {
                     sx={{ display: "flex", flexDirection: "column", gap: 2 }}
                   >
                     <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
+                      sx={{ display: "flex", justifyContent: "space-between" }}
                     >
-                      <Typography variant="body1">Plan:</Typography>
-                      <Typography variant="body1" fontWeight="bold">
-                        Premium
-                      </Typography>
+                      <Typography>Plan:</Typography>
+                      <Typography fontWeight="bold">Premium</Typography>
                     </Box>
                     <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
+                      sx={{ display: "flex", justifyContent: "space-between" }}
                     >
-                      <Typography variant="body1">Status:</Typography>
-                      <Typography
-                        variant="body1"
-                        color="success.main"
-                        fontWeight="bold"
-                      >
+                      <Typography>Status:</Typography>
+                      <Typography color="success.main" fontWeight="bold">
                         Active
                       </Typography>
                     </Box>
                     <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
+                      sx={{ display: "flex", justifyContent: "space-between" }}
                     >
-                      <Typography variant="body1">Start Date:</Typography>
-                      <Typography variant="body1">January 1, 2024</Typography>
+                      <Typography>Start Date:</Typography>
+                      <Typography>January 1, 2024</Typography>
                     </Box>
                     <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
+                      sx={{ display: "flex", justifyContent: "space-between" }}
                     >
-                      <Typography variant="body1">Expiry Date:</Typography>
-                      <Typography variant="body1">December 31, 2024</Typography>
+                      <Typography>Expiry Date:</Typography>
+                      <Typography>December 31, 2024</Typography>
                     </Box>
                     <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
+                      sx={{ display: "flex", justifyContent: "space-between" }}
                     >
-                      <Typography variant="body1">Monthly Fee:</Typography>
-                      <Typography variant="body1" fontWeight="bold">
-                        $9.99
-                      </Typography>
+                      <Typography>Monthly Fee:</Typography>
+                      <Typography fontWeight="bold">$9.99</Typography>
                     </Box>
-                  </Box>
-                </Box>
-
-                <Box sx={{ mb: 3 }}>
-                  <Typography variant="h6" color="primary" gutterBottom>
-                    Premium Benefits
-                  </Typography>
-                  <Box
-                    sx={{ display: "flex", flexDirection: "column", gap: 1 }}
-                  >
-                    <Typography variant="body2">
-                      • Free shipping on all orders
-                    </Typography>
-                    <Typography variant="body2">
-                      • Exclusive member discounts
-                    </Typography>
-                    <Typography variant="body2">
-                      • Priority customer support
-                    </Typography>
-                    <Typography variant="body2">
-                      • Early access to new products
-                    </Typography>
-                    <Typography variant="body2">
-                      • Extended return window (60 days)
-                    </Typography>
                   </Box>
                 </Box>
               </>
@@ -308,78 +237,27 @@ const Nav = () => {
                     sx={{ display: "flex", flexDirection: "column", gap: 2 }}
                   >
                     <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
+                      sx={{ display: "flex", justifyContent: "space-between" }}
                     >
-                      <Typography variant="body1">Plan:</Typography>
-                      <Typography variant="body1" fontWeight="bold">
-                        Regular
-                      </Typography>
+                      <Typography>Plan:</Typography>
+                      <Typography fontWeight="bold">Regular</Typography>
                     </Box>
                     <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
+                      sx={{ display: "flex", justifyContent: "space-between" }}
                     >
-                      <Typography variant="body1">Status:</Typography>
-                      <Typography
-                        variant="body1"
-                        color="text.secondary"
-                        fontWeight="bold"
-                      >
+                      <Typography>Status:</Typography>
+                      <Typography color="text.secondary" fontWeight="bold">
                         Active
                       </Typography>
                     </Box>
                   </Box>
                 </Box>
-
-                <Box sx={{ mb: 3 }}>
-                  <Typography variant="h6" color="primary" gutterBottom>
-                    Upgrade to Premium
-                  </Typography>
-                  <Box
-                    sx={{ display: "flex", flexDirection: "column", gap: 1 }}
-                  >
-                    <Typography variant="body2">
-                      • Free shipping on all orders
-                    </Typography>
-                    <Typography variant="body2">
-                      • Exclusive member discounts
-                    </Typography>
-                    <Typography variant="body2">
-                      • Priority customer support
-                    </Typography>
-                    <Typography variant="body2">
-                      • Early access to new products
-                    </Typography>
-                    <Typography variant="body2">
-                      • Extended return window (60 days)
-                    </Typography>
-                  </Box>
-                </Box>
               </>
             )}
-
-            {/* <Box sx={{ p: 2, bgcolor: "warning.light", borderRadius: 1 }}>
-              <Typography variant="body2" color="warning.dark">
-                <strong>Note:</strong> Cancelling your membership will remove
-                all premium benefits immediately. You can reactivate at any
-                time.
-              </Typography>
-            </Box> */}
           </DialogContent>
           <DialogActions sx={{ p: 3, gap: 2 }}>
-            {isPremiumMember ? (
-              <Button
-                onClick={handleCancelMembership}
-                variant="outlined"
-                // color="error"
-              >
+            {isPremiumMember && id == 1 ? (
+              <Button onClick={handleOpenCancelFlow} variant="outlined">
                 Cancel Membership
               </Button>
             ) : (
@@ -388,7 +266,7 @@ const Nav = () => {
                   setIsPremiumMember(true);
                   handleMembershipDialogClose();
                 }}
-                variant="contained"
+                variant="outlined"
                 color="primary"
               >
                 Upgrade to Premium
@@ -400,21 +278,103 @@ const Nav = () => {
           </DialogActions>
         </Dialog>
 
-        {/* Success Snackbar */}
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={3000}
-          onClose={handleSnackbarClose}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        {/* 多步骤取消 Dialog */}
+        <Dialog
+          open={cancelFlowOpen}
+          onClose={() => setCancelFlowOpen(false)}
+          maxWidth="sm"
+          fullWidth
         >
-          <Alert
-            onClose={handleSnackbarClose}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            Membership cancelled successfully!
-          </Alert>
-        </Snackbar>
+          <DialogTitle>Cancel Premium Membership</DialogTitle>
+          <DialogContent>
+            {cancelStep === 0 && (
+              <Typography>
+                Are you sure you want to cancel your premium membership?
+              </Typography>
+            )}
+            {cancelStep === 1 && (
+              <>
+                <Typography>You will lose the following benefits:</Typography>
+                <ul className="list-disc pl-6 mt-2 text-sm">
+                  <li>Free shipping on all orders</li>
+                  <li>Exclusive member discounts</li>
+                  <li>Priority customer support</li>
+                  <li>Early access to new products</li>
+                  <li>Extended return window (60 days)</li>
+                </ul>
+              </>
+            )}
+            {cancelStep === 2 && (
+              <>
+                <Typography>Select a reason for cancellation:</Typography>
+                <RadioGroup
+                  value={cancelReason}
+                  onChange={(e) => setCancelReason(e.target.value)}
+                  className="mt-2"
+                >
+                  <FormControlLabel
+                    value="Too expensive"
+                    control={<Radio />}
+                    label="Too expensive"
+                  />
+                  <FormControlLabel
+                    value="Not using enough"
+                    control={<Radio />}
+                    label="Not using enough"
+                  />
+                  <FormControlLabel
+                    value="Found better alternative"
+                    control={<Radio />}
+                    label="Found a better alternative"
+                  />
+                  <FormControlLabel
+                    value="Other"
+                    control={<Radio />}
+                    label="Other"
+                  />
+                </RadioGroup>
+              </>
+            )}
+            {cancelStep === 3 && (
+              <Typography>
+                If you cancel now, reactivating will require eligibility
+                reassessment. Do you still want to proceed?
+              </Typography>
+            )}
+            {cancelStep === 4 && (
+              <>
+                <Typography>
+                  Please enter your payment password to confirm:
+                </Typography>
+                <TextField
+                  type="password"
+                  fullWidth
+                  className="mt-3"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setCancelFlowOpen(false)}
+              variant="outlined"
+              color="primary"
+            >
+              Close
+            </Button>
+            <Button variant="outlined" color="primary" onClick={handleNextStep}>
+              Confirm Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* 成功弹窗 */}
+        <TaskCompletionModal
+          open={snackbarOpen}
+          onClose={handleSnackbarClose}
+        />
       </div>
     </nav>
   );

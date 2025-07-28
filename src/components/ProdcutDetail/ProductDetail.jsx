@@ -101,7 +101,7 @@ const ProductDetail = () => {
             >
               Add to Cart
             </Button>
-            <Button
+            {/* <Button
               variant="contained"
               fullWidth
               style={{
@@ -129,7 +129,7 @@ const ProductDetail = () => {
               }}
             >
               Buy Now
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

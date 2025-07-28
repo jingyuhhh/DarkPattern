@@ -17,23 +17,17 @@ import {
   DialogActions,
 } from "@mui/material";
 import Nav from "../Nav/Nav";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { tasks, TaskType } from "../TaskEntry/tasks";
+import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
 
 const SHIPPING_OPTIONS = [
   { label: "Standard (Free)", value: "standard", price: 0 },
-  { label: "Premium (+$10)", value: "premium", price: 10 },
+  { label: "Premium (+$2)", value: "premium", price: 2 },
 ];
 
 const Checkout = () => {
-  const location = useLocation();
-  const itemsFromState = location.state?.product
-    ? [{ ...location.state.product }]
-    : [];
-  const itemsFromCart = useSelector((state) => state.cart.items);
-  const items = itemsFromState.length ? itemsFromState : itemsFromCart;
-
+  const items = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -42,9 +36,9 @@ const Checkout = () => {
     phone: "",
     address: "",
   });
-
   const [shipping, setShipping] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
+
   const sortedShippingOptions =
     parseInt(id) === 4
       ? [...SHIPPING_OPTIONS].sort((a, b) => (a.value === "premium" ? -1 : 1))
@@ -52,29 +46,20 @@ const Checkout = () => {
 
   const shippingPrice =
     SHIPPING_OPTIONS.find((opt) => opt.value === shipping)?.price || 0;
-  const total =
-    items.reduce((sum, item) => sum + item.price * item.quantity, 0) +
-    shippingPrice;
+  const itemsTotal = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const estimatedTax = (itemsTotal + shippingPrice) * 0.07; // 模拟税
+  const orderTotal = itemsTotal + shippingPrice + estimatedTax;
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e) =>
     setAddress({ ...address, [e.target.name]: e.target.value });
-  };
-
-  const handleShippingChange = (e) => {
-    setShipping(e.target.value);
-  };
-
-  const handlePlaceOrder = () => {
-    setDialogOpen(true);
-  };
-
+  const handleShippingChange = (e) => setShipping(e.target.value);
+  const handlePlaceOrder = () => setDialogOpen(true);
   const handleDialogClose = () => {
     setDialogOpen(false);
-
-    // Reset the cart
     dispatch(resetCart());
-
-    // Check if the current task type is "Buy Product"
     const currentTaskIndex = tasks.findIndex(
       (task) => task.id === parseInt(id)
     );
@@ -83,9 +68,7 @@ const Checkout = () => {
       tasks[currentTaskIndex].taskType === TaskType.BuyProduct
     ) {
       const nextTask = tasks[currentTaskIndex + 1];
-      if (nextTask) {
-        navigate(`/task/${nextTask.id}`);
-      }
+      if (nextTask) navigate(`/task/${nextTask.id}`);
     }
   };
 
@@ -96,18 +79,10 @@ const Checkout = () => {
   return (
     <>
       <Nav />
-      <Button onClick={() => navigate(-1)} startIcon={<ArrowBackIcon />}>
-        Return
-      </Button>
-      <div className="flex flex-col h-[calc(100vh-56px)] bg-gray-50">
-        <Typography variant="h6" className="mb-4 font-bold px-6 pt-6">
-          Checkout
-        </Typography>
-        <div className="flex-1 overflow-y-auto px-4 pb-32 space-y-6">
-          <Paper
-            elevation={2}
-            className="p-4 rounded-xl bg-white border border-gray-100"
-          >
+      <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+        {/* 左侧：收货地址 & 配送方式 */}
+        <div className="md:col-span-8 space-y-6">
+          <Paper className="p-4 rounded-xl bg-white border border-gray-100">
             <Typography variant="subtitle1" className="font-semibold mb-2">
               Shipping Address
             </Typography>
@@ -140,120 +115,101 @@ const Checkout = () => {
               />
             </div>
           </Paper>
-          <Paper
-            elevation={2}
-            className="p-4 rounded-xl bg-white border border-gray-100"
-          >
+          <Paper className="p-4 rounded-xl bg-white border border-gray-100">
             <FormControl component="fieldset">
               <FormLabel component="legend" className="font-semibold mb-2">
                 Shipping Method
               </FormLabel>
-
-              {/* 仅在 id === 6 时显示鼓励提示 */}
-              {parseInt(id) === 6 && (
-                <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 shadow-sm">
-                  <Typography
-                    variant="subtitle1"
-                    className="font-semibold text-orange-700"
-                  >
-                    Treat yourself to express shipping!
-                  </Typography>
-                  <Typography variant="body2" className="text-orange-600">
-                    You deserve to enjoy your purchase as soon as possible.
-                  </Typography>
-                </div>
-              )}
-
               <div className="grid gap-3">
-                {sortedShippingOptions.map((opt) => {
-                  const isPremium = opt.value === "premium";
-                  const highlightPremium =
-                    (parseInt(id) === 4 && isPremium) ||
-                    (parseInt(id) === 5 && isPremium);
-                  return (
-                    <div
-                      key={opt.value}
-                      className={`relative flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all
-            ${
-              highlightPremium
-                ? "border-blue-500 bg-blue-50 shadow-md"
-                : "border-gray-200 hover:border-gray-300 bg-white"
-            }`}
-                      onClick={() => setShipping(opt.value)}
-                    >
-                      {/* 推荐徽标 */}
-                      {highlightPremium && (
-                        <div className="absolute -top-2 right-2">
-                          <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full shadow">
-                            Recommended
-                          </span>
-                        </div>
-                      )}
-                      <div className="flex items-center gap-3">
-                        <Radio
-                          checked={shipping === opt.value}
-                          value={opt.value}
-                        />
-                        <div>
-                          <Typography
-                            variant="subtitle1"
-                            className={`font-semibold ${
-                              highlightPremium
-                                ? "text-blue-700"
-                                : "text-gray-800"
-                            }`}
-                          >
-                            {opt.label}
-                          </Typography>
-                          <Typography variant="body2" className="text-gray-500">
-                            {isPremium
-                              ? "Faster delivery (1-2 days)"
-                              : "Standard shipping (3-5 days)"}
-                          </Typography>
-                        </div>
+                {sortedShippingOptions.map((opt) => (
+                  <div
+                    key={opt.value}
+                    className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all
+                      ${
+                        shipping === opt.value
+                          ? "border-blue-500 bg-blue-50 shadow-md"
+                          : "border-gray-200 hover:border-gray-300 bg-white"
+                      }`}
+                    onClick={() => setShipping(opt.value)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Radio
+                        checked={shipping === opt.value}
+                        value={opt.value}
+                      />
+                      <div>
+                        <Typography
+                          variant="subtitle1"
+                          className="font-semibold text-gray-800"
+                        >
+                          {opt.label}
+                        </Typography>
+                        <Typography variant="body2" className="text-gray-500">
+                          {opt.value === "premium"
+                            ? "Faster delivery (1-2 days)"
+                            : "Standard shipping (3-5 days)"}
+                        </Typography>
                       </div>
-                      <Typography
-                        variant="subtitle1"
-                        className={`font-bold ${
-                          highlightPremium ? "text-blue-600" : "text-gray-700"
-                        }`}
-                      >
-                        {opt.price === 0 ? "Free" : `+$${opt.price}`}
-                      </Typography>
                     </div>
-                  );
-                })}
+                    <Typography
+                      variant="subtitle1"
+                      className="font-bold text-gray-700"
+                    >
+                      {opt.price === 0 ? "Free" : `+$${opt.price}`}
+                    </Typography>
+                  </div>
+                ))}
               </div>
             </FormControl>
           </Paper>
         </div>
-        <div className="fixed left-0 right-0 bottom-0 bg-white border-t shadow-lg px-6 py-4 flex justify-between items-center z-10">
-          <div className="text-xl font-bold text-gray-800">
-            Total: <span className="text-blue-600">${total.toFixed(2)}</span>
-          </div>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            onClick={handlePlaceOrder}
-          >
-            Place Order
-          </Button>
+
+        {/* 右侧：订单总结 */}
+        <div className="md:col-span-4">
+          <Paper className="p-6 rounded-xl bg-white border border-gray-200 shadow">
+            <Button
+              fullWidth
+              style={{
+                backgroundColor: "#ffd814",
+                color: "#000",
+                borderRadius: "8px",
+                textTransform: "none",
+                fontWeight: 600,
+                fontSize: "16px",
+                padding: "10px 0",
+                marginBottom: "16px",
+              }}
+              onClick={handlePlaceOrder}
+            >
+              Place your order
+            </Button>
+            <div className="border-t my-4"></div>
+            <div className="space-y-2 text-sm text-gray-700">
+              <div className="flex justify-between">
+                <span>Items:</span>
+                <span>${itemsTotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Shipping:</span>
+                <span>${shippingPrice.toFixed(2)}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Estimated Tax:</span>
+                <span>${estimatedTax.toFixed(2)}</span>
+              </div>
+            </div>
+            <div className="border-t my-4"></div>
+            <div className="flex justify-between text-lg font-bold">
+              <span>Order Total:</span>
+              <span>${orderTotal.toFixed(2)}</span>
+            </div>
+          </Paper>
         </div>
       </div>
 
-      {/* Success Dialog */}
-      <Dialog open={dialogOpen} onClose={handleDialogClose}>
-        <DialogTitle>Order Successful</DialogTitle>
-        <DialogContent>
-          <Typography>Your order has been placed successfully!</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose} color="primary">
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {/* 下单成功弹窗 */}
+      <TaskCompletionModal open={dialogOpen} onClose={handleDialogClose} />
     </>
   );
 };
