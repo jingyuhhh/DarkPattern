@@ -1,11 +1,12 @@
 import Product from "../Product/Product.jsx";
 import Nav from "../Nav/Nav.jsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { shoes } from "./productInfo.js";
+import { getProducts } from "./productInfo.js";
 
 function Shopping() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const products = getProducts(id);
 
   return (
     <div>
@@ -29,7 +30,7 @@ function Shopping() {
           }}
           className="p-2"
         >
-          {shoes.map((item, index) => (
+          {products.map((item, index) => (
             <Product
               key={index}
               onClick={() => navigate(`/task/${id}/productDetail/${index}`)}

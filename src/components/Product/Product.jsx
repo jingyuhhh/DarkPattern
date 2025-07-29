@@ -36,18 +36,15 @@ function Product({ onClick, product, ad = false }) {
           Advertisement
         </div>
       )}
-
       {/* 商品图 */}
       <img
         src={product.image}
         alt="Product"
         onClick={handleClick}
-        className="mb-3 w-full object-contain"
+        className="mb-3 w-full object-contain h-70"
       />
-
       {/* 店铺名 */}
       <p className="text-sm text-[#0f1111] font-medium">{product.store}</p>
-
       {/* 商品名 */}
       <p
         className="text-base text-[#0f1111] leading-snug"
@@ -55,7 +52,6 @@ function Product({ onClick, product, ad = false }) {
       >
         {product.name}
       </p>
-
       {/* 紧迫性 & 社会证明 */}
       {id === "12" && product.socialProof && (
         <span className="text-sm text-[#007185] my-1">
@@ -72,34 +68,32 @@ function Product({ onClick, product, ad = false }) {
           Deal ends in {formatTime(timeLeft)}
         </span>
       )}
-
       {/* 价格 */}
       <div className="flex items-baseline space-x-2" onClick={handleClick}>
         <span className="text-[28px] text-[#0f1111] font-semibold">
           ${product.price}
         </span>
       </div>
-
       {/* Add to cart 按钮 */}
-      {!ad && (
-        <div
-          className="mt-3"
-          onClick={() => {
-            dispatch(
-              addToCart({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-              })
-            );
-          }}
-        >
-          <button className="w-full bg-[#ffd814] hover:bg-[#f7ca00] text-black text-sm font-medium rounded-full py-2 shadow-sm border border-[#fcd200] transition">
-            Add to cart
-          </button>
-        </div>
-      )}
+      {/* {!ad && ( */}
+      <div
+        className="mt-3"
+        onClick={() => {
+          dispatch(
+            addToCart({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image: product.image,
+            })
+          );
+        }}
+      >
+        <button className="w-full bg-[#ffd814] hover:bg-[#f7ca00] text-black text-sm font-medium rounded-full py-2 shadow-sm border border-[#fcd200] transition">
+          Add to cart
+        </button>
+      </div>
+      {/* )} */}
     </div>
   );
 }

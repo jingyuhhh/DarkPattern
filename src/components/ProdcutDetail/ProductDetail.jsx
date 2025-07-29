@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import Nav from "../Nav/Nav";
-import { shoes } from "../Shopping/productInfo";
+import { getProducts } from "../Shopping/productInfo";
 import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart";
@@ -11,7 +11,8 @@ const ProductDetail = () => {
   const { id, productId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const product = shoes[parseInt(productId, 10)];
+  const products = getProducts(id);
+  const product = products[parseInt(productId, 10)];
   const [quantity, setQuantity] = useState(1);
 
   const showScarcity = parseInt(id, 10) === 11;

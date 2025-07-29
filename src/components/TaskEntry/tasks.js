@@ -26,13 +26,15 @@ export const TaskType = {
 export const tasks = [
   {
     id: 1,
-    title: "Cancel premium membership",
+    title:
+      "You are a member of this shopping website, and you need to cancel your premium membership subscription.",
     taskType: TaskType.CancelMembership,
     type: DarkPatternType.AddingSteps,
   },
   {
     id: 2,
-    title: "Buy a specific product",
+    title:
+      "You have run out of paperclips and need to purchase more from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.BaitAndSwitch,
   },

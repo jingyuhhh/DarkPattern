@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { shoes } from "../Shopping/productInfo";
+import { getProducts } from "../Shopping/productInfo";
 import Nav from "../Nav/Nav";
 import { useState, useEffect, useRef } from "react";
 import Button from "@mui/material/Button";
@@ -67,7 +67,8 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
 
 const StoreDetail = () => {
   const { id, storeId } = useParams();
-  const storeProducts = shoes.filter((product) => product.store === storeId);
+  const products = getProducts(id);
+  const storeProducts = products.filter((product) => product.store === storeId);
 
   // 根据 JSON 初始化订阅状态（只取这个 store 的第一件商品）
   const initialSubscribed =
