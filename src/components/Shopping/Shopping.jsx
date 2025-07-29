@@ -1,7 +1,7 @@
 import Product from "../Product/Product.jsx";
 import Nav from "../Nav/Nav.jsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { getProducts } from "./productInfo.js";
+import { getProducts } from "../../data/productInfo.js";
 
 function Shopping() {
   const navigate = useNavigate();
@@ -32,11 +32,10 @@ function Shopping() {
         >
           {products.map((item, index) => (
             <Product
-              key={index}
-              onClick={() => navigate(`/task/${id}/productDetail/${index}`)}
+              key={item.id}
+              onClick={() => navigate(`/task/${id}/productDetail/${item.id}`)}
               product={item}
-              ad={id == 2 ? [0, 1, 4].includes(index) : false}
-              productIndex={index}
+              productIndex={item.id}
             />
           ))}
         </div>

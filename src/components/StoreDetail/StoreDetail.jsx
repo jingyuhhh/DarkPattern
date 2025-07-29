@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { getProducts } from "../Shopping/productInfo";
+import { getProducts } from "../../data/productInfo";
 import Nav from "../Nav/Nav";
 import { useState, useEffect, useRef } from "react";
 import Button from "@mui/material/Button";
@@ -13,8 +13,10 @@ import { useNavigate } from "react-router-dom";
 import Product from "../Product/Product";
 import { useDispatch } from "react-redux";
 import { resetCart } from "../../store/cart";
-import { tasks, TaskType } from "../TaskEntry/tasks";
+import { tasks, TaskType } from "../../data/tasks";
 import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
+import Terms from "./components/Terms";
+import { getStoreProducts } from "../../data/productInfo";
 
 const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
   const { id, storeId } = useParams();
@@ -27,16 +29,14 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
         <DialogTitle>Unsubscribe from this store?</DialogTitle>
         <DialogContent>
           <div className="text-gray-700">
-            {id === "14" && storeId === "aa"
+            {id === "14"
               ? "Are you sure you want to cancel your memberhip? You’ll lose access to member-only discounts and perks” with options labeled"
               : "Are you sure you want to unsubscribe from this store?"}
           </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="inherit" variant="outlined">
-            {id === "14" && storeId === "aa"
-              ? "No, I like the discounts"
-              : "No, Keep Subscribed"}
+            {id === "14" ? "No, I like the discounts" : "No, Keep Subscribed"}
           </Button>
           <Button
             onClick={() => {
@@ -46,9 +46,7 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
             color="inherit"
             variant="outlined"
           >
-            {id === "14" && storeId === "aa"
-              ? "Yes, I like full price"
-              : "Yes, Unsubscribe"}
+            {id === "14" ? "Yes, I like full price" : "Yes, Unsubscribe"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -67,13 +65,9 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
 
 const StoreDetail = () => {
   const { id, storeId } = useParams();
-  const products = getProducts(id);
-  const storeProducts = products.filter((product) => product.store === storeId);
+  const storeInfo = getStoreProducts(id);
 
-  // 根据 JSON 初始化订阅状态（只取这个 store 的第一件商品）
-  const initialSubscribed =
-    storeProducts.length > 0 ? storeProducts[0].storeSubscribed : false;
-  const [isSubscribed, setIsSubscribed] = useState(initialSubscribed);
+  const [isSubscribed, setIsSubscribed] = useState(storeInfo.subscribed);
 
   const [showModal, setShowModal] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
@@ -116,17 +110,6 @@ const StoreDetail = () => {
     }
   };
 
-  const termsContent = `
-  Welcome to our store! Before subscribing, please read these Terms of Service carefully:
-1. Your subscription allows us to send you updates about this store.
-2. You may unsubscribe at any time.
-3. Please ensure that you have read and understood all conditions.${
-    id == 8
-      ? "\n4. By subscribing, you allow us to share your personal information with our partners for service improvement."
-      : ""
-  }
-  `;
-
   return (
     <>
       <div className="min-h-screen bg-gray-50">
@@ -149,16 +132,21 @@ const StoreDetail = () => {
               ref={termsRef}
               onScroll={handleScroll}
               style={{
-                maxHeight: "140px",
+                maxHeight: "350px",
                 overflowY: "auto",
                 padding: "8px",
                 border: "1px solid #ccc",
                 borderRadius: "4px",
                 marginBottom: "12px",
-                whiteSpace: "pre-wrap",
               }}
             >
-              {termsContent}
+              <Terms
+                extraClause={
+                  id == 8
+                    ? "By subscribing, you allow us to share your personal information with our partners for service improvement."
+                    : null
+                }
+              />
             </div>
 
             <FormControlLabel
@@ -211,8 +199,9 @@ const StoreDetail = () => {
                 }
                 label={
                   <span className="font-bold text-sm">
-                    Uncheck to opt out of sharing my information for
-                    personalized advertising
+                    Do not leave this box unchecked if you would not like to
+                    avoid consenting to the sharing of my information for
+                    personalized advertising.
                   </span>
                 }
               />
@@ -269,7 +258,7 @@ const StoreDetail = () => {
         <div className="max-w-5xl mx-auto bg-white rounded-lg shadow p-6">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold text-[#0f1111]">
-              Store: {storeId}
+              {storeInfo.name}
             </h1>
             <Button
               variant={!isSubscribed ? "contained" : "outlined"}
@@ -298,18 +287,19 @@ const StoreDetail = () => {
             personalized recommendations.
           </p>
 
-          {storeProducts.length === 0 ? (
+          {storeInfo.products.length === 0 ? (
             <p className="text-gray-500 text-lg">
               No products found for this store.
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {storeProducts.map((product, idx) => (
+              {storeInfo.products.map((product, idx) => (
                 <Product
                   product={product}
-                  onClick={() =>
-                    navigate(`/task/${id}/productDetail/${product.id}`)
-                  }
+                  onClick={() => {
+                    console.log(product);
+                    navigate(`/task/${id}/productDetail/${product.id}`);
+                  }}
                 />
               ))}
             </div>

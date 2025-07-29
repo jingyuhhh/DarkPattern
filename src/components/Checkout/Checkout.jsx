@@ -18,12 +18,12 @@ import {
 } from "@mui/material";
 import Nav from "../Nav/Nav";
 import { useNavigate, useParams } from "react-router-dom";
-import { tasks, TaskType } from "../TaskEntry/tasks";
+import { tasks, TaskType } from "../../data/tasks";
 import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
 
 const SHIPPING_OPTIONS = [
-  { label: "Standard (Free)", value: "standard", price: 0 },
-  { label: "Premium (+$2)", value: "premium", price: 2 },
+  { label: "Standard", value: "standard", price: 0 },
+  { label: "Premium", value: "premium", price: 2 },
 ];
 
 const Checkout = () => {
@@ -110,27 +110,11 @@ const Checkout = () => {
               <FormLabel component="legend" className="font-semibold mb-2">
                 Shipping Method
               </FormLabel>
-              {/* 仅在 id === 6 时显示鼓励提示 */}
-              {parseInt(id) === 6 && (
-                <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 shadow-sm">
-                  <Typography
-                    variant="subtitle1"
-                    className="font-semibold text-orange-700"
-                  >
-                    Treat yourself to express shipping!
-                  </Typography>
-                  <Typography variant="body2" className="text-orange-600">
-                    You deserve to enjoy your purchase as soon as possible.
-                  </Typography>
-                </div>
-              )}
 
               <div className="grid gap-3">
                 {sortedShippingOptions.map((opt) => {
-                  const isPremium = opt.value === "premium";
                   const highlightPremium =
-                    (parseInt(id) === 4 && isPremium) ||
-                    (parseInt(id) === 5 && isPremium);
+                    parseInt(id) === 4 && opt.value === "premium";
                   return (
                     <div
                       key={opt.value}
@@ -158,29 +142,43 @@ const Checkout = () => {
                         <div>
                           <Typography
                             variant="subtitle1"
-                            className={`font-semibold ${
+                            className={`font-extrabold ${
                               highlightPremium
                                 ? "text-blue-700"
                                 : "text-gray-800"
                             }`}
+                            style={{
+                              fontSize: parseInt(id) === 4 ? "1.2rem" : "1rem", // id=4时加大 Fast / Standard
+                              fontWeight:
+                                parseInt(id) === 4 ? "bold" : "normal",
+                            }}
                           >
                             {opt.label}
                           </Typography>
-                          <Typography variant="body2" className="text-gray-500">
-                            {isPremium
+                          <Typography
+                            variant="body2"
+                            style={{
+                              fontSize: parseInt(id) === 4 ? "1rem" : "1rem", // id=4时加大天数描述
+                              fontWeight:
+                                parseInt(id) === 4 ? "bold" : "normal",
+                            }}
+                          >
+                            {parseInt(id) === 4
                               ? "Faster delivery (1-2 days)"
                               : "Standard shipping (3-5 days)"}
                           </Typography>
+
+                          <Typography
+                            variant="subtitle1"
+                            className={`font-bold "text-gray-700"`}
+                            style={{
+                              fontSize: parseInt(id) === 4 ? "0.7rem" : "1rem", // id=4时缩小 +2 / Free
+                            }}
+                          >
+                            Cost ${opt.price}
+                          </Typography>
                         </div>
                       </div>
-                      <Typography
-                        variant="subtitle1"
-                        className={`font-bold ${
-                          highlightPremium ? "text-blue-600" : "text-gray-700"
-                        }`}
-                      >
-                        {opt.price === 0 ? "Free" : `+$${opt.price}`}
-                      </Typography>
                     </div>
                   );
                 })}

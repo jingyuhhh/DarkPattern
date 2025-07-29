@@ -15,7 +15,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
-import { tasks, TaskType } from "../TaskEntry/tasks";
+import { tasks, TaskType } from "../../data/tasks";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart";
 import { resetCart } from "../../store/cart";

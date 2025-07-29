@@ -8,6 +8,7 @@ export const usePopup = () => useContext(PopupContext);
 
 export const PopupProvider = ({ children, interval = 30000 }) => {
   const [open, setOpen] = useState(false);
+  const [popupDisabled, setPopupDisabled] = useState(false); // Track if popup is disabled
   const location = useLocation();
 
   // 从路径中获取 taskId 和额外的路径部分（假设路由格式是 /task/:id/:extra）
@@ -17,21 +18,30 @@ export const PopupProvider = ({ children, interval = 30000 }) => {
 
   useEffect(() => {
     let timer;
-    if (taskId === 9 && extraPath) {
-      // 只有 taskId === 9 且存在额外路径部分时才启动定时器
+    if (!popupDisabled && taskId === 9 && extraPath) {
+      // Only start the timer if popup is not disabled
       timer = setInterval(() => {
         setOpen(true);
       }, interval);
     }
     return () => clearInterval(timer);
-  }, [taskId, extraPath, interval]);
+  }, [taskId, extraPath, interval, popupDisabled]);
 
   const handleClose = () => setOpen(false);
 
+  const handleDisablePopup = () => {
+    setPopupDisabled(true); // Disable popup
+    setOpen(false); // Close popup
+  };
+
   return (
-    <PopupContext.Provider value={{ open, setOpen }}>
+    <PopupContext.Provider value={{ open, setOpen, handleDisablePopup }}>
       {children}
-      <GlobalPopup open={open} onClose={handleClose} />
+      <GlobalPopup
+        open={open}
+        onClose={handleClose}
+        onDisable={handleDisablePopup}
+      />
     </PopupContext.Provider>
   );
 };

@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import Nav from "../Nav/Nav";
-import { getProducts } from "../Shopping/productInfo";
+import { getProducts } from "../../data/productInfo";
 import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart";
@@ -12,12 +12,13 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const products = getProducts(id);
-  const product = products[parseInt(productId, 10)];
+  const product = products.find((item) => item.id === parseInt(productId, 10));
   const [quantity, setQuantity] = useState(1);
 
-  const showScarcity = parseInt(id, 10) === 11;
-  const showSocialProof = parseInt(id, 10) === 12;
+  const showScarcity = parseInt(id, 10) === 11 && product.scarcity;
+  const showSocialProof = parseInt(id, 10) === 12 && product.socialProof;
   const showUrgency = parseInt(id, 10) === 13 && product.urgency;
+  const showEmotion = parseInt(id, 10) === 6 && product.emotional;
 
   const timeLeft = showUrgency
     ? useGlobalCountdown(`product_${String(product.id)}`, 3 * 60 * 60)
@@ -48,10 +49,10 @@ const ProductDetail = () => {
           <div className="md:col-span-5 space-y-3">
             <a
               href="#"
-              className="text-sm text-blue-600 hover:underline"
-              onClick={() => navigate(`/task/${id}/store/${product.store}`)}
+              className="text-sm font-semibold "
+              // onClick={() => navigate(`/task/${id}/store/${product.store}`)}
             >
-              Visit the {product.store} Store
+              {product.store}
             </a>
             <h1 className="text-2xl font-semibold text-[#0f1111]">
               {product.name}
@@ -68,23 +69,30 @@ const ProductDetail = () => {
               </p>
             )}
             {showSocialProof && (
-              <p className="text-[#565959] text-sm mt-1">
+              <p className="text-[#007185] font-bold text-sm mt-1">
                 300+ bought in the past month
               </p>
             )}
             {showUrgency && (
-              <p className="text-[#B12704] text-base font-semibold mt-2">
-                Deal ends in {formatTime(timeLeft)}
+              <div className="flex items-center space-x-2 my-1">
+                <span className="bg-[#7fda69] text-black text-xs font-semibold px-2 py-1 ">
+                  Save 30%
+                </span>
+                <span className="text-red-600 text-sm font-semibold">
+                  Deal ends in {formatTime(timeLeft)}
+                </span>
+              </div>
+            )}
+            {showEmotion && (
+              <p className="text-[#7fda69] text-base font-semibold mt-2">
+                A small choice today for a healthier, happier you.
               </p>
             )}
 
             <div className="mt-16">
               <p className="font-semibold text-lg mb-1">Product details</p>
               <ul className="text-sm text-gray-700 list-disc pl-5">
-                <li>Origin: Imported</li>
-                <li>Sole material: Rubber</li>
-                <li>Outer material: Polyester</li>
-                <li>Closure type: Lace-Up</li>
+                {product.description}
               </ul>
             </div>
           </div>

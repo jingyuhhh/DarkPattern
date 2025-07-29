@@ -20,7 +20,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { tasks } from "../TaskEntry/tasks.js";
+import { tasks } from "../../data/tasks.js";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart.js";
 

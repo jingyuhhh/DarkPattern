@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useGlobalCountdown from "../../hooks/useGlobalCountdown";
 
-function Product({ onClick, product, ad = false }) {
+function Product({ onClick, product }) {
   const dispatch = useDispatch();
   const { id } = useParams();
   const timeLeft =
@@ -19,6 +19,7 @@ function Product({ onClick, product, ad = false }) {
     const secs = String(seconds % 60).padStart(2, "0");
     return `${hrs}:${mins}:${secs}`;
   };
+  const ad = id === "3" && product.ad;
 
   const handleClick = ad
     ? () =>
@@ -30,12 +31,6 @@ function Product({ onClick, product, ad = false }) {
 
   return (
     <div className="border border-gray-200 rounded-md flex flex-col cursor-pointer relative p-3 ">
-      {/* Advertisement 标签 */}
-      {ad && (
-        <div className="absolute top-3 left-3 bg-[#c45500] text-white text-xs font-semibold px-2 py-1 rounded">
-          Advertisement
-        </div>
-      )}
       {/* 商品图 */}
       <img
         src={product.image}
@@ -54,7 +49,7 @@ function Product({ onClick, product, ad = false }) {
       </p>
       {/* 紧迫性 & 社会证明 */}
       {id === "12" && product.socialProof && (
-        <span className="text-sm text-[#007185] my-1">
+        <span className="text-sm text-[#007185] font-bold my-1">
           300+ bought in past month
         </span>
       )}
@@ -64,21 +59,36 @@ function Product({ onClick, product, ad = false }) {
         </span>
       )}
       {id === "13" && product.urgency && (
-        <span className="text-red-600 text-sm font-semibold">
-          Deal ends in {formatTime(timeLeft)}
-        </span>
+        <div className="flex items-center space-x-2 my-1">
+          <span className="bg-[#7fda69] text-black text-xs font-semibold px-2 py-1 ">
+            Save 30%
+          </span>
+          <span className="text-red-600 text-sm font-semibold">
+            Deal ends in {formatTime(timeLeft)}
+          </span>
+        </div>
       )}
+      {id === "6" && product.emotional && (
+        <p className="text-[#7fda69] text-base font-semibold mt-2">
+          A small choice today for a healthier, happier you.
+        </p>
+      )}
+      {ad && <p className="text-xs text-gray-500 mt-1">Advertisement</p>}
+
       {/* 价格 */}
       <div className="flex items-baseline space-x-2" onClick={handleClick}>
         <span className="text-[28px] text-[#0f1111] font-semibold">
           ${product.price}
         </span>
       </div>
-      {/* Add to cart 按钮 */}
-      {/* {!ad && ( */}
+
       <div
         className="mt-3"
         onClick={() => {
+          if (ad) {
+            handleClick();
+            return;
+          }
           dispatch(
             addToCart({
               id: product.id,

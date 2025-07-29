@@ -17,7 +17,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { tasks, TaskType } from "../TaskEntry/tasks";
+import { TaskType } from "../../data/tasks";
 import { resetCart } from "../../store/cart";
 import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
 import { RadioGroup, FormControlLabel, Radio, TextField } from "@mui/material";
@@ -101,7 +101,7 @@ const Nav = () => {
 
         {/* 用户菜单 */}
         <div
-          className={`p-1 rounded-full border-2 cursor-pointer transition-colors ${
+          className={`flex items-center space-x-2 p-2 rounded-full border-2 cursor-pointer transition-colors ${
             isPremiumMember && id == 1
               ? "border-yellow-400 hover:border-yellow-500"
               : "border-gray-300 hover:border-gray-400"
@@ -109,7 +109,11 @@ const Nav = () => {
           onClick={handleClick}
         >
           <AccountCircleIcon className="text-white" fontSize="medium" />
+          <Typography variant="body2" className="text-white" fontWeight="bold">
+            Account
+          </Typography>
         </div>
+
         <Menu
           anchorEl={anchorEl}
           open={open}

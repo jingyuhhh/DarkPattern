@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { tasks } from "./tasks";
+import { tasks, TaskType } from "../../data/tasks";
 import {
   Container,
   Card,
@@ -20,22 +20,13 @@ const TaskEntry = () => {
 
   const task = tasks.find((task) => task.id === parseInt(id));
 
-  useEffect(() => {
-    if (task?.id === 3 && !addedRef.current) {
-      dispatch(
-        addToCart({
-          id: 10,
-          title: "Default",
-          price: 5.9,
-          Image: "https://example.com/default-item.jpg",
-        })
-      );
-      addedRef.current = true; // 避免重复添加
-    }
-  }, [task?.id, dispatch]);
-
   const handleContinue = () => {
-    navigate(`/task/${id}/shopping`);
+    if (
+      task.taskType === TaskType.CancelSubscription ||
+      task.taskType === TaskType.SignSubscription
+    ) {
+      navigate(`/task/${id}/store/PaperPal#`);
+    } else navigate(`/task/${id}/shopping`);
   };
 
   return (
@@ -53,10 +44,6 @@ const TaskEntry = () => {
 
             <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
               {task.title}
-            </Typography>
-
-            <Typography variant="body1" sx={{ mt: 2, mb: 3 }}>
-              {task.description}
             </Typography>
 
             <Button
