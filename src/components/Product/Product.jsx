@@ -1,9 +1,25 @@
 import { Star } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart";
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import useGlobalCountdown from "../../hooks/useGlobalCountdown";
 
 function Product({ onClick, product, ad = false }) {
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const timeLeft =
+    id === "13" && product.urgency
+      ? useGlobalCountdown(`product_${String(product.id)}`, 5 * 54 * 60)
+      : 0;
+
+  const formatTime = (seconds) => {
+    const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+    const secs = String(seconds % 60).padStart(2, "0");
+    return `${hrs}:${mins}:${secs}`;
+  };
+
   const handleClick = ad
     ? () =>
         window.open(
@@ -29,17 +45,6 @@ function Product({ onClick, product, ad = false }) {
         className="mb-3 w-full object-contain"
       />
 
-      {/* 颜色选择（模拟小圆点） */}
-      {/* <div className="flex items-center gap-1 mb-2">
-        {[...Array(5)].map((_, i) => (
-          <div
-            key={i}
-            className="w-5 h-5 rounded-full border border-gray-300 bg-gray-200"
-          ></div>
-        ))}
-        <span className="text-sm text-blue-600 ml-1">+89</span>
-      </div> */}
-
       {/* 店铺名 */}
       <p className="text-sm text-[#0f1111] font-medium">{product.store}</p>
 
@@ -51,35 +56,35 @@ function Product({ onClick, product, ad = false }) {
         {product.name}
       </p>
 
-      {/* 星级评分 */}
-      {/* <div className="flex items-center text-sm text-[#007185] my-1">
-        <span className="flex items-center text-[#f59e0b] mr-1">★★★★☆</span>
-        <span className="ml-1 text-blue-600 text-sm">(5.1K)</span>
-      </div> */}
+      {/* 紧迫性 & 社会证明 */}
+      {id === "12" && product.socialProof && (
+        <span className="text-sm text-[#007185] my-1">
+          300+ bought in past month
+        </span>
+      )}
+      {id === "11" && product.scarcity && (
+        <span className="text-red-600 text-sm font-semibold">
+          Only 3 left in stock
+        </span>
+      )}
+      {id === "13" && product.urgency && (
+        <span className="text-red-600 text-sm font-semibold">
+          Deal ends in {formatTime(timeLeft)}
+        </span>
+      )}
 
       {/* 价格 */}
       <div className="flex items-baseline space-x-2" onClick={handleClick}>
         <span className="text-[28px] text-[#0f1111] font-semibold">
           ${product.price}
         </span>
-        {/* <span className="text-sm text-gray-500 line-through">$75.00</span> */}
       </div>
-
-      {/* Prime 信息 & 配送时间 */}
-      {/* <p className="text-sm text-[#007185] mt-1">
-        Prime <span className="text-black">members</span> get FREE delivery
-      </p>
-      <p className="text-sm text-black font-semibold">Overnight 7 AM - 11 AM</p>
-      <p className="text-sm text-black">
-        Or Non-members get FREE delivery{" "}
-        <span className="font-semibold">Sat, Aug 2</span>
-      </p> */}
 
       {/* Add to cart 按钮 */}
       {!ad && (
         <div
           className="mt-3"
-          onClick={() =>
+          onClick={() => {
             dispatch(
               addToCart({
                 id: product.id,
@@ -87,8 +92,8 @@ function Product({ onClick, product, ad = false }) {
                 price: product.price,
                 image: product.image,
               })
-            )
-          }
+            );
+          }}
         >
           <button className="w-full bg-[#ffd814] hover:bg-[#f7ca00] text-black text-sm font-medium rounded-full py-2 shadow-sm border border-[#fcd200] transition">
             Add to cart

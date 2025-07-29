@@ -16,36 +16,71 @@ import { resetCart } from "../../store/cart";
 import { tasks, TaskType } from "../TaskEntry/tasks";
 import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
 
-const UnsubscribeDialog = ({ open, onClose, onConfirm }) => (
-  <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-    <DialogTitle>Unsubscribe from this store?</DialogTitle>
-    <DialogContent>
-      <div className="text-gray-700">
-        Are you sure you want to unsubscribe from this store?
-      </div>
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={onClose} color="inherit" variant="outlined">
-        Cancel
-      </Button>
-      <Button onClick={onConfirm} color="amazon" variant="contained">
-        Confirm
-      </Button>
-    </DialogActions>
-  </Dialog>
-);
+const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
+  const { id, storeId } = useParams();
+  const [confirm, setConfirm] = useState(false);
+  const dispatch = useDispatch();
+
+  return (
+    <>
+      <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+        <DialogTitle>Unsubscribe from this store?</DialogTitle>
+        <DialogContent>
+          <div className="text-gray-700">
+            {id === "14" && storeId === "aa"
+              ? "Are you sure you want to cancel your memberhip? You’ll lose access to member-only discounts and perks” with options labeled"
+              : "Are you sure you want to unsubscribe from this store?"}
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose} color="inherit" variant="outlined">
+            {id === "14" && storeId === "aa"
+              ? "No, I like the discounts"
+              : "No, Keep Subscribed"}
+          </Button>
+          <Button
+            onClick={() => {
+              onConfirm();
+              setConfirm(true);
+            }}
+            color="inherit"
+            variant="outlined"
+          >
+            {id === "14" && storeId === "aa"
+              ? "Yes, I like full price"
+              : "Yes, Unsubscribe"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <TaskCompletionModal
+        open={confirm}
+        id={id}
+        targetTaskType={TaskType.CancelSubscription}
+        onClose={() => {
+          onClose();
+          dispatch(resetCart());
+        }}
+      />
+    </>
+  );
+};
 
 const StoreDetail = () => {
   const { id, storeId } = useParams();
   const storeProducts = shoes.filter((product) => product.store === storeId);
+
+  // 根据 JSON 初始化订阅状态（只取这个 store 的第一件商品）
+  const initialSubscribed =
+    storeProducts.length > 0 ? storeProducts[0].storeSubscribed : false;
+  const [isSubscribed, setIsSubscribed] = useState(initialSubscribed);
+
   const [showModal, setShowModal] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState(false);
   const dispatch = useDispatch();
   const [isAdConsent, setIsAdConsent] = useState(true);
   const [isTrickQuestionConsent, setIsTrickQuestionConsent] = useState(false);
   const [isUnsubscribeMode, setIsUnsubscribeMode] = useState(false);
-  const [showCompletionModal, setShowCompletionModal] = useState(false); // ✅ 新增：控制 TaskCompletionModal
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
 
   const [canCheckTerms, setCanCheckTerms] = useState(false);
   const [countdown, setCountdown] = useState(5);
@@ -287,17 +322,9 @@ const StoreDetail = () => {
         onClose={() => {
           setShowCompletionModal(false);
           dispatch(resetCart());
-          const currentTaskIndex = tasks.findIndex(
-            (task) => task.id === parseInt(id)
-          );
-          if (
-            currentTaskIndex !== -1 &&
-            tasks[currentTaskIndex].taskType === TaskType.SignSubscription
-          ) {
-            const nextTask = tasks[currentTaskIndex + 1];
-            if (nextTask) navigate(`/task/${nextTask.id}`);
-          }
         }}
+        id={id}
+        targetTaskType={TaskType.SignSubscription}
       />
     </>
   );

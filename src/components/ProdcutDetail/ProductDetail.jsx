@@ -5,15 +5,29 @@ import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart";
 import { useState } from "react";
+import useGlobalCountdown from "../../hooks/useGlobalCountdown";
 
 const ProductDetail = () => {
   const { id, productId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const product = shoes[parseInt(productId, 10)];
-
-  // 新增：数量状态
   const [quantity, setQuantity] = useState(1);
+
+  const showScarcity = parseInt(id, 10) === 11;
+  const showSocialProof = parseInt(id, 10) === 12;
+  const showUrgency = parseInt(id, 10) === 13 && product.urgency;
+
+  const timeLeft = showUrgency
+    ? useGlobalCountdown(`product_${String(product.id)}`, 3 * 60 * 60)
+    : 0;
+
+  const formatTime = (seconds) => {
+    const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+    const secs = String(seconds % 60).padStart(2, "0");
+    return `${hrs}:${mins}:${secs}`;
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -45,6 +59,24 @@ const ProductDetail = () => {
             <div>
               <span className="text-3xl font-bold">${product.price}</span>
             </div>
+
+            {/* 紧迫性 & 社会证明 */}
+            {showScarcity && (
+              <p className="text-[#B12704] text-base font-semibold mt-2">
+                Only 3 left in stock — order soon.
+              </p>
+            )}
+            {showSocialProof && (
+              <p className="text-[#565959] text-sm mt-1">
+                300+ bought in the past month
+              </p>
+            )}
+            {showUrgency && (
+              <p className="text-[#B12704] text-base font-semibold mt-2">
+                Deal ends in {formatTime(timeLeft)}
+              </p>
+            )}
+
             <div className="mt-16">
               <p className="font-semibold text-lg mb-1">Product details</p>
               <ul className="text-sm text-gray-700 list-disc pl-5">
@@ -101,35 +133,6 @@ const ProductDetail = () => {
             >
               Add to Cart
             </Button>
-            {/* <Button
-              variant="contained"
-              fullWidth
-              style={{
-                backgroundColor: "#ffd814",
-                color: "#000",
-                borderRadius: "9999px",
-                border: "1px solid #ffd814",
-                textTransform: "none",
-                fontWeight: 500,
-                marginTop: "10px",
-                fontSize: "14px",
-              }}
-              onClick={() => {
-                navigate(`/task/${id}/checkout`, {
-                  state: {
-                    product: {
-                      id: parseInt(productId, 10),
-                      name: product.name,
-                      price: product.price,
-                      image: product.image,
-                      quantity: quantity, // Pass the selected quantity
-                    },
-                  },
-                });
-              }}
-            >
-              Buy Now
-            </Button> */}
           </div>
         </div>
       </div>

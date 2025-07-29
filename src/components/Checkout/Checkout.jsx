@@ -60,16 +60,6 @@ const Checkout = () => {
   const handleDialogClose = () => {
     setDialogOpen(false);
     dispatch(resetCart());
-    const currentTaskIndex = tasks.findIndex(
-      (task) => task.id === parseInt(id)
-    );
-    if (
-      currentTaskIndex !== -1 &&
-      tasks[currentTaskIndex].taskType === TaskType.BuyProduct
-    ) {
-      const nextTask = tasks[currentTaskIndex + 1];
-      if (nextTask) navigate(`/task/${nextTask.id}`);
-    }
   };
 
   if (!items.length) {
@@ -244,7 +234,12 @@ const Checkout = () => {
       </div>
 
       {/* 下单成功弹窗 */}
-      <TaskCompletionModal open={dialogOpen} onClose={handleDialogClose} />
+      <TaskCompletionModal
+        id={id}
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        targetTaskType={TaskType.BuyProduct}
+      />
     </>
   );
 };

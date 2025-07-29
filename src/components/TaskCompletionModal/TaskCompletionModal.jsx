@@ -14,21 +14,82 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
+import { useParams, useNavigate } from "react-router-dom";
+import { tasks, TaskType } from "../TaskEntry/tasks";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/cart";
+import { resetCart } from "../../store/cart";
 
-const TaskCompletionModal = ({ open, onClose }) => {
-  return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Task Completion Successful</DialogTitle>
-      <DialogContent>
-        <Typography>Your finished the task successfully!</Typography>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Next Task
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
+  const navigate = useNavigate();
+  const currentTaskIndex = tasks.findIndex((task) => task.id === parseInt(id));
+  const dispatch = useDispatch();
+
+  if (
+    currentTaskIndex !== -1 &&
+    tasks[currentTaskIndex].taskType === targetTaskType
+  ) {
+    const nextTask = tasks[currentTaskIndex + 1];
+    if (!nextTask) {
+      return (
+        <Dialog
+          open={open}
+          onClose={() => {
+            if (onClose) onClose();
+            navigate("/tasks/completed"); // Navigate to a completion page or summary
+          }}
+        >
+          <DialogTitle>All Tasks Completed</DialogTitle>
+          <DialogContent>
+            <Typography>You have completed all tasks!</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => onClose && onClose()} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      );
+    } else {
+      console.log(`Next task ID: ${nextTask.id}`);
+      if (nextTask.id === 4) {
+        dispatch(
+          addToCart({
+            id: 10,
+            title: "Default",
+            price: 5.9,
+            Image: "https://example.com/default-item.jpg",
+          })
+        );
+      }
+      return (
+        <Dialog
+          open={open}
+          onClose={() => {
+            if (onClose) onClose();
+            navigate(`/task/${nextTask.id}`);
+          }}
+        >
+          <DialogTitle>Task Completion Successful</DialogTitle>
+          <DialogContent>
+            <Typography>You finished the task successfully!</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                if (onClose) onClose();
+                navigate(`/task/${nextTask.id}`);
+              }}
+              color="primary"
+            >
+              Next Task
+            </Button>
+          </DialogActions>
+        </Dialog>
+      );
+    }
+  }
+  return null; // Return null if the task is not found or does not match the targetTaskType
 };
 
 export default TaskCompletionModal;

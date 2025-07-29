@@ -68,7 +68,7 @@ const TaskEntry = () => {
               onClick={handleContinue}
               sx={{ mt: 2 }}
             >
-              Continue to Shopping
+              Continue
             </Button>
           </Box>
         </CardContent>

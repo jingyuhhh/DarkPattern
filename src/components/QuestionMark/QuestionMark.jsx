@@ -21,12 +21,15 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { tasks } from "../TaskEntry/tasks.js";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/cart.js";
 
 const QuestionMark = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [skipReason, setSkipReason] = useState("");
   const { id } = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // Get current task information
@@ -82,8 +85,21 @@ const QuestionMark = () => {
         console.log("Task finished");
         // Navigate to next task
         nextTask = getNextTask();
+
         if (nextTask) {
           navigate(`/task/${nextTask.id}`);
+          console.log(nextTask);
+
+          if (nextTask.id === 3) {
+            dispatch(
+              addToCart({
+                id: 10,
+                title: "Default",
+                price: 5.9,
+                Image: "https://example.com/default-item.jpg",
+              })
+            );
+          }
         } else {
           // If no next task, go to shopping page with current task ID
           navigate(`/task/${id}/shopping`);

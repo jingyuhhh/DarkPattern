@@ -1,28 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const getTaskIdFromPath = () => {
-  if (typeof window === "undefined") return null;
-  const match = window.location.pathname.match(/\/task\/(\d+)/);
-  return match ? match[1] : null;
-};
-
-const getInitialItems = () => {
-  const id = getTaskIdFromPath();
-  if (id === "3") {
-    return [
-      {
-        id: 3,
-        name: "Default Item",
-        price: 10,
-        image: "default.jpg",
-        quantity: 1,
-      },
-    ];
-  }
-  return [];
-};
-
-const initialItems = getInitialItems();
+const initialItems = [];
 
 const initialState = {
   items: initialItems,

@@ -62,18 +62,6 @@ const Nav = () => {
     setCancelFlowOpen(false);
     setMembershipDialogOpen(false);
   };
-
-  const handleSnackbarClose = () => {
-    dispatch(resetCart());
-    const currentTaskIndex = tasks.findIndex(
-      (task) => task.id === parseInt(id)
-    );
-    if (tasks[currentTaskIndex].taskType === TaskType.CancelMembership) {
-      const nextTask = tasks[currentTaskIndex + 1];
-      if (nextTask) navigate(`/task/${nextTask.id}`);
-    }
-  };
-
   const handleNextStep = () => {
     if (cancelStep < 4) {
       setCancelStep(cancelStep + 1);
@@ -373,7 +361,9 @@ const Nav = () => {
         {/* 成功弹窗 */}
         <TaskCompletionModal
           open={snackbarOpen}
-          onClose={handleSnackbarClose}
+          id={id}
+          onClose={() => dispatch(resetCart())}
+          targetTaskType={TaskType.CancelMembership}
         />
       </div>
     </nav>
