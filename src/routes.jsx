@@ -23,7 +23,7 @@ const PageWrapper = ({ children }) => (
 
 const AppRoutes = () => (
   <Router>
-    <PopupProvider interval={8000}>
+    <PopupProvider interval={6000}>
       {/* 必须放到 Router 内 */}
       <Routes>
         <Route path="/task/:id" element={<TaskEntry />} />

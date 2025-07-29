@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { tasks } from "./tasks";
 import {
@@ -8,38 +8,35 @@ import {
   Typography,
   Button,
   Box,
-  Paper,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/cart";
 
 const TaskEntry = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const addedRef = useRef(false); // 标记是否已经添加
 
-  // Find the task by ID
   const task = tasks.find((task) => task.id === parseInt(id));
+
+  useEffect(() => {
+    if (task?.id === 3 && !addedRef.current) {
+      dispatch(
+        addToCart({
+          id: 10,
+          title: "Default",
+          price: 5.9,
+          Image: "https://example.com/default-item.jpg",
+        })
+      );
+      addedRef.current = true; // 避免重复添加
+    }
+  }, [task?.id, dispatch]);
 
   const handleContinue = () => {
     navigate(`/task/${id}/shopping`);
   };
-
-  if (!task) {
-    return (
-      <Container maxWidth="md" sx={{ mt: 4 }}>
-        <Paper sx={{ p: 3, textAlign: "center" }}>
-          <Typography variant="h5" color="error">
-            Task not found
-          </Typography>
-          <Button
-            variant="contained"
-            onClick={() => navigate(`/task/${id}/shopping`)}
-            sx={{ mt: 2 }}
-          >
-            Go to Shopping
-          </Button>
-        </Paper>
-      </Container>
-    );
-  }
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>

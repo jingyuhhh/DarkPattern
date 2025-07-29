@@ -52,16 +52,7 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
       );
     } else {
       console.log(`Next task ID: ${nextTask.id}`);
-      if (nextTask.id === 4) {
-        dispatch(
-          addToCart({
-            id: 10,
-            title: "Default",
-            price: 5.9,
-            Image: "https://example.com/default-item.jpg",
-          })
-        );
-      }
+
       return (
         <Dialog
           open={open}

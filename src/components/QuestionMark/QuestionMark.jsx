@@ -89,17 +89,6 @@ const QuestionMark = () => {
         if (nextTask) {
           navigate(`/task/${nextTask.id}`);
           console.log(nextTask);
-
-          if (nextTask.id === 3) {
-            dispatch(
-              addToCart({
-                id: 10,
-                title: "Default",
-                price: 5.9,
-                Image: "https://example.com/default-item.jpg",
-              })
-            );
-          }
         } else {
           // If no next task, go to shopping page with current task ID
           navigate(`/task/${id}/shopping`);

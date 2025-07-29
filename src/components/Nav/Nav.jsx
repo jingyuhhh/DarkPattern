@@ -62,7 +62,12 @@ const Nav = () => {
     setCancelFlowOpen(false);
     setMembershipDialogOpen(false);
   };
+
   const handleNextStep = () => {
+    if (cancelStep === 2 && !cancelReason) {
+      alert("Please select a reason for cancellation.");
+      return;
+    }
     if (cancelStep < 4) {
       setCancelStep(cancelStep + 1);
     } else {
