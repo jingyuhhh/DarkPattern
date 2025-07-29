@@ -2,26 +2,21 @@ import React from "react";
 import {
   Typography,
   Button,
-  Paper,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  TextField,
-  FormControl,
-  FormLabel,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { useParams, useNavigate } from "react-router-dom";
-import { tasks, TaskType } from "../../data/tasks";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { tasks } from "../../data/tasks";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../store/cart";
-import { resetCart } from "../../store/cart";
+import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 
 const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
-  const navigate = useNavigate();
+  const navigate = usePreserveQueryNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const isAgent = searchParams.get("agent") === "true"; // 判断是否为 agent 模式
   const currentTaskIndex = tasks.findIndex((task) => task.id === parseInt(id));
   const dispatch = useDispatch();
 
@@ -30,13 +25,34 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
     tasks[currentTaskIndex].taskType === targetTaskType
   ) {
     const nextTask = tasks[currentTaskIndex + 1];
+
+    // 如果是 agent 模式，始终返回 Task Completion Successful
+    if (isAgent) {
+      return (
+        <Dialog
+          open={open}
+          onClose={() => {
+            if (onClose) onClose();
+            navigate(`/task/${tasks[currentTaskIndex].id}`); // 停留在当前任务或保持页面
+          }}
+        >
+          <DialogTitle>Task Completion Successful</DialogTitle>
+          <DialogContent>
+            <Typography>You finished the task successfully!</Typography>
+          </DialogContent>
+          <DialogActions></DialogActions>
+        </Dialog>
+      );
+    }
+
+    // 非 agent 模式逻辑（原来）
     if (!nextTask) {
       return (
         <Dialog
           open={open}
           onClose={() => {
             if (onClose) onClose();
-            navigate("/tasks/completed"); // Navigate to a completion page or summary
+            navigate("/tasks/completed");
           }}
         >
           <DialogTitle>All Tasks Completed</DialogTitle>
@@ -51,8 +67,6 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
         </Dialog>
       );
     } else {
-      console.log(`Next task ID: ${nextTask.id}`);
-
       return (
         <Dialog
           open={open}
@@ -80,7 +94,7 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
       );
     }
   }
-  return null; // Return null if the task is not found or does not match the targetTaskType
+  return null;
 };
 
 export default TaskCompletionModal;

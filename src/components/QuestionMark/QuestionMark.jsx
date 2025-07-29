@@ -24,6 +24,7 @@ import { tasks } from "../../data/tasks.js";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart.js";
 import { PII } from "../../data/PII.js";
+import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate.js";
 
 const QuestionMark = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -31,7 +32,7 @@ const QuestionMark = () => {
   const [skipReason, setSkipReason] = useState("");
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = usePreserveQueryNavigate();
 
   // Get current task information
   const getCurrentTask = () => {

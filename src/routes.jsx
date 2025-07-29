@@ -12,14 +12,26 @@ import Checkout from "./components/Checkout/Checkout";
 import StoreDetail from "./components/StoreDetail/StoreDetail";
 import TaskEntry from "./components/TaskEntry/TaskEntry";
 import QuestionMark from "./components/QuestionMark/QuestionMark";
+
 import { PopupProvider } from "./Provider/PopupProvider"; // 引入
 
-const PageWrapper = ({ children }) => (
-  <div style={{ position: "relative" }}>
-    <QuestionMark />
-    {children}
-  </div>
-);
+const PageWrapper = ({ children }) => {
+  const searchParams = new URLSearchParams(location.search);
+
+  const isAgent = searchParams.get("agent") === "true"; // 判断是否为 agent 模式
+  return (
+    <>
+      {!isAgent ? (
+        <div style={{ position: "relative" }}>
+          <QuestionMark />
+          {children}
+        </div>
+      ) : (
+        <div style={{ position: "relative" }}>{children}</div>
+      )}
+    </>
+  );
+};
 
 const AppRoutes = () => (
   <Router>

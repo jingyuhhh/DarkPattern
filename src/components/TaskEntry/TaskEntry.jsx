@@ -12,11 +12,12 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart";
+import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 
 const TaskEntry = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = usePreserveQueryNavigate();
   const addedRef = useRef(false); // 标记是否已经添加
 
   const task = tasks.find((task) => task.id === parseInt(id));

@@ -20,6 +20,7 @@ import Nav from "../Nav/Nav";
 import { useNavigate, useParams } from "react-router-dom";
 import { tasks, TaskType } from "../../data/tasks";
 import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
+import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 
 const SHIPPING_OPTIONS = [
   { label: "Standard", value: "standard", price: 0 },
@@ -29,7 +30,7 @@ const SHIPPING_OPTIONS = [
 const Checkout = () => {
   const items = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = usePreserveQueryNavigate();
   const { id } = useParams();
   const [address, setAddress] = useState({
     name: "",

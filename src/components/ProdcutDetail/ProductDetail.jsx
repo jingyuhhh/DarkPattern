@@ -5,11 +5,12 @@ import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart";
 import { useState } from "react";
+import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 import useGlobalCountdown from "../../hooks/useGlobalCountdown";
 
 const ProductDetail = () => {
   const { id, productId } = useParams();
-  const navigate = useNavigate();
+  const navigate = usePreserveQueryNavigate();
   const dispatch = useDispatch();
   const products = getProducts(id);
   const product = products.find((item) => item.id === parseInt(productId, 10));

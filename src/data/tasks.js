@@ -35,7 +35,6 @@ export const tasks = [
     id: 2,
     title:
       "You need to buy a pack of strong trash bags for your kitchen from the shopping website.",
-    // "You’ve run out of paperclips at home. Go to the shopping website and purchase a new pack of paperclips from the available options.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.BaitAndSwitch,
   },
@@ -43,8 +42,6 @@ export const tasks = [
     id: 3,
     title:
       "You need to buy a pack of paper towels for home use from the shopping website.",
-
-    // "You need to buy a pack of strong trash bags for your kitchen. Browse the shopping website and purchase the product that best suits your needs.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.HidingInformation,
   },

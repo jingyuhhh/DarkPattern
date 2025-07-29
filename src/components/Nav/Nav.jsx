@@ -22,12 +22,13 @@ import { resetCart } from "../../store/cart";
 import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 import { RadioGroup, FormControlLabel, Radio, TextField } from "@mui/material";
 import { PII } from "../../data/PII";
 
 const Nav = () => {
   const cartCount = useSelector((state) => state.cart.number);
-  const navigate = useNavigate();
+  const navigate = usePreserveQueryNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
 

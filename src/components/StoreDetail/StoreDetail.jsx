@@ -17,6 +17,7 @@ import { tasks, TaskType } from "../../data/tasks";
 import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
 import Terms from "./components/Terms";
 import { getStoreProducts } from "../../data/productInfo";
+import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 
 const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
   const { id, storeId } = useParams();
@@ -80,7 +81,7 @@ const StoreDetail = () => {
   const [canCheckTerms, setCanCheckTerms] = useState(false);
   const [countdown, setCountdown] = useState(5);
   const termsRef = useRef(null);
-  const navigate = useNavigate();
+  const navigate = usePreserveQueryNavigate();
 
   useEffect(() => {
     if (showModal && !isUnsubscribeMode) {
@@ -160,7 +161,7 @@ const StoreDetail = () => {
               }
               label={
                 canCheckTerms ? (
-                  <div className="font-bold text-sm">
+                  <div className=" text-base">
                     I have read and agree to{" "}
                     <span className="text-blue-600">the Terms of Service</span>
                   </div>
@@ -180,7 +181,7 @@ const StoreDetail = () => {
                   />
                 }
                 label={
-                  <span className="font-bold text-sm">
+                  <span className=" text-base">
                     I agree to share my information for personalized advertising
                   </span>
                 }
@@ -198,7 +199,7 @@ const StoreDetail = () => {
                   />
                 }
                 label={
-                  <span className="font-bold text-sm">
+                  <span className=" text-base">
                     Do not leave this box unchecked if you would not like to
                     avoid consenting to the sharing of my information for
                     personalized advertising.
