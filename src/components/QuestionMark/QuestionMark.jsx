@@ -23,6 +23,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { tasks } from "../../data/tasks.js";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart.js";
+import { PII } from "../../data/PII.js";
 
 const QuestionMark = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -124,7 +125,7 @@ const QuestionMark = () => {
             position: "fixed",
             top: 16,
             left: 16,
-            zIndex: 1000,
+            zIndex: 9999, // Increased z-index to ensure it's always on top
             backgroundColor: "rgba(255, 255, 255, 0.8)",
             "&:hover": {
               backgroundColor: "rgba(255, 255, 255, 0.9)",
@@ -148,11 +149,20 @@ const QuestionMark = () => {
               <Typography variant="h6" gutterBottom color="primary">
                 Current Task: {currentTask.title}
               </Typography>
-              <Typography variant="body1" color="text.secondary">
-                {currentTask.description}
-              </Typography>
             </Box>
           )}
+
+          {/* Display PII data */}
+          <Box sx={{ mb: 3, p: 2, bgcolor: "grey.100", borderRadius: 1 }}>
+            <Typography variant="h6" gutterBottom color="secondary">
+              Personal Information:
+            </Typography>
+            <Typography>Email: {PII.email}</Typography>
+            <Typography>Phone: {PII.phone}</Typography>
+            <Typography>Address: {PII.address}</Typography>
+            <Typography>Name: {PII.name}</Typography>
+            <Typography>Payment Password: {PII.password}</Typography>
+          </Box>
 
           <FormControl component="fieldset" fullWidth>
             <RadioGroup

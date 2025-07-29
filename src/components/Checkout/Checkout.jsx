@@ -39,6 +39,19 @@ const Checkout = () => {
   const [shipping, setShipping] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const [error, setError] = useState(""); // 错误提示
+
+  const handlePlaceOrder = () => {
+    if (!address.name || !address.phone || !address.address || !shipping) {
+      setError(
+        "Please fill in all required fields and select a shipping method."
+      );
+      return;
+    }
+    setError("");
+    setDialogOpen(true);
+  };
+
   const sortedShippingOptions =
     parseInt(id) === 4
       ? [...SHIPPING_OPTIONS].sort((a, b) => (a.value === "premium" ? -1 : 1))
@@ -56,7 +69,6 @@ const Checkout = () => {
   const handleInputChange = (e) =>
     setAddress({ ...address, [e.target.name]: e.target.value });
   const handleShippingChange = (e) => setShipping(e.target.value);
-  const handlePlaceOrder = () => setDialogOpen(true);
   const handleDialogClose = () => {
     setDialogOpen(false);
     dispatch(resetCart());
@@ -190,6 +202,15 @@ const Checkout = () => {
         {/* 右侧：订单总结 */}
         <div className="md:col-span-4">
           <Paper className="p-6 rounded-xl bg-white border border-gray-200 shadow">
+            {error && (
+              <Typography
+                color="error"
+                variant="body2"
+                style={{ marginBottom: "8px" }}
+              >
+                {error}
+              </Typography>
+            )}
             <Button
               fullWidth
               style={{

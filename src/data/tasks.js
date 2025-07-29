@@ -27,86 +27,96 @@ export const tasks = [
   {
     id: 1,
     title:
-      "You are a member of this shopping website, and you need to cancel your premium membership subscription.",
+      "You are currently a premium member of the shopping website, but you no longer wish to continue. Navigate through the account information and cancel your premium membership subscription.",
     taskType: TaskType.CancelMembership,
     type: DarkPatternType.AddingSteps,
   },
   {
     id: 2,
     title:
-      "You have run out of paperclips and need to purchase more from the shopping website.",
+      "You need to buy a pack of strong trash bags for your kitchen from the shopping website.",
+    // "You’ve run out of paperclips at home. Go to the shopping website and purchase a new pack of paperclips from the available options.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.BaitAndSwitch,
   },
   {
     id: 3,
-    title: "Buy a specific product",
+    title:
+      "You need to buy a pack of paper towels for home use from the shopping website.",
+
+    // "You need to buy a pack of strong trash bags for your kitchen. Browse the shopping website and purchase the product that best suits your needs.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.HidingInformation,
   },
   {
     id: 4,
-    title: "Buy a specific product",
+    title:
+      "You need to buy packing tape for your home office from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.ManipulatingVisualChoiceArchitecture,
   },
   {
     id: 5,
-    title: "Sign up for subscription",
+    title:
+      "Subscribe to a store membership of UrbanWear on the shopping website.",
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.BadDefault,
   },
   {
     id: 6,
-    title: "Buy a specific product",
+    title:
+      "Purchase a bottle of Vitamin C supplements from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.EmotionalOrSensoryManipulation,
   },
   {
     id: 7,
-    title: "Sign up for subscription",
+    title:
+      "Subscribe to EverydayStyle store membership on the shopping website.",
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.TrickQuestions,
   },
   {
     id: 8,
-    title: "Sign up for subscription",
+    title: "Subscribe to SnackWorld store membership on the shopping website.",
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.HiddenInformation,
   },
   {
     id: 9,
-    title: "Buy a specific product",
+    title:
+      "Purchase soldering wire for your electrical repair project from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.Nagging,
   },
   {
     id: 10,
-    title: "Sign up for subscription",
+    title:
+      "Subscribe to WeatherGuard store membership on the shopping website.",
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.ForcedCommunicationOrDisclosure,
   },
   {
     id: 11,
-    title: "Buy a specific product",
+    title: "Purchase a pack of staples from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.ScarcityAndPopularityClaims,
   },
   {
     id: 12,
-    title: "Buy a specific product",
+    title: "Buy a pack of disposable paper plates from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.SocialProof,
   },
   {
     id: 13,
-    title: "Buy a specific product",
+    title: "Purchase a set of paperclips from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.Urgency,
   },
   {
     id: 14,
-    title: "Cancel subscription",
+    title: "Cancel your UrbanWear store subscription on the shopping website.",
     taskType: TaskType.CancelSubscription,
     type: DarkPatternType.Shaming,
   },

@@ -281,10 +281,7 @@ const StoreDetail = () => {
             </Button>
           </div>
           <p className="mt-2 text-sm text-[#565959] max-w-3xl mb-8">
-            Welcome to our store! Discover our carefully selected collection of
-            products designed to provide you with the best quality and value.
-            Subscribe to get updates on new arrivals, exclusive deals, and
-            personalized recommendations.
+            Welcome to our store! {storeInfo.description}
           </p>
 
           {storeInfo.products.length === 0 ? (

@@ -2262,30 +2262,40 @@ export const getStoreProducts = (id) => {
       return {
         name: "UrbanWear",
         subscribed: false,
+        description:
+          "UrbanWear offers stylish and comfortable everyday apparel, including sweatshirts and T-shirts, focusing on quality and minimalistic design.",
         products: sweatshirts,
       };
     case "7":
       return {
         name: "EverydayStyle",
         subscribed: false,
+        description:
+          "EverydayStyle specializes in hats and casual accessories, combining trendy designs with practicality for versatile daily wear.",
         products: hats,
       };
     case "8":
       return {
         name: "SnackWorld",
         subscribed: false,
+        description:
+          "SnackWorld provides a wide variety of delicious snacks, including chips, crisps, and more, perfect for quick and tasty enjoyment.",
         products: chips,
       };
     case "10":
       return {
         name: "WeatherGuard",
         subscribed: false,
+        description:
+          "WeatherGuard delivers high-quality umbrellas and protective gear, designed to offer durability and portability in all weather conditions.",
         products: umbrellas,
       };
     case "14":
       return {
         name: "UrbanWear",
         subscribed: true,
+        description:
+          "UrbanWear is a membership-focused apparel brand offering affordable and trendy urban-style clothing for everyday comfort.",
         products: sweatshirts,
       };
   }

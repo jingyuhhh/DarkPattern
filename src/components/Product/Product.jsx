@@ -19,7 +19,7 @@ function Product({ onClick, product }) {
     const secs = String(seconds % 60).padStart(2, "0");
     return `${hrs}:${mins}:${secs}`;
   };
-  const ad = id === "3" && product.ad;
+  const ad = id === "2" && product.ad;
 
   const handleClick = ad
     ? () =>
