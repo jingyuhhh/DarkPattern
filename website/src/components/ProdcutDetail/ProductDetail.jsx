@@ -70,7 +70,7 @@ const ProductDetail = () => {
               </p>
             )}
             {showSocialProof && (
-              <p className="text-[#007185] font-bold text-sm mt-1">
+              <p className="text-red-500 font-bold text-sm mt-1">
                 300+ bought in the past month
               </p>
             )}
@@ -85,7 +85,7 @@ const ProductDetail = () => {
               </div>
             )}
             {showEmotion && (
-              <p className="text-[#7fda69] text-base font-semibold mt-2">
+              <p className="text-green-600 text-base font-semibold mt-2">
                 A small choice today for a healthier, happier you.
               </p>
             )}

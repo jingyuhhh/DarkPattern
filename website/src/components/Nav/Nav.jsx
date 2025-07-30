@@ -343,7 +343,10 @@ const Nav = () => {
                     <li>Early access to new products</li>
                     <li>Extended return window (60 days)</li>
                   </ul>
-                  <Typography className="mt-4">
+                  <Typography
+                    className="mt-4 font-bold"
+                    style={{ fontWeight: "bold" }}
+                  >
                     Are you sure you want to proceed with cancellation?
                   </Typography>
                 </>

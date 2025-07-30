@@ -103,7 +103,7 @@ async def main():
         # traces_dir="./trace10"
     )
     session = BrowserSession(user_data_dir=None, browser_profile=profile)
-    new_tasks = tasks[5:]
+    new_tasks = [tasks[i] for i in [6, 7, 8, 9, 10, 12]]
 
     for task in new_tasks:
         agent = Agent(

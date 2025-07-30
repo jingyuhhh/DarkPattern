@@ -48,7 +48,7 @@ function Product({ onClick, product }) {
       </p>
       {/* 紧迫性 & 社会证明 */}
       {id === "12" && product.socialProof && (
-        <span className="text-sm text-[#007185] font-bold my-1">
+        <span className="text-sm text-red-500 font-bold my-1">
           300+ bought in past month
         </span>
       )}
@@ -68,7 +68,7 @@ function Product({ onClick, product }) {
         </div>
       )}
       {id === "6" && product.emotional && (
-        <p className="text-[#7fda69] text-base font-semibold mt-2">
+        <p className="text-green-600 text-base font-semibold mt-2">
           A small choice today for a healthier, happier you.
         </p>
       )}

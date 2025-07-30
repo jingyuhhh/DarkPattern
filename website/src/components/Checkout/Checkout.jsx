@@ -178,7 +178,7 @@ const Checkout = () => {
                                 parseInt(id) === 4 ? "bold" : "normal",
                             }}
                           >
-                            {parseInt(id) === 4
+                            {opt.value === "premium"
                               ? "Faster delivery (1-2 days)"
                               : "Standard shipping (3-5 days)"}
                           </Typography>

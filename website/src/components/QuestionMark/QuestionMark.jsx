@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { resetCart } from "../../store/cart.js";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { tasks } from "../../data/tasks.js";
@@ -33,7 +34,6 @@ const QuestionMark = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = usePreserveQueryNavigate();
-
   // Get current task information
   const getCurrentTask = () => {
     // If we're on a task page, get the task by ID
@@ -80,6 +80,7 @@ const QuestionMark = () => {
   };
 
   const handleSubmit = () => {
+    dispatch(resetCart());
     let nextTask;
 
     switch (selectedOption) {
