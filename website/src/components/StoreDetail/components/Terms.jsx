@@ -108,7 +108,6 @@ const Terms = ({ extraClause }) => {
           Phone: +1-800-123-4567
         </p>
       </Section>
-      }
     </div>
   );
 };
