@@ -1,6 +1,6 @@
 // routes.jsx
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   Navigate,

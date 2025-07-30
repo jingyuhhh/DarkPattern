@@ -130,7 +130,9 @@ async def main():
             ],
         )
         logger.info(f"Starting task {task['id']}: {task['task']}")  # Log task start
-        result = await agent.run()
+        result = await agent.run(
+            max_steps=20,
+        )
         logger.info(f"Task {task['id']} result: {result}")  # Log task result
         print(f"Task {task['id']} result:", result)
 
