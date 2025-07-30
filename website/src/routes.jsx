@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation, // Import useLocation
 } from "react-router-dom";
 import Shopping from "./components/Shopping/Shopping";
 import ProductDetail from "./components/ProdcutDetail/ProductDetail";
@@ -16,6 +17,7 @@ import QuestionMark from "./components/QuestionMark/QuestionMark";
 import { PopupProvider } from "./Provider/PopupProvider"; // 引入
 
 const PageWrapper = ({ children }) => {
+  const location = useLocation(); // Use useLocation hook
   const searchParams = new URLSearchParams(location.search);
 
   const isAgent = searchParams.get("agent") === "true"; // 判断是否为 agent 模式

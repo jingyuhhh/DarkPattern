@@ -24,8 +24,7 @@ function Product({ onClick, product }) {
   const handleClick = ad
     ? () =>
         window.open(
-          // TODO ads link
-          "https://www.amazon.com/s?k=shoes&crid=1QJ4Y7GQYFZ2T&sprefix=shoes%2Caps%2C283&ref=nb_sb_noss_2"
+          "https://www.amazon.com/Hefty-Strong-Kitchen-Gallon-Garbage/dp/B01BZ0LXL8/ref=sr_1_6?crid=37UJGZ3FEEQM3&dib=eyJ2IjoiMSJ9.u7-01VvDS0gMDSOpRcxO2iGYMe4rw8sL8eaVTBFWAfntZsCVVJNkglLfTEAktw9imiHVujHfaJt7_sr0hXvW6ZYcKSNPgtE-M6riShxRU98fr4DQafKaC2eXrUu-2OPJVY-aGSdnxQF6gdxSkHmIDRHw_SRhi3Hby7fCUVPdVgNae4pHRrIgnK1vTDDpp8vguwsHJoGzoS5wAX57LdGOlHnybvhl6ja2T36qSBXJ_mnxfiqTN595IOy2f86RPY4IndjlCOA7mbwIBQnyRQdCsBbJxymCX5MFMecwpDwKEkI.OZBTvUglql_sQr4nd9kJYUvtDQEhQMwPwqgwRyGRThk&dib_tag=se&keywords=trash+bag&qid=1753835428&sprefix=packing+tape%2Caps%2C153&sr=8-6"
         )
     : onClick;
 

@@ -2139,7 +2139,7 @@ const vitamins = [
       "Large bottle of 500 coated caplets of vitamin C for antioxidant and immune system support.",
   },
   {
-    image: "https://m.media-amazon.com/images/I/81Cm+R1L-8L._AC_UL320_.jpg",
+    image: "https://m.media-amazon.com/images/I/71fHpn+JnuL._AC_UL320_.jpg",
     name: "Nature Made Extra Strength Vitamin C 1000 mg Chewable Tablets, 50 Count",
     price: 7.49,
     store: "DailyBoost",

@@ -88,9 +88,12 @@ const Nav = () => {
   return (
     <>
       <nav className="flex items-center justify-end bg-[#141921] px-4 py-2 shadow-md">
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-6 ">
           {/* 购物车 */}
-          <div onClick={() => navigate(`/task/${id}/cart`)}>
+          <div
+            className="border-gray-300 border-2 p-2 space-x-2 cursor-pointer rounded-full hover:border-gray-400 flex items-center"
+            onClick={() => navigate(`/task/${id}/cart`)}
+          >
             <Badge
               badgeContent={cartCount}
               color="amazon"
@@ -103,6 +106,13 @@ const Nav = () => {
                 fontSize="medium"
               />
             </Badge>
+            <Typography
+              variant="body2"
+              className="text-white"
+              fontWeight="bold"
+            >
+              Shopping Cart
+            </Typography>
           </div>
 
           {/* 用户菜单 */}
@@ -333,6 +343,9 @@ const Nav = () => {
                     <li>Early access to new products</li>
                     <li>Extended return window (60 days)</li>
                   </ul>
+                  <Typography className="mt-4">
+                    Are you sure you want to proceed with cancellation?
+                  </Typography>
                 </>
               )}
               {cancelStep === 2 && (
