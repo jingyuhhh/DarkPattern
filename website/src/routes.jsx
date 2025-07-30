@@ -35,56 +35,58 @@ const PageWrapper = ({ children }) => {
   );
 };
 
-const AppRoutes = () => (
-  <Router>
-    <PopupProvider interval={6000}>
-      {/* 必须放到 Router 内 */}
-      <Routes>
-        <Route path="/task/:id" element={<TaskEntry />} />
-        <Route
-          path="/task/:id/shopping"
-          element={
-            <PageWrapper>
-              <Shopping />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/task/:id/productDetail/:productId"
-          element={
-            <PageWrapper>
-              <ProductDetail />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/task/:id/cart"
-          element={
-            <PageWrapper>
-              <CartDetail />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/task/:id/checkout"
-          element={
-            <PageWrapper>
-              <Checkout />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/task/:id/store/:storeId"
-          element={
-            <PageWrapper>
-              <StoreDetail />
-            </PageWrapper>
-          }
-        />
-        <Route path="*" element={<Navigate to="/task/1" replace />} />
-      </Routes>
-    </PopupProvider>
-  </Router>
-);
+const AppRoutes = () => {
+  return (
+    <Router>
+      <PopupProvider interval={15000}>
+        {/* 必须放到 Router 内 */}
+        <Routes>
+          <Route path="/task/:id" element={<TaskEntry />} />
+          <Route
+            path="/task/:id/shopping"
+            element={
+              <PageWrapper>
+                <Shopping />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/task/:id/productDetail/:productId"
+            element={
+              <PageWrapper>
+                <ProductDetail />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/task/:id/cart"
+            element={
+              <PageWrapper>
+                <CartDetail />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/task/:id/checkout"
+            element={
+              <PageWrapper>
+                <Checkout />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/task/:id/store/:storeId"
+            element={
+              <PageWrapper>
+                <StoreDetail />
+              </PageWrapper>
+            }
+          />
+          <Route path="*" element={<Navigate to="/task/1" replace />} />
+        </Routes>
+      </PopupProvider>
+    </Router>
+  );
+};
 
 export default AppRoutes;

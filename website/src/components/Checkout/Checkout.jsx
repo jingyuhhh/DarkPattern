@@ -120,10 +120,12 @@ const Checkout = () => {
           </Paper>
           <Paper className="p-4 rounded-xl bg-white border border-gray-100">
             <FormControl component="fieldset">
-              <FormLabel component="legend" className="font-semibold mb-2">
+              <Typography variant="subtitle1" className="font-semibold mb-2">
                 Shipping Method
-              </FormLabel>
-
+              </Typography>
+              <Typography variant="subtitle2" className="font-semibold mb-2">
+                Please select your preferred shipping method:
+              </Typography>
               <div className="grid gap-3">
                 {sortedShippingOptions.map((opt) => {
                   const highlightPremium =

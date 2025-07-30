@@ -262,7 +262,7 @@ const StoreDetail = () => {
               {storeInfo.name}
             </h1>
             <Button
-              variant={!isSubscribed ? "contained" : "outlined"}
+              variant={!isSubscribed ? "contained" : "contained"}
               onClick={() => {
                 if (isSubscribed) {
                   setIsUnsubscribeMode(true);
@@ -271,11 +271,11 @@ const StoreDetail = () => {
                   setShowModal(true);
                 }
               }}
-              color="amazon"
+              color={!isSubscribed ? "amazon" : "inherit"}
               style={{
                 borderRadius: "9999px",
                 textTransform: "none",
-                fontWeight: 500,
+                fontWeight: 1000,
               }}
             >
               {isSubscribed ? "Subscribed" : "Subscribe"}
