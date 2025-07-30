@@ -5,5 +5,5 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: "https://jingyuhhh.github.io/DarkPattern",
+  base: "https://jingyuhhh.github.io/Shopping",
 });

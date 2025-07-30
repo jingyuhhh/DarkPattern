@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 from os import getenv
 import os
 import json
@@ -95,24 +96,33 @@ tasks = [
 logger = logging.getLogger(__name__)
 
 
+def safe_serialize(obj):
+    """Convert AgentHistoryList objects to JSON-safe formats."""
+    try:
+        if isinstance(obj, (str, int, float, bool)) or obj is None:
+            return obj
+        if isinstance(obj, dict):
+            return {k: safe_serialize(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [safe_serialize(v) for v in obj]
+        if hasattr(obj, "__dict__"):
+            return {k: safe_serialize(v) for k, v in obj.__dict__.items()}
+        return str(obj)  # Fallback: string representation
+    except Exception:
+        return str(obj)
+
+
 async def main():
     profile = BrowserProfile(
         user_data_dir=None,
         headless=True,
-        # record_video_dir="./video10",
-        # traces_dir="./trace10"
     )
     session = BrowserSession(user_data_dir=None, browser_profile=profile)
-    new_tasks = [tasks[i] for i in [6, 7, 8, 9, 10, 12]]
+    # new_tasks = tasks
 
-    for task in new_tasks:
+    for task in tasks:
         agent = Agent(
             task=task["task"],
-            # llm=ChatOpenAI(
-            #     openai_api_key=getenv("OPENROUTER_ANOTHER_API_KEY"),
-            #     openai_api_base=getenv("OPENROUTER_BASE_URL"),
-            #     model_name="meta-llama/llama-4-maverick:free",
-            # ),
             llm=ChatOpenAI(
                 openai_api_key=getenv("OPENAI_API_KEY"), model_name="gpt-4o"
             ),
@@ -131,11 +141,37 @@ async def main():
             ],
         )
         logger.info(f"Starting task {task['id']}: {task['task']}")  # Log task start
-        result = await agent.run(
-            max_steps=20,
-        )
-        logger.info(f"Task {task['id']} result: {result}")  # Log task result
-        print(f"Task {task['id']} result:", result)
+        history = await agent.run(max_steps=20)  # Get full AgentHistoryList
+
+        # Save history to JSON
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        history_dir = f"./history/task_{task['id']}"
+        os.makedirs(history_dir, exist_ok=True)
+        history_file = os.path.join(history_dir, f"run_{timestamp}.json")
+
+        # Convert history to serializable format
+        # Convert history to serializable format
+        history_data = {
+            "task_id": task["id"],
+            "task": task["task"],
+            "urls": history.urls(),
+            # "screenshots": history.screenshots(),
+            "action_names": history.action_names(),
+            "extracted_content": history.extracted_content(),
+            "errors": history.errors(),
+            "model_actions": safe_serialize(history.model_actions()),
+            "model_thoughts": safe_serialize(history.model_thoughts()),
+            "action_results": safe_serialize(history.action_results()),
+            "final_result": history.final_result(),
+            "is_done": history.is_done(),
+            "has_errors": history.has_errors(),
+        }
+
+        with open(history_file, "w", encoding="utf-8") as f:
+            json.dump(history_data, f, ensure_ascii=False, indent=4)
+
+        logger.info(f"Task {task['id']} history saved to {history_file}")
+        print(f"Task {task['id']} result:", history.final_result())
 
 
 asyncio.run(main())
