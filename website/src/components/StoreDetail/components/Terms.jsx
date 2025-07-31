@@ -12,28 +12,28 @@ const Terms = ({ extraClause }) => {
   return (
     <div className="text-[14px] leading-5">
       <h2 className="text-center text-xl font-bold mb-1">
-        Terms and Conditions for Subscribing to Our Shop
+        Terms and Conditions for Subscribing to Our Content
       </h2>
       <p className="text-center italic mb-4">Last Updated: July 29, 2025</p>
       <p>
-        These Terms and Conditions govern your subscription to this shop. By
-        subscribing, you agree to these Terms and Conditions, which define the
-        scope of content you may access and how the shop provides updates to
-        subscribers.
+        These Terms and Conditions govern your subscription to this content
+        creator. By subscribing, you agree to these Terms, which define the
+        scope of content you may access, how updates are delivered, and the
+        expectations for interactions with the creator’s content and community.
       </p>
       <Section title="Purpose of the Subscription">
         <p>
-          The subscription allows you to stay informed about the shop’s updates,
-          such as new collections, product launches, or other relevant shop
-          activities. It is designed to enhance your experience with our shop
-          within the platform.
+          The subscription gives you access to exclusive content, updates, and
+          insights shared by the creator. This may include behind-the-scenes
+          content, early access to posts or projects, special announcements, or
+          other exclusive materials intended for subscribers only.
         </p>
       </Section>
       <Section title="Eligibility">
         <ul className="list-disc pl-5 space-y-1">
           <li>
-            You must have an active account on the platform where the shop is
-            hosted.
+            You must have an active account on the platform where this creator’s
+            content is hosted.
           </li>
           <li>
             You must be of legal age to use this service in your jurisdiction.
@@ -43,68 +43,67 @@ const Terms = ({ extraClause }) => {
           </li>
         </ul>
       </Section>
-      <Section title="What You Can Expect from Us">
+      <Section title="What You Can Expect from the Creator">
         <ul className="list-disc pl-5 space-y-1">
           <li>
-            We will provide timely updates related to our shop (e.g., product
-            launches, service changes).
+            Regular updates, posts, or content releases as described in the
+            subscription offering.
           </li>
           <li>
-            We will strive to ensure that the content we provide is accurate and
-            relevant to our shop.
+            Efforts to ensure that shared content is original, relevant, and of
+            value to subscribers.
           </li>
           <li>
-            We will not request or require any personal information beyond what
-            is already part of your platform account.
+            Respect for your privacy; no personal information will be requested
+            beyond what is required by the platform.
           </li>
         </ul>
       </Section>
       <Section title="Your Responsibilities as a Subscriber">
         <p>By subscribing, you agree to:</p>
         <ul className="list-disc pl-5 space-y-1">
-          {/* <li>
-            Use subscription content only for personal purposes and not
-            redistribute it without permission.
-          </li> */}
           <li>
-            Refrain from abusive, unlawful, or disruptive behavior toward the
-            shop or its content.
+            Use subscription content only for personal purposes and not
+            redistribute, reproduce, or share it without permission from the
+            creator.
           </li>
           <li>
-            Respect any intellectual property rights associated with the shop’s
-            content.
+            Refrain from abusive, unlawful, or disruptive behavior toward the
+            creator or other members.
+          </li>
+          <li>
+            Respect any intellectual property rights associated with the
+            creator’s content.
           </li>
           {extraClause && <li>{extraClause}</li>}
         </ul>
       </Section>
       <Section title="Limitations">
         <p>
-          While we aim to provide accurate and up-to-date information, we do not
-          guarantee that all content will be error-free or continuously
-          available.
+          While the creator strives to provide consistent and high-quality
+          content, they do not guarantee uninterrupted availability, error-free
+          materials, or a specific posting schedule.
         </p>
       </Section>
       <Section title="Cancellation">
         <p>
-          You may unsubscribe at any time through your account settings. Once
-          you unsubscribe, you will no longer receive updates from our shop.
+          You may unsubscribe at any time through your account settings on the
+          platform. Once you unsubscribe, you will lose access to
+          subscriber-only content and updates.
         </p>
       </Section>
       <Section title="Changes to These Terms">
         <p>
-          We may update these Terms periodically to reflect changes in our
-          operations or offerings. Continued subscription after such updates
-          constitutes acceptance of the revised Terms.
+          These Terms may be updated periodically to reflect changes in
+          offerings or platform policies. Continued subscription after such
+          updates constitutes acceptance of the revised Terms.
         </p>
       </Section>
       <Section title="Contact Information">
+        <p>For questions or concerns about these Terms, please contact:</p>
         <p>
-          If you have questions or concerns about these Terms, please contact
-          us:
-        </p>
-        <p>
-          Support Team <br />
-          Email: support@shopsphere.com <br />
+          Creator Support Team <br />
+          Email: support@creatorhub.com <br />
           Phone: +1-800-123-4567
         </p>
       </Section>

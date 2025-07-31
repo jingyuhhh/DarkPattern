@@ -7,9 +7,9 @@ import {
   useLocation, // Import useLocation
 } from "react-router-dom";
 import Shopping from "./components/Shopping/Shopping";
-import ProductDetail from "./components/ProdcutDetail/ProductDetail";
-import CartDetail from "./components/CartDetail/CartDetail";
-import Checkout from "./components/Checkout/Checkout";
+import ProductDetail from "./components/Shopping/components/ProdcutDetail/ProductDetail";
+import CartDetail from "./components/Shopping/components/CartDetail/CartDetail";
+import Checkout from "./components/Shopping/components/Checkout/Checkout";
 import StoreDetail from "./components/StoreDetail/StoreDetail";
 import TaskEntry from "./components/TaskEntry/TaskEntry";
 import QuestionMark from "./components/QuestionMark/QuestionMark";

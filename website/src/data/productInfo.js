@@ -157,7 +157,7 @@ const trashBags = [
   {
     image: "https://m.media-amazon.com/images/I/81Wx3UVgfnL._AC_UL320_.jpg",
     name: "Hefty Ultra Strong Tall Kitchen Trash Bags, Lavender & Sweet Vanilla Scent, 13 Gallon, 80 Count",
-    price: 11.97,
+    price: 21.97,
     store: "HeftyHome",
     storeSubscribed: false,
     id: 1,
@@ -2088,7 +2088,7 @@ const vitamins = [
     socialProof: false,
     scarcity: false,
     urgency: false,
-    emotional: true,
+    emotional: false,
     ad: false,
     description:
       "Whole-food based vitamin C supplement with 120 vegan capsules. Includes bioflavonoids and organic fruits & veggies.",
@@ -2133,7 +2133,7 @@ const vitamins = [
     socialProof: false,
     scarcity: false,
     urgency: false,
-    emotional: false,
+    emotional: true,
     ad: false,
     description:
       "Large bottle of 500 coated caplets of vitamin C for antioxidant and immune system support.",
@@ -2256,47 +2256,92 @@ export const getProducts = (id) => {
   }
 };
 
+const dolaAmeng = [
+  "https://i.ibb.co/3Ys2RbV9/jimeng-2025-07-31-2289-a.jpg",
+  "https://i.ibb.co/HpdMfVNX/jimeng-2025-07-31-6170-a.jpg",
+  "https://i.ibb.co/203f9dz7/jimeng-2025-07-31-7302-a.jpg",
+  "https://i.ibb.co/cck2K1fW/jimeng-2025-07-31-9819-a.jpg",
+];
+
+const drawing = [
+  "https://i.ibb.co/dsGXv5gk/jimeng-2025-07-31-1740-Ted-Nutall.jpg",
+  "https://i.ibb.co/dJJ2fL43/jimeng-2025-07-31-2093-Ted-Nutall.jpg",
+  "https://i.ibb.co/ZzM1vNvF/jimeng-2025-07-31-3616-Ted-Nutall.jpg",
+  "https://i.ibb.co/67nSSN1F/jimeng-2025-07-31-9951-Ted-Nutall.jpg",
+];
+
+const nahan = [
+  "https://i.ibb.co/pBcg5hwh/jimeng-2025-07-31-1879.jpg",
+  "https://i.ibb.co/5hGKkMw9/jimeng-2025-07-31-5784.jpg",
+  "https://i.ibb.co/hJGd39Hv/jimeng-2025-07-31-6119.jpg",
+  "https://i.ibb.co/HkpLVb0/jimeng-2025-07-31-6795.jpg",
+];
+
+const building = [
+  "https://i.ibb.co/7JKpvz55/jimeng-2025-07-31-3940-oc.jpg",
+  "https://i.ibb.co/d4fvS4DM/jimeng-2025-07-31-6585-oc.jpg",
+  "https://i.ibb.co/ns7h6M5y/jimeng-2025-07-31-8763-oc.jpg",
+  "https://i.ibb.co/rffmbb0s/jimeng-2025-07-31-8829-oc.jpg",
+];
+
 export const getStoreProducts = (id) => {
   switch (id) {
     case "5":
       return {
-        name: "UrbanWear",
+        name: "DoraemonDiaries",
+        avatar: "https://i.ibb.co/6MYS8c3/jimeng-2025-07-22-5172-a.jpg",
         subscribed: false,
+        followers: 452,
+        following: 121,
         description:
-          "UrbanWear offers stylish and comfortable everyday apparel, including sweatshirts and T-shirts, focusing on quality and minimalistic design.",
-        products: sweatshirts,
+          "A lifelong fan documenting the wonder of Doraemon — sharing favorite scenes, nostalgic moments, and little pockets of joy. Tokyo-based dreamer.",
+        images: dolaAmeng,
       };
     case "7":
       return {
-        name: "EverydayStyle",
+        name: "CornerMuse",
         subscribed: false,
+        avatar:
+          "https://i.ibb.co/x8Xs5Bs6/jimeng-2025-07-16-5014-Ted-Nutall.png",
+        followers: 287,
+        following: 98,
         description:
-          "EverydayStyle specializes in hats and casual accessories, combining trendy designs with practicality for versatile daily wear.",
-        products: hats,
+          "Portrait artist & storyteller capturing quiet souls and intimate moments in watercolor. Currently painting my way through Berlin cafés.",
+        images: drawing,
       };
     case "8":
       return {
-        name: "SnackWorld",
+        name: "ScreamEchoes",
         subscribed: false,
+        avatar: "https://i.ibb.co/SXmvrN18/jimeng-2025-06-08-8340.jpg",
+        followers: 615,
+        following: 143,
         description:
-          "SnackWorld provides a wide variety of delicious snacks, including chips, crisps, and more, perfect for quick and tasty enjoyment.",
-        products: chips,
+          "Exploring the raw emotion behind The Scream — reinterpreting Edvard Munch’s masterpiece through mood-driven edits and reflections.",
+        images: nahan,
       };
     case "10":
       return {
-        name: "WeatherGuard",
+        name: "HiddenHandsStudio",
         subscribed: false,
+        avatar: "https://i.ibb.co/60719v2j/jimeng-2025-07-19-5344-oc.jpg",
+        followers: 333,
+        following: 85,
         description:
-          "WeatherGuard delivers high-quality umbrellas and protective gear, designed to offer durability and portability in all weather conditions.",
-        products: umbrellas,
+          "Wandering painter turning city streets into sunlit canvases. DIY enthusiast & plein-air sketcher, now in Barcelona.",
+        images: building,
       };
     case "14":
       return {
-        name: "UrbanWear",
+        name: "CornerMuse",
         subscribed: true,
+        avatar:
+          "https://i.ibb.co/x8Xs5Bs6/jimeng-2025-07-16-5014-Ted-Nutall.png",
+        followers: 288,
+        following: 98,
         description:
-          "UrbanWear is a membership-focused apparel brand offering affordable and trendy urban-style clothing for everyday comfort.",
-        products: sweatshirts,
+          "Portrait artist & storyteller capturing quiet souls and intimate moments in watercolor. Currently painting my way through Berlin cafés.",
+        images: drawing,
       };
   }
 };

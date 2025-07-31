@@ -335,7 +335,10 @@ const Nav = () => {
               )}
               {cancelStep === 1 && (
                 <>
-                  <Typography>You will lose the following benefits:</Typography>
+                  <Typography>
+                    You will lose the following benefits if you cancel the
+                    premium membership:
+                  </Typography>
                   <ul className="list-disc pl-6 mt-2 text-sm">
                     <li>Free shipping on all orders</li>
                     <li>Exclusive member discounts</li>
@@ -416,7 +419,7 @@ const Nav = () => {
                 color="primary"
                 onClick={handleNextStep}
               >
-                Confirm Cancel
+                Confirm Cancellation
               </Button>
             </DialogActions>
           </Dialog>

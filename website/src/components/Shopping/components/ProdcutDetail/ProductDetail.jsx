@@ -1,12 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
-import Nav from "../Nav/Nav";
-import { getProducts } from "../../data/productInfo";
+import Nav from "../../../Nav/Nav";
+import { getProducts } from "../../../../data/productInfo";
 import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../store/cart";
+import { addToCart } from "../../../../store/cart";
 import { useState } from "react";
-import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
-import useGlobalCountdown from "../../hooks/useGlobalCountdown";
+import { usePreserveQueryNavigate } from "../../../../hooks/useQueryNavigate";
+import useGlobalCountdown from "../../../../hooks/useGlobalCountdown";
 
 const ProductDetail = () => {
   const { id, productId } = useParams();
@@ -102,6 +102,7 @@ const ProductDetail = () => {
           <div className="md:col-span-2 border rounded p-4 space-y-3">
             <p className="text-2xl font-bold">${product.price}</p>
             <p className="text-green-600 font-semibold">In Stock</p>
+
             <div>
               <label className="block text-sm mb-1">Quantity:</label>
               <select
@@ -143,6 +144,21 @@ const ProductDetail = () => {
             >
               Add to Cart
             </Button>
+            <div className="text-sm pt-2 mt-4 border-t">
+              <p className="text-blue-600 text-sm my-2">FREE Returns</p>
+              <div className="grid grid-cols-2 gap-y-1">
+                <p className="whitespace-nowrap">Ships from</p>
+                <p className="font-semibold break-words">ShopXpress</p>
+
+                <p className="whitespace-nowrap">Returns</p>
+                <p className="text-blue-600 break-words">
+                  30-day refund/replacement
+                </p>
+
+                <p className="whitespace-nowrap">Payment</p>
+                <p className="text-blue-600 break-words">Secure transaction</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

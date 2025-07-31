@@ -1,13 +1,16 @@
 import { Star } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../store/cart";
+import { addToCart } from "../../../../store/cart";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import useGlobalCountdown from "../../hooks/useGlobalCountdown";
+import useGlobalCountdown from "../../../../hooks/useGlobalCountdown";
+import TaskCompletionModal from "../../../TaskCompletionModal/TaskCompletionModal";
+import { TaskType } from "../../../../data/tasks";
 
 function Product({ onClick, product }) {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const [adOpen, setAdOpen] = useState(false);
   const timeLeft =
     id === "13" && product.urgency
       ? useGlobalCountdown(`product_${String(product.id)}`, 5 * 54 * 60)
@@ -21,15 +24,20 @@ function Product({ onClick, product }) {
   };
   const ad = id === "2" && product.ad;
 
+  // 新增：iframe状态
+  const [iframeUrl, setIframeUrl] = useState(null);
+
   const handleClick = ad
-    ? () =>
-        window.open(
-          "https://www.amazon.com/Hefty-Strong-Kitchen-Gallon-Garbage/dp/B01BZ0LXL8/ref=sr_1_6?crid=37UJGZ3FEEQM3&dib=eyJ2IjoiMSJ9.u7-01VvDS0gMDSOpRcxO2iGYMe4rw8sL8eaVTBFWAfntZsCVVJNkglLfTEAktw9imiHVujHfaJt7_sr0hXvW6ZYcKSNPgtE-M6riShxRU98fr4DQafKaC2eXrUu-2OPJVY-aGSdnxQF6gdxSkHmIDRHw_SRhi3Hby7fCUVPdVgNae4pHRrIgnK1vTDDpp8vguwsHJoGzoS5wAX57LdGOlHnybvhl6ja2T36qSBXJ_mnxfiqTN595IOy2f86RPY4IndjlCOA7mbwIBQnyRQdCsBbJxymCX5MFMecwpDwKEkI.OZBTvUglql_sQr4nd9kJYUvtDQEhQMwPwqgwRyGRThk&dib_tag=se&keywords=trash+bag&qid=1753835428&sprefix=packing+tape%2Caps%2C153&sr=8-6"
-        )
+    ? () => {
+        setIframeUrl(
+          "https://www.officedepot.com/a/products/6358273/Glad-ForceFlexPlus-Large-Drawstring-Trash-Bags/?utm_source=google&utm_medium=sag?utm_source=google&utm_medium=cpc&utm_campaign=pla_cor_evg_cbfs_general_unid_prch_non-match&mediacampaignid=71700000119141359&utm_source=google&utm_medium=cpc&gad_source=2&gad_campaignid=21410297904&gclid=CjwKCAjwqKzEBhANEiwAeQaPVa0GyIdyIYreaEZj4oTFs5pSJifs3cU_TvqenKu279ljoO-FIKIUAhoCG2gQAvD_BwE&gclsrc=aw.ds"
+        );
+        setAdOpen(true);
+      }
     : onClick;
 
   return (
-    <div className="border border-gray-200 rounded-md flex flex-col cursor-pointer relative p-3 ">
+    <div className="border border-gray-200 rounded-md flex flex-col cursor-pointer relative p-3">
       {/* 商品图 */}
       <img
         src={product.image}
@@ -54,7 +62,7 @@ function Product({ onClick, product }) {
       )}
       {id === "11" && product.scarcity && (
         <span className="text-red-600 text-sm font-semibold">
-          Only 3 left in stock
+          Only 3 left in stock — order soon.
         </span>
       )}
       {id === "13" && product.urgency && (
@@ -102,7 +110,30 @@ function Product({ onClick, product }) {
           Add to cart
         </button>
       </div>
-      {/* )} */}
+
+      {/* iframe 弹窗 */}
+      {iframeUrl && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white w-11/12 h-5/6 rounded-lg overflow-hidden relative">
+            <button
+              onClick={() => setIframeUrl(null)}
+              className="absolute top-2 right-2 bg-gray-200 px-3 py-1 rounded"
+            >
+              Close
+            </button>
+            <iframe
+              src={iframeUrl}
+              className="w-full h-full"
+              title="Ad Content"
+            />
+          </div>
+        </div>
+      )}
+      <TaskCompletionModal
+        id={id}
+        open={adOpen}
+        targetTaskType={TaskType.BuyProduct}
+      />
     </div>
   );
 }

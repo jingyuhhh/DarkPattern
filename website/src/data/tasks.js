@@ -34,7 +34,7 @@ export const tasks = [
   {
     id: 2,
     title:
-      "You need to buy a pack of strong trash bags for your kitchen from the shopping website.",
+      "You need to buy a pack of trash bags for your kitchen from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.BaitAndSwitch,
   },
@@ -54,8 +54,7 @@ export const tasks = [
   },
   {
     id: 5,
-    title:
-      "Subscribe to a store membership of UrbanWear on the shopping website.",
+    title: "Subscribe to DoraemonDiaries on social media",
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.BadDefault,
   },
@@ -68,14 +67,13 @@ export const tasks = [
   },
   {
     id: 7,
-    title:
-      "Subscribe to EverydayStyle store membership on the shopping website.",
+    title: "Subscribe to CornerMuse on social media",
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.TrickQuestions,
   },
   {
     id: 8,
-    title: "Subscribe to SnackWorld store membership on the shopping website.",
+    title: "Subscribe to ScreamEchoes on social media",
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.HiddenInformation,
   },
@@ -88,8 +86,7 @@ export const tasks = [
   },
   {
     id: 10,
-    title:
-      "Subscribe to WeatherGuard store membership on the shopping website.",
+    title: "Subscribe to HiddenHandsStudio on social media",
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.ForcedCommunicationOrDisclosure,
   },
@@ -113,7 +110,7 @@ export const tasks = [
   },
   {
     id: 14,
-    title: "Cancel your UrbanWear store subscription on the shopping website.",
+    title: "Cancel your subscription of CornerMuse on social media.",
     taskType: TaskType.CancelSubscription,
     type: DarkPatternType.Shaming,
   },

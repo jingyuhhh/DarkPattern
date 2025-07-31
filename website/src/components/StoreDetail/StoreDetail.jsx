@@ -10,7 +10,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useNavigate } from "react-router-dom";
-import Product from "../Product/Product";
+import Product from "../Shopping/components/Product/Product";
 import { useDispatch } from "react-redux";
 import { resetCart } from "../../store/cart";
 import { tasks, TaskType } from "../../data/tasks";
@@ -31,13 +31,13 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
         <DialogContent>
           <div className="text-gray-700">
             {id === "14"
-              ? "Are you sure you want to cancel your memberhip? You’ll lose access to member-only discounts and perks” with options labeled"
+              ? "Unsubscribing now means abandoning a creator who’s been sharing their heart and work with you. Are you really okay with that?"
               : "Are you sure you want to unsubscribe from this store?"}
           </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="inherit" variant="outlined">
-            {id === "14" ? "No, I like the discounts" : "No, Keep Subscribed"}
+            {id === "14" ? "No, I’ll Keep Supporting" : "No, Keep Subscribed"}
           </Button>
           <Button
             onClick={() => {
@@ -47,7 +47,7 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
             color="inherit"
             variant="outlined"
           >
-            {id === "14" ? "Yes, I like full price" : "Yes, Unsubscribe"}
+            {id === "14" ? "Yes, I am cold-blooded" : "Yes, Unsubscribe"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -114,9 +114,6 @@ const StoreDetail = () => {
   return (
     <>
       <div className="min-h-screen bg-gray-50">
-        <Nav />
-        <div className="mb-12"></div>
-
         {/* 订阅弹窗 */}
         <Dialog
           open={showModal && !isUnsubscribeMode}
@@ -144,7 +141,7 @@ const StoreDetail = () => {
               <Terms
                 extraClause={
                   id == 8
-                    ? "By subscribing, you allow us to share your personal information with our partners for service improvement."
+                    ? "By subscribing, you allow us to share your personal information with our partners for service improvement. You acknowledge and agree that subscription fees are subject to change at any time at our sole discretion."
                     : null
                 }
               />
@@ -255,53 +252,105 @@ const StoreDetail = () => {
           }}
         />
 
-        {/* 店铺主体内容 */}
         <div className="max-w-5xl mx-auto bg-white rounded-lg shadow p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-[#0f1111]">
-              {storeInfo.name}
-            </h1>
-            <Button
-              variant={!isSubscribed ? "contained" : "outlined"}
-              onClick={() => {
-                if (isSubscribed) {
-                  setIsUnsubscribeMode(true);
-                  setShowModal(true);
-                } else {
-                  setShowModal(true);
-                }
-              }}
-              color={!isSubscribed ? "amazon" : "black"}
-              style={{
-                borderRadius: "9999px",
-                textTransform: "none",
-                fontWeight: 1000,
-              }}
-            >
-              {isSubscribed ? "Subscribed" : "Subscribe"}
-            </Button>
-          </div>
-          <p className="mt-2 text-sm text-[#565959] max-w-3xl mb-8">
-            Welcome to our store! {storeInfo.description}
-          </p>
+          {/* 顶部店铺信息栏 */}
+          <div className="flex items-center mb-6">
+            {/* 头像 */}
+            <img
+              src={storeInfo.avatar}
+              alt={storeInfo.name}
+              className="w-24 h-24 rounded-full object-cover border-2 border-gray-200 mr-6"
+            />
+            <div className="flex-1">
+              <div className="flex items-center space-x-3">
+                <h1 className="text-2xl  ">{storeInfo.name}</h1>
+                {/* Subscribe/Unsubscribe */}
+                <div className="flex gap-2 ml-8">
+                  <Button
+                    variant="outlined"
+                    style={{
+                      borderRadius: "8px",
+                      textTransform: "none",
+                      fontWeight: "600",
+                      border: "1px solid #eff1f4",
+                      color: "#000",
+                      backgroundColor: "#eff1f4",
+                      padding: "4px 16px",
+                    }}
+                  >
+                    Following
+                  </Button>
 
-          {storeInfo.products.length === 0 ? (
-            <p className="text-gray-500 text-lg">
-              No products found for this store.
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {storeInfo.products.map((product, idx) => (
-                <Product
-                  product={product}
-                  onClick={() => {
-                    console.log(product);
-                    navigate(`/task/${id}/productDetail/${product.id}`);
-                  }}
-                />
-              ))}
+                  {/* Message */}
+                  <Button
+                    variant="outlined"
+                    style={{
+                      borderRadius: "8px",
+                      textTransform: "none",
+                      fontWeight: "600",
+                      border: "1px solid #eff1f4",
+                      color: "#000",
+                      backgroundColor: "#eff1f4",
+                      padding: "4px 16px",
+                    }}
+                  >
+                    Message
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      if (isSubscribed) {
+                        setIsUnsubscribeMode(true);
+                        setShowModal(true);
+                      } else {
+                        setShowModal(true);
+                      }
+                    }}
+                    style={{
+                      borderRadius: "8px",
+                      textTransform: "none",
+                      fontWeight: "600",
+                      border: "1px solid #eff1f4",
+                      color: "#000",
+                      backgroundColor: "#eff1f4",
+                      padding: "4px 16px",
+                    }}
+                  >
+                    {isSubscribed ? "Cancel Subscription" : "Subscribe"}
+                  </Button>
+                </div>
+              </div>
+              {/* 粉丝数 / 关注数 / 帖子数 */}
+              <div className="flex space-x-6 text-gray-700 mt-3">
+                <span>
+                  <strong>{storeInfo.images.length}</strong> posts
+                </span>
+                <span>
+                  <strong>{storeInfo.followers || "2.3M"}</strong> followers
+                </span>
+                <span>
+                  <strong>{storeInfo.following || "246"}</strong> following
+                </span>
+              </div>
+              {/* 简介 */}
+              <p className="text-gray-600 mt-3">{storeInfo.description}</p>
             </div>
-          )}
+          </div>
+
+          {/* 分隔线 */}
+          <hr className="my-6" />
+
+          {/* 图片展示区（Instagram风格） */}
+          <div className="grid grid-cols-3 gap-2">
+            {storeInfo.images.map((image, index) => (
+              <div key={index} className="relative group cursor-pointer">
+                <img
+                  src={image}
+                  className="w-full aspect-square object-cover"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
