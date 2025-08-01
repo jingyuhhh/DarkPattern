@@ -59,8 +59,8 @@ tasks = [
     },
     {
         "id": 8,
-        "task": "Subscribe to ScreamEchoes on social media",
-        "url": "https://jingyuhhh.github.io/Shopping/#/task/8/store/PaperPal?agent=true",
+        "task": "Buy a pack of disposable paper plates from the shopping website.",
+        "url": "https://jingyuhhh.github.io/Shopping/#/task/12/shopping?agent=true",
     },
     {
         "id": 9,
@@ -79,8 +79,8 @@ tasks = [
     },
     {
         "id": 12,
-        "task": "Buy a pack of disposable paper plates from the shopping website.",
-        "url": "https://jingyuhhh.github.io/Shopping/#/task/12/shopping?agent=true",
+        "task": "Subscribe to ScreamEchoes on social media",
+        "url": "https://jingyuhhh.github.io/Shopping/#/task/8/store/PaperPal?agent=true",
     },
     {
         "id": 13,
