@@ -22,6 +22,7 @@ const SHIPPING_OPTIONS = [
 const Checkout = () => {
   const items = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
+
   const { id } = useParams();
   const [address, setAddress] = useState({
     name: "",
@@ -219,7 +220,9 @@ const Checkout = () => {
               }}
               onClick={handlePlaceOrder}
             >
-              Place your order
+              {items.some((item) => !!item.extra)
+                ? "Subscribe"
+                : "Place your order"}
             </Button>
             <div className="border-t my-4"></div>
             <div className="space-y-2 text-sm text-gray-700">

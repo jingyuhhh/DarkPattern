@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Typography,
   Button,
@@ -6,71 +6,111 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Snackbar,
+  Alert,
 } from "@mui/material";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getTasks } from "../../data/tasks";
 import { useDispatch } from "react-redux";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
+import Survey from "./components/Survey/Survey";
 
 const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
   const navigate = usePreserveQueryNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const isAgent = searchParams.get("agent") === "true"; // 判断是否为 agent 模式
+  const isAgent = searchParams.get("agent") === "true";
   const userID = searchParams.get("userID") || 0;
   const tasks = getTasks(userID);
   const currentTaskIndex = tasks.findIndex((task) => task.id === parseInt(id));
   const dispatch = useDispatch();
 
-  // 如果是 agent 模式，始终返回 Task Completion Successful
+  const [likertAnswers, setLikertAnswers] = useState(Array(5).fill(null));
+  const [yesNoMaybe, setYesNoMaybe] = useState(null);
+
+  // Snackbar 状态
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleNextTask = () => {
+    if (likertAnswers.some((a) => a === null) || yesNoMaybe === null) {
+      setSnackbarOpen(true); // 打开提示
+      return;
+    }
+
+    const surveyData = { likertAnswers, yesNoMaybe };
+    console.log("Survey submitted:", surveyData);
+
+    if (onClose) onClose();
+    navigate(`/task/${nextTask.id}`);
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const nextTask = tasks[(currentTaskIndex + 1) % 14];
+
+  // Agent 模式
   if (isAgent) {
     return (
       <Dialog
         open={open}
         onClose={() => {
           if (onClose) onClose();
-          navigate(`/task/${tasks[currentTaskIndex].id}`); // 停留在当前任务或保持页面
+          navigate(`/task/${tasks[currentTaskIndex].id}`);
         }}
       >
         <DialogTitle>Task Completion Successful</DialogTitle>
         <DialogContent>
           <Typography>You finished the task successfully!</Typography>
         </DialogContent>
-        <DialogActions></DialogActions>
       </Dialog>
     );
   }
-
-  const nextTask = tasks[(currentTaskIndex + 1) % 14];
 
   if (
     tasks[currentTaskIndex].taskType === targetTaskType &&
     currentTaskIndex !== 13
   ) {
     return (
-      <Dialog
-        open={open}
-        onClose={() => {
-          if (onClose) onClose();
-          navigate(`/task/${nextTask.id}`);
-        }}
-      >
-        <DialogTitle>Task Completion Successful</DialogTitle>
-        <DialogContent>
-          <Typography>You finished the task successfully!</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              if (onClose) onClose();
-              navigate(`/task/${nextTask.id}`);
-            }}
-            color="primary"
-          >
-            Next Task
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <>
+        <Dialog
+          open={open}
+          onClose={() => {
+            if (onClose) onClose();
+            navigate(`/task/${nextTask.id}`);
+          }}
+        >
+          <DialogTitle>Task Completion Successful</DialogTitle>
+          <DialogContent>
+            <Typography>Please rate your experience</Typography>
+            <br />
+            <Survey
+              likertAnswers={likertAnswers}
+              setLikertAnswers={setLikertAnswers}
+              yesNoMaybe={yesNoMaybe}
+              setYesNoMaybe={setYesNoMaybe}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleNextTask} color="primary">
+              Next Task
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Snackbar 提示 */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          onClose={handleSnackbarClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert severity="warning" onClose={handleSnackbarClose}>
+            Please answer all questions before continuing.
+          </Alert>
+        </Snackbar>
+      </>
     );
   } else if (tasks[currentTaskIndex].taskType === targetTaskType) {
     return (
