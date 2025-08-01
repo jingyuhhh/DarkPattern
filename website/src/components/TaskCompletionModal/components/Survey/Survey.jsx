@@ -8,12 +8,27 @@ import {
   Divider,
 } from "@mui/material";
 
-const likertQuestions = [
-  "I found certain design choices to present available options unequally. For example, some options were made more obvious or attractive than others.",
-  "I found the effects of certain design choices hidden from me. For example, I couldn’t tell what would happen when I clicked or did something.",
-  "I found some design choices to induce false beliefs by confusing, misleading, or keeping information from me. For example, some designs confused me or made me believe something that wasn’t true.",
-  "I found certain design choices to obscure or delay necessary information. For example, important information was hidden or shown too late.",
-  "I found certain design choices to restrict available options. For example, it felt like I wasn’t given all the choices I should have.",
+export const likertQuestions = [
+  {
+    key: "Asymmetric",
+    text: "I found certain design choices to present available options unequally. For example, some options were made more obvious or attractive than others.",
+  },
+  {
+    key: "Covert",
+    text: "I found the effects of certain design choices hidden from me. For example, I couldn’t tell what would happen when I clicked or did something.",
+  },
+  {
+    key: "Deceptive",
+    text: "I found some design choices to induce false beliefs by confusing, misleading, or keeping information from me. For example, some designs confused me or made me believe something that wasn’t true.",
+  },
+  {
+    key: "HidesInformation",
+    text: "I found certain design choices to obscure or delay necessary information. For example, important information was hidden or shown too late.",
+  },
+  {
+    key: "Restrictive",
+    text: "I found certain design choices to restrict available options. For example, it felt like I wasn’t given all the choices I should have.",
+  },
 ];
 
 const yesNoMaybeQuestion =
@@ -34,8 +49,8 @@ const Survey = ({
   return (
     <div>
       {likertQuestions.map((q, idx) => (
-        <div key={idx} style={{ marginBottom: "16px" }}>
-          <Typography variant="body1">{q}</Typography>
+        <div key={q.key} style={{ marginBottom: "16px" }}>
+          <Typography variant="body1">{q.text}</Typography>
           <FormControl component="fieldset">
             <RadioGroup
               row

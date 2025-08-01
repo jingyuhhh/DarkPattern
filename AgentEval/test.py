@@ -6,9 +6,11 @@ import json
 import re
 from dotenv import load_dotenv
 from pathlib import Path
-from langchain_openai import ChatOpenAI
+from browser_use.llm import ChatOpenAI
 
 from browser_use import Agent, Controller, ActionResult, BrowserSession, BrowserProfile
+
+# from browser_use.llm import OpenAILLM
 
 
 load_dotenv()
@@ -124,7 +126,9 @@ async def main():
         agent = Agent(
             task=task["task"],
             llm=ChatOpenAI(
-                openai_api_key=getenv("OPENAI_API_KEY"), model_name="gpt-4o"
+                api_key=getenv("OPENAI_API_KEY"),
+                model="gpt-4o",
+                base_url="https://openrouter.ai/api/v1",
             ),
             browser_session=session,
             sensitive_data={

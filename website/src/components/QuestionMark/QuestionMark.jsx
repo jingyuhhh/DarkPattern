@@ -35,7 +35,7 @@ const QuestionMark = () => {
   const { id } = useParams();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const userID = searchParams.get("userID") || 0;
+  const userID = searchParams.get("userID") || 1;
   const tasks = getTasks(userID);
   const dispatch = useDispatch();
 

@@ -16,13 +16,15 @@ import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 import Survey from "./components/Survey/Survey";
 import { db } from "../../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { likertQuestions } from "./components/Survey/Survey";
+import { uploadLogToFirebase } from "../../logger";
 
 const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
   const navigate = usePreserveQueryNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const isAgent = searchParams.get("agent") === "true";
-  const userID = searchParams.get("userID") || 0;
+  const userID = searchParams.get("userID") || 1;
   const tasks = getTasks(userID);
   const currentTaskIndex = tasks.findIndex((task) => task.id === parseInt(id));
   const dispatch = useDispatch();
@@ -32,18 +34,24 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
 
   // Snackbar 状态
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const isEnd = currentTaskIndex === 13;
 
   const handleNextTask = async () => {
     if (likertAnswers.some((a) => a === null) || yesNoMaybe === null) {
       setSnackbarOpen(true); // 打开提示
       return;
     }
+    const userIDInt = parseInt(userID);
+    const likertData = likertQuestions.reduce((acc, q, idx) => {
+      acc[q.key] = likertAnswers[idx];
+      return acc;
+    }, {});
 
     const surveyData = {
-      userID,
+      userID: userIDInt,
       taskID: tasks[currentTaskIndex].id,
-      likertAnswers,
-      yesNoMaybe,
+      ...likertData,
+      awareness: yesNoMaybe,
       createdAt: serverTimestamp(),
     };
 
@@ -55,7 +63,10 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
     }
 
     if (onClose) onClose();
-    navigate(`/task/${nextTask.id}`);
+    if (isEnd) {
+      navigate("/task/0");
+      uploadLogToFirebase();
+    } else navigate(`/task/${nextTask.id}`);
   };
 
   const handleSnackbarClose = () => {
@@ -82,17 +93,15 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
     );
   }
 
-  if (
-    tasks[currentTaskIndex].taskType === targetTaskType &&
-    currentTaskIndex !== 13
-  ) {
+  if (tasks[currentTaskIndex].taskType === targetTaskType) {
     return (
       <>
         <Dialog
           open={open}
           onClose={() => {
             if (onClose) onClose();
-            navigate(`/task/${nextTask.id}`);
+            if (isEnd) navigate("/completed");
+            else navigate(`/task/${nextTask.id}`);
           }}
         >
           <DialogTitle>Task Completion Successful</DialogTitle>
@@ -126,26 +135,7 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
         </Snackbar>
       </>
     );
-  } else if (tasks[currentTaskIndex].taskType === targetTaskType) {
-    return (
-      <Dialog
-        open={open}
-        onClose={() => {
-          if (onClose) onClose();
-        }}
-      >
-        <DialogTitle>All Tasks Completed</DialogTitle>
-        <DialogContent>
-          <Typography>You have completed all tasks!</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => onClose && onClose()} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
+  } else return <></>;
 };
 
 export default TaskCompletionModal;

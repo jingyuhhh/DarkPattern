@@ -24,14 +24,13 @@ const TaskEntry = () => {
   const location = useLocation();
 
   const searchParams = new URLSearchParams(location.search);
-  const userID = searchParams.get("userID") || 0; // 给个默认值 0
+  const userID = searchParams.get("userID") || 1;
   const tasks = getTasks(userID);
 
   const parsedId = parseInt(id, 10);
   const task = tasks.find((task) => task.id === parsedId);
 
   const handleContinue = () => {
-    console.log(tasks);
     if (
       task.taskType === TaskType.CancelSubscription ||
       task.taskType === TaskType.SignSubscription
