@@ -14,6 +14,8 @@ import { getTasks } from "../../data/tasks";
 import { useDispatch } from "react-redux";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 import Survey from "./components/Survey/Survey";
+import { db } from "../../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
   const navigate = usePreserveQueryNavigate();
@@ -31,14 +33,26 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
   // Snackbar 状态
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const handleNextTask = () => {
+  const handleNextTask = async () => {
     if (likertAnswers.some((a) => a === null) || yesNoMaybe === null) {
       setSnackbarOpen(true); // 打开提示
       return;
     }
 
-    const surveyData = { likertAnswers, yesNoMaybe };
-    console.log("Survey submitted:", surveyData);
+    const surveyData = {
+      userID,
+      taskID: tasks[currentTaskIndex].id,
+      likertAnswers,
+      yesNoMaybe,
+      createdAt: serverTimestamp(),
+    };
+
+    try {
+      await addDoc(collection(db, "surveyResponses"), surveyData);
+      console.log("Survey submitted to Firebase:", surveyData);
+    } catch (err) {
+      console.error("Error saving survey:", err);
+    }
 
     if (onClose) onClose();
     navigate(`/task/${nextTask.id}`);

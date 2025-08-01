@@ -120,5 +120,5 @@ export const tasks = [
 export const getTasks = (userID) => {
   const n = tasks.length;
   const userIndex = parseInt(userID, 10);
-  return tasks.map((_, i) => tasks[(i + userIndex) % n]);
+  return tasks.map((_, i) => tasks[(i + userIndex - 1) % n]);
 };
