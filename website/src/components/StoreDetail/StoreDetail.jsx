@@ -13,14 +13,14 @@ import { useNavigate } from "react-router-dom";
 import Product from "../Shopping/components/Product/Product";
 import { useDispatch } from "react-redux";
 import { resetCart } from "../../store/cart";
-import { tasks, TaskType } from "../../data/tasks";
+import { TaskType } from "../../data/tasks";
 import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
 import Terms from "./components/Terms";
 import { getStoreProducts } from "../../data/productInfo";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 
 const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
-  const { id, storeId } = useParams();
+  const { id } = useParams();
   const [confirm, setConfirm] = useState(false);
   const dispatch = useDispatch();
 

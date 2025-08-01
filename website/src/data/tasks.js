@@ -73,9 +73,9 @@ export const tasks = [
   },
   {
     id: 8,
-    title: "Subscribe to ScreamEchoes on social media",
-    taskType: TaskType.SignSubscription,
-    type: DarkPatternType.HiddenInformation,
+    title: "Buy a pack of disposable paper plates from the shopping website.",
+    taskType: TaskType.BuyProduct,
+    type: DarkPatternType.SocialProof,
   },
   {
     id: 9,
@@ -98,10 +98,11 @@ export const tasks = [
   },
   {
     id: 12,
-    title: "Buy a pack of disposable paper plates from the shopping website.",
-    taskType: TaskType.BuyProduct,
-    type: DarkPatternType.SocialProof,
+    title: "Subscribe to ScreamEchoes on social media",
+    taskType: TaskType.SignSubscription,
+    type: DarkPatternType.HiddenInformation,
   },
+
   {
     id: 13,
     title: "Purchase a set of paperclips from the shopping website.",
@@ -115,3 +116,9 @@ export const tasks = [
     type: DarkPatternType.Shaming,
   },
 ];
+
+export const getTasks = (userID) => {
+  const n = tasks.length;
+  const userIndex = parseInt(userID, 10);
+  return tasks.map((_, i) => tasks[(i + userIndex) % n]);
+};

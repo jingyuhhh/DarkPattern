@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { tasks, TaskType } from "../../data/tasks";
+import { getTasks, TaskType } from "../../data/tasks";
 import { PII } from "../../data/PII";
 import {
   Container,
@@ -11,6 +11,8 @@ import {
   Box,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
+
 import { addToCart } from "../../store/cart";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 
@@ -19,15 +21,22 @@ const TaskEntry = () => {
   const dispatch = useDispatch();
   const navigate = usePreserveQueryNavigate();
   const addedRef = useRef(false); // 标记是否已经添加
+  const location = useLocation();
 
-  const task = tasks.find((task) => task.id === parseInt(id));
+  const searchParams = new URLSearchParams(location.search);
+  const userID = searchParams.get("userID") || 0; // 给个默认值 0
+  const tasks = getTasks(userID);
+
+  const parsedId = parseInt(id, 10);
+  const task = tasks.find((task) => task.id === parsedId);
 
   const handleContinue = () => {
+    console.log(tasks);
     if (
       task.taskType === TaskType.CancelSubscription ||
       task.taskType === TaskType.SignSubscription
     ) {
-      navigate(`/task/${id}/store/PaperPal#`);
+      navigate(`/task/${id}/store/1`);
     } else navigate(`/task/${id}/shopping`);
   };
 

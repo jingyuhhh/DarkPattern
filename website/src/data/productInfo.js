@@ -2081,7 +2081,7 @@ const vitamins = [
   {
     image: "https://m.media-amazon.com/images/I/814Te29TBKS._AC_UL320_.jpg",
     name: "Garden of Life Vitamin Code Raw Vitamin C, 120 Vegan Capsules",
-    price: 26.29,
+    price: 16.29,
     store: "OrganicLife",
     storeSubscribed: false,
     id: 1,
@@ -2126,7 +2126,7 @@ const vitamins = [
   {
     image: "https://m.media-amazon.com/images/I/71fHpn+JnuL._AC_UL320_.jpg",
     name: "Nature's Bounty Vitamin C 1000 mg, 500 Coated Caplets",
-    price: 14.19,
+    price: 24.19,
     store: "PureWellness",
     storeSubscribed: false,
     id: 4,
@@ -2247,7 +2247,7 @@ export const getProducts = (id) => {
       return solderWires;
     case "11":
       return staples;
-    case "12":
+    case "8":
       return paperPlates;
     // return sponges;
     case "13":
@@ -2309,7 +2309,7 @@ export const getStoreProducts = (id) => {
           "Portrait artist & storyteller capturing quiet souls and intimate moments in watercolor. Currently painting my way through Berlin cafés.",
         images: drawing,
       };
-    case "8":
+    case "12":
       return {
         name: "ScreamEchoes",
         subscribed: false,

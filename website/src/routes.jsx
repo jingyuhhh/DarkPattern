@@ -39,7 +39,6 @@ const AppRoutes = () => {
   return (
     <Router>
       <PopupProvider interval={15000}>
-        {/* 必须放到 Router 内 */}
         <Routes>
           <Route path="/task/:id" element={<TaskEntry />} />
           <Route

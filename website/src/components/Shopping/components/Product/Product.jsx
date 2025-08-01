@@ -55,7 +55,7 @@ function Product({ onClick, product }) {
         {product.name}
       </p>
       {/* 紧迫性 & 社会证明 */}
-      {id === "12" && product.socialProof && (
+      {id === "8" && product.socialProof && (
         <span className="text-sm text-red-500 font-bold my-1">
           300+ bought in past month
         </span>

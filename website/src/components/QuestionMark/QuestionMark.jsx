@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   IconButton,
   Tooltip,
@@ -18,103 +18,59 @@ import {
 } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { resetCart } from "../../store/cart.js";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { tasks } from "../../data/tasks.js";
+import { resetCart } from "../../store/cart.js";
+import { getTasks } from "../../data/tasks.js";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../store/cart.js";
 import { PII } from "../../data/PII.js";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate.js";
+import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal.jsx";
 
 const QuestionMark = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [skipReason, setSkipReason] = useState("");
+  const [completionModalOpen, setCompletionModalOpen] = useState(false); // 控制 TaskCompletionModal
+
   const { id } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const userID = searchParams.get("userID") || 0;
+  const tasks = getTasks(userID);
   const dispatch = useDispatch();
-  const navigate = usePreserveQueryNavigate();
-  // Get current task information
+
   const getCurrentTask = () => {
-    // If we're on a task page, get the task by ID
     if (id) {
       return tasks.find((task) => task.id === parseInt(id));
     }
-
-    // If we're on other pages, we might want to get task from URL or other sources
-    // For now, return the first task as default
     return tasks[0];
   };
 
-  // Get next task
   const getNextTask = () => {
     const currentTask = getCurrentTask();
     if (!currentTask) return null;
-
     const currentIndex = tasks.findIndex((task) => task.id === currentTask.id);
-    const nextIndex = currentIndex + 1;
-
-    // If there's a next task, return it
-    if (nextIndex < tasks.length) {
-      return tasks[nextIndex];
-    }
-
-    // If this is the last task, return null
-    return null;
+    if (currentIndex === 13) return null;
+    const nextIndex = (currentIndex + 1) % 14;
+    return tasks[nextIndex] || null;
   };
 
   const currentTask = getCurrentTask();
+  const nextTask = getNextTask();
 
-  const handleClick = () => {
-    setDialogOpen(true);
-  };
-
+  const handleClick = () => setDialogOpen(true);
   const handleClose = () => {
     setDialogOpen(false);
     setSelectedOption("");
     setSkipReason("");
   };
 
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
-  };
+  const handleOptionSelect = (option) => setSelectedOption(option);
 
   const handleSubmit = () => {
     dispatch(resetCart());
-    let nextTask;
-
-    switch (selectedOption) {
-      case "finished":
-        console.log("Task finished");
-        // Navigate to next task
-        nextTask = getNextTask();
-
-        if (nextTask) {
-          navigate(`/task/${nextTask.id}`);
-          console.log(nextTask);
-        } else {
-          // If no next task, go to shopping page with current task ID
-          navigate(`/task/${id}/shopping`);
-        }
-        break;
-      case "skip":
-        console.log("Task skipped with reason:", skipReason);
-        // Navigate to next task
-        nextTask = getNextTask();
-        if (nextTask) {
-          navigate(`/task/${nextTask.id}`);
-        } else {
-          // If no next task, go to shopping page with current task ID
-          navigate(`/task/${id}/shopping`);
-        }
-        break;
-      case "continue":
-        console.log("Continue with task");
-        // Stay on current page
-        break;
-      default:
-        break;
-    }
+    // 打开 TaskCompletionModal 而不是直接 navigate
+    setCompletionModalOpen(true);
     handleClose();
   };
 
@@ -127,7 +83,7 @@ const QuestionMark = () => {
             position: "fixed",
             top: 16,
             left: 16,
-            zIndex: 9999, // Increased z-index to ensure it's always on top
+            zIndex: 9999,
             backgroundColor: "rgba(255, 255, 255, 0.8)",
             "&:hover": {
               backgroundColor: "rgba(255, 255, 255, 0.9)",
@@ -138,6 +94,7 @@ const QuestionMark = () => {
         </IconButton>
       </Tooltip>
 
+      {/* 原有的弹窗 */}
       <Dialog open={dialogOpen} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>
           <Typography variant="h6" component="div">
@@ -154,7 +111,6 @@ const QuestionMark = () => {
             </Box>
           )}
 
-          {/* Display PII data */}
           <Box sx={{ mb: 3, p: 2, bgcolor: "grey.100", borderRadius: 1 }}>
             <Typography variant="h6" gutterBottom color="secondary">
               Personal Information:
@@ -181,17 +137,6 @@ const QuestionMark = () => {
                   </Box>
                 }
               />
-
-              {/* <FormControlLabel
-                value="continue"
-                control={<Radio />}
-                label={
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <PlayArrowIcon color="primary" />
-                    <Typography>Continue to do the task</Typography>
-                  </Box>
-                }
-              /> */}
               <FormControlLabel
                 value="skip"
                 control={<Radio />}
@@ -236,6 +181,14 @@ const QuestionMark = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Task Completion Modal */}
+      <TaskCompletionModal
+        id={id}
+        open={completionModalOpen}
+        targetTaskType={currentTask?.taskType}
+        onClose={() => setCompletionModalOpen(false)}
+      />
     </>
   );
 };
