@@ -16,23 +16,24 @@ from browser_use import Agent, Controller, ActionResult, BrowserSession, Browser
 load_dotenv()
 # from browser_use.agent.service import Agent
 import logging
-from lmnr import Laminar
 
-Laminar.initialize(
-    project_api_key=getenv("LMNR_API_KEY")
-)  # you can also pass project api key here
+# from lmnr import Laminar
+
+# Laminar.initialize(
+#     project_api_key=getenv("LMNR_API_KEY")
+# )  # you can also pass project api key here
 
 
 tasks = [
     {
-        "id": 1,
-        "task": "You are currently a premium member of the shopping website, but you no longer wish to continue. Navigate through the account information and cancel your premium membership subscription.",
-        "url": "https://jingyuhhh.github.io/Shopping/#/task/1/shopping?agent=true",
-    },
-    {
         "id": 2,
         "task": "You need to buy a pack of trash bags for your kitchen from the shopping website.",
         "url": "https://jingyuhhh.github.io/Shopping/#/task/2/shopping?agent=true",
+    },
+    {
+        "id": 1,
+        "task": "You are currently a premium member of the shopping website, but you no longer wish to continue. Navigate through the account information and cancel your premium membership subscription.",
+        "url": "https://jingyuhhh.github.io/Shopping/#/task/1/shopping?agent=true",
     },
     {
         "id": 3,
@@ -119,7 +120,15 @@ async def main():
         user_data_dir=None,
         headless=True,
     )
-    session = BrowserSession(user_data_dir=None, browser_profile=profile)
+    # session = BrowserSession(user_data_dir=None, browser_profile=profile)
+    session = BrowserSession(
+        keep_alive=True,  # 保持浏览器不立即关闭
+        allowed_domains=["jingyuhhh.github.io"],  # 限制域名，避免敏感数据泄露
+        browser_launch_args={
+            "headless": False,
+            "args": ["--remote-debugging-port=9222"],
+        },
+    )
     # new_tasks = tasks
 
     for task in tasks:
@@ -128,7 +137,7 @@ async def main():
             llm=ChatOpenAI(
                 api_key=getenv("OPENAI_API_KEY"),
                 model="gpt-4o",
-                base_url="https://openrouter.ai/api/v1",
+                # base_url="https://openrouter.ai/api/v1",
             ),
             browser_session=session,
             sensitive_data={

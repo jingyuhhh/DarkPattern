@@ -34,6 +34,16 @@ export const likertQuestions = [
 const yesNoMaybeQuestion =
   'Deceptive design strategies can be described as "user interface design choices that benefit an online service by coercing, steering, or deceiving users into making decisions that, if fully informed and capable of selecting alternatives, they might not make." Did you notice any deceptive design strategies during the previous task?';
 
+const likertLabels = {
+  1: "Strongly Disagree",
+  2: "Disagree",
+  3: "Somewhat Disagree",
+  4: "Neutral",
+  5: "Somewhat Agree",
+  6: "Agree",
+  7: "Strongly Agree",
+};
+
 const Survey = ({
   likertAnswers,
   setLikertAnswers,
@@ -64,7 +74,7 @@ const Survey = ({
                   key={num}
                   value={num}
                   control={<Radio />}
-                  label={num.toString()}
+                  label={`${likertLabels[num]}`}
                 />
               ))}
             </RadioGroup>

@@ -79,7 +79,7 @@ const Checkout = () => {
         <div className="md:col-span-8 space-y-6">
           <Paper className="p-4 rounded-xl bg-white border border-gray-100">
             <Typography variant="subtitle1" className="font-semibold mb-2">
-              Shipping Address
+              Shipping Address<span>*</span>
             </Typography>
             <div className="flex flex-col gap-3">
               <TextField
@@ -113,8 +113,9 @@ const Checkout = () => {
           <Paper className="p-4 rounded-xl bg-white border border-gray-100">
             <FormControl component="fieldset">
               <Typography variant="subtitle1" className="font-semibold mb-2">
-                Shipping Method
+                Shipping Method <span>*</span>
               </Typography>
+
               <Typography variant="subtitle2" className="font-semibold mb-2">
                 Please select your preferred shipping method:
               </Typography>

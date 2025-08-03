@@ -98,6 +98,8 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
       <>
         <Dialog
           open={open}
+          fullWidth
+          maxWidth="lg"
           onClose={() => {
             if (onClose) onClose();
             if (isEnd) navigate("/completed");
@@ -106,7 +108,9 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
         >
           <DialogTitle>Task Completion Successful</DialogTitle>
           <DialogContent>
-            <Typography>Please rate your experience</Typography>
+            <Typography>
+              Please rate your opinions on these statements
+            </Typography>
             <br />
             <Survey
               likertAnswers={likertAnswers}

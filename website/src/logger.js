@@ -73,7 +73,6 @@ export async function uploadLogToFirebase() {
       uploadedAt: new Date().toISOString(),
       userAgent: navigator.userAgent,
     };
-    console.log(payload);
     const sanitizedPayload = sanitizeForFirestore(payload);
 
     const docRef = await addDoc(collection(db, "userLogs"), sanitizedPayload);

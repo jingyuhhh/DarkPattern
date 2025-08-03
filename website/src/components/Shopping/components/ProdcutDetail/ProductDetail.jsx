@@ -7,6 +7,8 @@ import { addToCart } from "../../../../store/cart";
 import { useState } from "react";
 import { usePreserveQueryNavigate } from "../../../../hooks/useQueryNavigate";
 import useGlobalCountdown from "../../../../hooks/useGlobalCountdown";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const ProductDetail = () => {
   const { id, productId } = useParams();
@@ -15,6 +17,7 @@ const ProductDetail = () => {
   const products = getProducts(id);
   const product = products.find((item) => item.id === parseInt(productId, 10));
   const [quantity, setQuantity] = useState(1);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const showScarcity = parseInt(id, 10) === 11 && product.scarcity;
   const showSocialProof = parseInt(id, 10) === 8 && product.socialProof;
@@ -140,6 +143,7 @@ const ProductDetail = () => {
                     })
                   );
                 }
+                setSnackbarOpen(true);
               }}
             >
               Add to Cart
@@ -162,6 +166,16 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity="success">
+          Added to cart successfully!
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

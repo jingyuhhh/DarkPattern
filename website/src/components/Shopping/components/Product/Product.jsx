@@ -6,11 +6,14 @@ import { useState, useEffect } from "react";
 import useGlobalCountdown from "../../../../hooks/useGlobalCountdown";
 import TaskCompletionModal from "../../../TaskCompletionModal/TaskCompletionModal";
 import { TaskType } from "../../../../data/tasks";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 function Product({ onClick, product }) {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [adOpen, setAdOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const timeLeft =
     id === "13" && product.urgency
       ? useGlobalCountdown(`product_${String(product.id)}`, 5 * 54 * 60)
@@ -104,6 +107,7 @@ function Product({ onClick, product }) {
               image: product.image,
             })
           );
+          setSnackbarOpen(true);
         }}
       >
         <button className="w-full bg-[#ffd814] hover:bg-[#f7ca00] text-black text-sm font-medium rounded-full py-2 shadow-sm border border-[#fcd200] transition">
@@ -134,6 +138,16 @@ function Product({ onClick, product }) {
         open={adOpen}
         targetTaskType={TaskType.BuyProduct}
       />
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity="success">
+          Added to cart successfully!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
