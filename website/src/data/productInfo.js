@@ -2256,40 +2256,45 @@ export const getProducts = (id) => {
   }
 };
 
-const dolaAmeng = [
-  "https://i.ibb.co/3Ys2RbV9/jimeng-2025-07-31-2289-a.jpg",
-  "https://i.ibb.co/HpdMfVNX/jimeng-2025-07-31-6170-a.jpg",
-  "https://i.ibb.co/203f9dz7/jimeng-2025-07-31-7302-a.jpg",
-  "https://i.ibb.co/cck2K1fW/jimeng-2025-07-31-9819-a.jpg",
-];
+// Doraemon
+import dola1 from "../../public/assets/dola_1.jpeg";
+import dola2 from "../../public/assets/dola_2.jpeg";
+import dola3 from "../../public/assets/dola_3.jpeg";
+import dola4 from "../../public/assets/dola_4.jpeg";
+import dolaAvatar from "../../public/assets/dola_avatar.jpeg";
 
-const drawing = [
-  "https://i.ibb.co/dsGXv5gk/jimeng-2025-07-31-1740-Ted-Nutall.jpg",
-  "https://i.ibb.co/dJJ2fL43/jimeng-2025-07-31-2093-Ted-Nutall.jpg",
-  "https://i.ibb.co/ZzM1vNvF/jimeng-2025-07-31-3616-Ted-Nutall.jpg",
-  "https://i.ibb.co/67nSSN1F/jimeng-2025-07-31-9951-Ted-Nutall.jpg",
-];
+// Painting
+import painting1 from "../../public/assets/painting_1.jpeg";
+import painting2 from "../../public/assets/painting_2.jpeg";
+import painting3 from "../../public/assets/painting_3.jpeg";
+import painting4 from "../../public/assets/painting_4.jpeg";
+import paintingAvatar from "../../public/assets/painting_avatar.png";
 
-const nahan = [
-  "https://i.ibb.co/pBcg5hwh/jimeng-2025-07-31-1879.jpg",
-  "https://i.ibb.co/5hGKkMw9/jimeng-2025-07-31-5784.jpg",
-  "https://i.ibb.co/hJGd39Hv/jimeng-2025-07-31-6119.jpg",
-  "https://i.ibb.co/HkpLVb0/jimeng-2025-07-31-6795.jpg",
-];
+// Scream
+import nahan1 from "../../public/assets/nahan_1.jpeg";
+import nahan2 from "../../public/assets/nahan_2.jpeg";
+import nahan3 from "../../public/assets/nahan_3.jpeg";
+import nahan4 from "../../public/assets/nahan_4.jpeg";
+import nahanAvatar from "../../public/assets/nahan_avatar.jpeg";
 
-const building = [
-  "https://i.ibb.co/7JKpvz55/jimeng-2025-07-31-3940-oc.jpg",
-  "https://i.ibb.co/d4fvS4DM/jimeng-2025-07-31-6585-oc.jpg",
-  "https://i.ibb.co/ns7h6M5y/jimeng-2025-07-31-8763-oc.jpg",
-  "https://i.ibb.co/rffmbb0s/jimeng-2025-07-31-8829-oc.jpg",
-];
+// Building
+import building1 from "../../public/assets/building_1.jpeg";
+import building2 from "../../public/assets/building_2.jpeg";
+import building3 from "../../public/assets/building_3.jpeg";
+import building4 from "../../public/assets/building_4.jpeg";
+import buildingAvatar from "../../public/assets/building_avatar.jpeg";
+
+const dolaAmeng = [dola1, dola2, dola3, dola4];
+const drawing = [painting1, painting2, painting3, painting4];
+const nahan = [nahan1, nahan2, nahan3, nahan4];
+const building = [building1, building2, building3, building4];
 
 export const getStoreProducts = (id) => {
   switch (id) {
     case "5":
       return {
         name: "DoraemonDiaries",
-        avatar: "https://i.ibb.co/6MYS8c3/jimeng-2025-07-22-5172-a.jpg",
+        avatar: dolaAvatar,
         subscribed: false,
         followers: 452,
         following: 121,
@@ -2301,8 +2306,7 @@ export const getStoreProducts = (id) => {
       return {
         name: "CornerMuse",
         subscribed: false,
-        avatar:
-          "https://i.ibb.co/x8Xs5Bs6/jimeng-2025-07-16-5014-Ted-Nutall.png",
+        avatar: paintingAvatar,
         followers: 287,
         following: 98,
         description:
@@ -2313,7 +2317,7 @@ export const getStoreProducts = (id) => {
       return {
         name: "ScreamEchoes",
         subscribed: false,
-        avatar: "https://i.ibb.co/SXmvrN18/jimeng-2025-06-08-8340.jpg",
+        avatar: nahanAvatar,
         followers: 615,
         following: 143,
         description:
@@ -2324,7 +2328,7 @@ export const getStoreProducts = (id) => {
       return {
         name: "HiddenHandsStudio",
         subscribed: false,
-        avatar: "https://i.ibb.co/60719v2j/jimeng-2025-07-19-5344-oc.jpg",
+        avatar: buildingAvatar,
         followers: 333,
         following: 85,
         description:
@@ -2335,8 +2339,7 @@ export const getStoreProducts = (id) => {
       return {
         name: "CornerMuse",
         subscribed: true,
-        avatar:
-          "https://i.ibb.co/x8Xs5Bs6/jimeng-2025-07-16-5014-Ted-Nutall.png",
+        avatar: paintingAvatar,
         followers: 288,
         following: 98,
         description:
