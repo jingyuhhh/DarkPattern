@@ -64,7 +64,7 @@ const Checkout = () => {
 
   const handleDialogClose = () => {
     setDialogOpen(false);
-    dispatch(resetCart());
+    // dispatch(resetCart());
   };
 
   if (!items.length) {

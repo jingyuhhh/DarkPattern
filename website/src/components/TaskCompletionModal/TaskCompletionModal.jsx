@@ -18,6 +18,8 @@ import { db } from "../../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { likertQuestions } from "./components/Survey/Survey";
 import { detectAvoidBehavior } from "../../utils/behaviorDetection";
+import { resetCart } from "../../store/cart";
+import { useDispatch } from "react-redux";
 
 const TaskCompletionModal = ({
   id,
@@ -28,6 +30,7 @@ const TaskCompletionModal = ({
 }) => {
   const navigate = usePreserveQueryNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const searchParams = new URLSearchParams(location.search);
   const isAgent = searchParams.get("agent") === "true";
   const userID = searchParams.get("userID") || 1;
@@ -101,6 +104,7 @@ const TaskCompletionModal = ({
     localStorage.removeItem("lastInputValues");
     localStorage.removeItem("lastToggleStates");
     localStorage.removeItem("visitedRoutes");
+    dispatch(resetCart());
 
     if (isEnd) {
       navigate("/task/0");
