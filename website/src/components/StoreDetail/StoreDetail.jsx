@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import { getProducts } from "../../data/productInfo";
 import Nav from "../Nav/Nav";
 import { useState, useEffect, useRef } from "react";
 import Button from "@mui/material/Button";
@@ -9,7 +8,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { useNavigate } from "react-router-dom";
 import Product from "../Shopping/components/Product/Product";
 import { useDispatch } from "react-redux";
 import { resetCart } from "../../store/cart";
@@ -17,7 +15,6 @@ import { TaskType } from "../../data/tasks";
 import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
 import Terms from "./components/Terms";
 import { getStoreProducts } from "../../data/productInfo";
-import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 
 const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
   const { id } = useParams();
@@ -31,13 +28,13 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
         <DialogContent>
           <div className="text-gray-700">
             {id === "14"
-              ? "Unsubscribing now means abandoning a creator who’s been sharing their heart and work with you. Are you really okay with that?"
+              ? "Unsubscribing now means abandoning a creator who's been sharing their heart and work with you. Are you really okay with that?"
               : "Are you sure you want to unsubscribe from this store?"}
           </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="inherit" variant="outlined">
-            {id === "14" ? "No, I’ll Keep Supporting" : "No, Keep Subscribed"}
+            {id === "14" ? "No, I'll Keep Supporting" : "No, Keep Subscribed"}
           </Button>
           <Button
             onClick={() => {
@@ -65,7 +62,7 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
 };
 
 const StoreDetail = () => {
-  const { id, storeId } = useParams();
+  const { id } = useParams();
   const storeInfo = getStoreProducts(id);
 
   const [isSubscribed, setIsSubscribed] = useState(storeInfo.subscribed);
@@ -81,7 +78,6 @@ const StoreDetail = () => {
   const [canCheckTerms, setCanCheckTerms] = useState(false);
   const [countdown, setCountdown] = useState(5);
   const termsRef = useRef(null);
-  const navigate = usePreserveQueryNavigate();
 
   useEffect(() => {
     if (showModal && !isUnsubscribeMode) {
@@ -363,6 +359,10 @@ const StoreDetail = () => {
         }}
         id={id}
         targetTaskType={TaskType.SignSubscription}
+        formData={{
+          adConsent: isAdConsent,
+          trickQuestionConsent: isTrickQuestionConsent,
+        }}
       />
     </>
   );

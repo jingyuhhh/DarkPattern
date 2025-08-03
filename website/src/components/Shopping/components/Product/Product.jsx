@@ -2,7 +2,7 @@ import { Star } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../../store/cart";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useGlobalCountdown from "../../../../hooks/useGlobalCountdown";
 import TaskCompletionModal from "../../../TaskCompletionModal/TaskCompletionModal";
 import { TaskType } from "../../../../data/tasks";
@@ -14,10 +14,14 @@ function Product({ onClick, product }) {
   const { id } = useParams();
   const [adOpen, setAdOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const timeLeft =
-    id === "13" && product.urgency
-      ? useGlobalCountdown(`product_${String(product.id)}`, 5 * 54 * 60)
-      : 0;
+
+  // Always call the hook, but only use the result when needed
+  const timeLeft = useGlobalCountdown(
+    `product_${String(product.id)}`,
+    5 * 54 * 60
+  );
+  const shouldShowCountdown = id === "13" && product.urgency;
+  const displayTimeLeft = shouldShowCountdown ? timeLeft : 0;
 
   const formatTime = (seconds) => {
     const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
@@ -74,7 +78,7 @@ function Product({ onClick, product }) {
             Save 30%
           </span>
           <span className="text-red-600 text-sm font-semibold">
-            Deal ends in {formatTime(timeLeft)}
+            Deal ends in {formatTime(displayTimeLeft)}
           </span>
         </div>
       )}
@@ -137,6 +141,7 @@ function Product({ onClick, product }) {
         id={id}
         open={adOpen}
         targetTaskType={TaskType.BuyProduct}
+        formData={{ clickedAd: true }}
       />
       <Snackbar
         open={snackbarOpen}

@@ -23,7 +23,6 @@ import { resetCart } from "../../store/cart.js";
 import { getTasks } from "../../data/tasks.js";
 import { useDispatch } from "react-redux";
 import { PII } from "../../data/PII.js";
-import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate.js";
 import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal.jsx";
 
 const QuestionMark = () => {
@@ -31,7 +30,7 @@ const QuestionMark = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [skipReason, setSkipReason] = useState("");
   const [completionModalOpen, setCompletionModalOpen] = useState(false); // 控制 TaskCompletionModal
-
+  const [taskFormData, setTaskFormData] = useState();
   const { id } = useParams();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -46,17 +45,7 @@ const QuestionMark = () => {
     return tasks[0];
   };
 
-  const getNextTask = () => {
-    const currentTask = getCurrentTask();
-    if (!currentTask) return null;
-    const currentIndex = tasks.findIndex((task) => task.id === currentTask.id);
-    if (currentIndex === 13) return null;
-    const nextIndex = (currentIndex + 1) % 14;
-    return tasks[nextIndex] || null;
-  };
-
   const currentTask = getCurrentTask();
-  const nextTask = getNextTask();
 
   const handleClick = () => setDialogOpen(true);
   const handleClose = () => {
@@ -68,9 +57,12 @@ const QuestionMark = () => {
   const handleOptionSelect = (option) => setSelectedOption(option);
 
   const handleSubmit = () => {
+    const data = {
+      skipReason: selectedOption === "skip" ? skipReason : null,
+    };
     dispatch(resetCart());
-    // 打开 TaskCompletionModal 而不是直接 navigate
     setCompletionModalOpen(true);
+    setTaskFormData(data); // 新增一个 state 保存 formData
     handleClose();
   };
 
@@ -127,7 +119,7 @@ const QuestionMark = () => {
               value={selectedOption}
               onChange={(e) => handleOptionSelect(e.target.value)}
             >
-              <FormControlLabel
+              {/* <FormControlLabel
                 value="finished"
                 control={<Radio />}
                 label={
@@ -136,7 +128,7 @@ const QuestionMark = () => {
                     <Typography>I finished the task</Typography>
                   </Box>
                 }
-              />
+              /> */}
               <FormControlLabel
                 value="skip"
                 control={<Radio />}
@@ -188,6 +180,7 @@ const QuestionMark = () => {
         open={completionModalOpen}
         targetTaskType={currentTask?.taskType}
         onClose={() => setCompletionModalOpen(false)}
+        formData={taskFormData}
       />
     </>
   );

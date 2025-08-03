@@ -194,15 +194,20 @@ const Nav = () => {
               {isPremiumMember && id == 1 ? (
                 <>
                   <WorkspacePremium className="text-yellow-600" />
-                  <Typography variant="h6">Premium Membership</Typography>
+                  <Typography variant="h6" component="span">
+                    Premium Membership
+                  </Typography>
                 </>
               ) : (
                 <>
                   <PersonIcon />
-                  <Typography variant="h6">User Account</Typography>
+                  <Typography variant="h6" component="span">
+                    User Account
+                  </Typography>
                 </>
               )}
             </DialogTitle>
+
             <DialogContent>
               {isPremiumMember && id == 1 ? (
                 <>
@@ -431,6 +436,7 @@ const Nav = () => {
             id={id}
             onClose={() => dispatch(resetCart())}
             targetTaskType={TaskType.CancelMembership}
+            formData={{ cancelReason }}
           />
         </div>
       </nav>

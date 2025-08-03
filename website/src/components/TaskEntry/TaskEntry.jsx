@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { getTasks, TaskType } from "../../data/tasks";
 import { PII } from "../../data/PII";
 import {
@@ -10,17 +10,27 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-import { addToCart } from "../../store/cart";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
+
+// 重新初始化日志数据的函数
+const resetLoggerData = () => {
+  localStorage.removeItem("userActions");
+  localStorage.removeItem("lastInputValues");
+  localStorage.removeItem("lastToggleStates");
+  localStorage.removeItem("visitedRoutes");
+
+  // 重新初始化全局变量
+  window.userActions = [];
+  window.lastInputValues = {};
+  window.lastToggleStates = {};
+  window.visitedRoutes = [];
+};
 
 const TaskEntry = () => {
   const { id } = useParams();
-  const dispatch = useDispatch();
   const navigate = usePreserveQueryNavigate();
-  const addedRef = useRef(false); // 标记是否已经添加
   const location = useLocation();
 
   const searchParams = new URLSearchParams(location.search);
@@ -29,6 +39,11 @@ const TaskEntry = () => {
 
   const parsedId = parseInt(id, 10);
   const task = tasks.find((task) => task.id === parsedId);
+
+  // 在任务开始时重新初始化日志数据
+  useEffect(() => {
+    resetLoggerData();
+  }, [id]);
 
   const handleContinue = () => {
     if (

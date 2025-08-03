@@ -11,15 +11,21 @@ import {
 } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { getTasks } from "../../data/tasks";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 import Survey from "./components/Survey/Survey";
 import { db } from "../../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { likertQuestions } from "./components/Survey/Survey";
-import { uploadLogToFirebase } from "../../logger";
+import { detectAvoidBehavior } from "../../utils/behaviorDetection";
 
-const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
+const TaskCompletionModal = ({
+  id,
+  open,
+  targetTaskType,
+  onClose,
+  formData,
+}) => {
   const navigate = usePreserveQueryNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -27,7 +33,9 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
   const userID = searchParams.get("userID") || 1;
   const tasks = getTasks(userID);
   const currentTaskIndex = tasks.findIndex((task) => task.id === parseInt(id));
-  const dispatch = useDispatch();
+
+  // 获取购物车状态
+  const cartState = useSelector((state) => state.cart);
 
   const [likertAnswers, setLikertAnswers] = useState(Array(5).fill(null));
   const [yesNoMaybe, setYesNoMaybe] = useState(null);
@@ -41,32 +49,64 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
       setSnackbarOpen(true); // 打开提示
       return;
     }
+
+    // 检测avoid behavior
+    const userActions = window.userActions || [];
+    const avoided = detectAvoidBehavior(id, userActions, cartState, formData);
+
     const userIDInt = parseInt(userID);
     const likertData = likertQuestions.reduce((acc, q, idx) => {
       acc[q.key] = likertAnswers[idx];
       return acc;
     }, {});
 
+    // 获取当前任务的日志数据
+    const lastInputValues = window.lastInputValues || {};
+    const lastToggleStates = window.lastToggleStates || {};
+    const visitedRoutes = window.visitedRoutes || [];
+
     const surveyData = {
       userID: userIDInt,
       taskID: tasks[currentTaskIndex].id,
+      avoided: avoided, // 添加avoided字段
       ...likertData,
       awareness: yesNoMaybe,
       createdAt: serverTimestamp(),
+      // 添加日志数据
+      userActions: userActions,
+      lastInputValues: lastInputValues,
+      lastToggleStates: lastToggleStates,
+      visitedRoutes: visitedRoutes,
+      uploadedAt: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      // 如果是跳过的任务，添加跳过信息
+      ...(formData &&
+        formData.skipReason && {
+          skipped: true,
+          skipReason: formData.skipReason,
+        }),
     };
 
     try {
       await addDoc(collection(db, "surveyResponses"), surveyData);
-      console.log("Survey submitted to Firebase:", surveyData);
+      console.log("Survey and logs submitted to Firebase:", surveyData);
     } catch (err) {
       console.error("Error saving survey:", err);
     }
 
     if (onClose) onClose();
+
+    // 每完成一个任务都清空本地存储，确保下次任务的日志数据只与当前任务相关
+    localStorage.removeItem("userActions");
+    localStorage.removeItem("lastInputValues");
+    localStorage.removeItem("lastToggleStates");
+    localStorage.removeItem("visitedRoutes");
+
     if (isEnd) {
       navigate("/task/0");
-      uploadLogToFirebase();
-    } else navigate(`/task/${nextTask.id}`);
+    } else {
+      navigate(`/task/${nextTask.id}`);
+    }
   };
 
   const handleSnackbarClose = () => {
@@ -93,7 +133,10 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
     );
   }
 
-  if (tasks[currentTaskIndex].taskType === targetTaskType) {
+  // 检查是否是从 QuestionMark 跳过的任务（有 formData 且包含 skipReason）
+  const isSkippedTask = formData && formData.skipReason;
+
+  if (tasks[currentTaskIndex].taskType === targetTaskType || isSkippedTask) {
     return (
       <>
         <Dialog
@@ -106,8 +149,15 @@ const TaskCompletionModal = ({ id, open, targetTaskType, onClose }) => {
             else navigate(`/task/${nextTask.id}`);
           }}
         >
-          <DialogTitle>Task Completion Successful</DialogTitle>
+          <DialogTitle>
+            {isSkippedTask ? "Task Skipped" : "Task Completion Successful"}
+          </DialogTitle>
           <DialogContent>
+            {isSkippedTask && (
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+                You skipped this task. Reason: {formData.skipReason}
+              </Typography>
+            )}
             <Typography>
               Please rate your opinions on these statements
             </Typography>

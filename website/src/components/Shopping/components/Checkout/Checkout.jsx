@@ -47,7 +47,7 @@ const Checkout = () => {
 
   const sortedShippingOptions =
     parseInt(id) === 4
-      ? [...SHIPPING_OPTIONS].sort((a, b) => (a.value === "premium" ? -1 : 1))
+      ? [...SHIPPING_OPTIONS].sort((a) => (a.value === "premium" ? -1 : 1))
       : SHIPPING_OPTIONS;
 
   const shippingPrice =
@@ -61,7 +61,7 @@ const Checkout = () => {
 
   const handleInputChange = (e) =>
     setAddress({ ...address, [e.target.name]: e.target.value });
-  const handleShippingChange = (e) => setShipping(e.target.value);
+
   const handleDialogClose = () => {
     setDialogOpen(false);
     dispatch(resetCart());
@@ -256,6 +256,7 @@ const Checkout = () => {
         open={dialogOpen}
         onClose={handleDialogClose}
         targetTaskType={TaskType.BuyProduct}
+        formData={{ shipping }}
       />
     </>
   );

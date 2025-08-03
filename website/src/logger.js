@@ -1,22 +1,31 @@
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
-let userActions = JSON.parse(localStorage.getItem("userActions") || "[]");
-let lastInputValues = JSON.parse(
-  localStorage.getItem("lastInputValues") || "{}"
-);
-let lastToggleStates = JSON.parse(
-  localStorage.getItem("lastToggleStates") || "{}"
-);
-let visitedRoutes = JSON.parse(localStorage.getItem("visitedRoutes") || "[]"); // 记录完整 URL + 时间
+// 使用全局变量，这样可以在其他地方重置
+window.userActions =
+  window.userActions || JSON.parse(localStorage.getItem("userActions") || "[]");
+window.lastInputValues =
+  window.lastInputValues ||
+  JSON.parse(localStorage.getItem("lastInputValues") || "{}");
+window.lastToggleStates =
+  window.lastToggleStates ||
+  JSON.parse(localStorage.getItem("lastToggleStates") || "{}");
+window.visitedRoutes =
+  window.visitedRoutes ||
+  JSON.parse(localStorage.getItem("visitedRoutes") || "[]"); // 记录完整 URL + 时间
 let currentPopupElements = [];
-let logFilename = "activity_log.json";
 
 function saveToLocalStorage() {
-  localStorage.setItem("userActions", JSON.stringify(userActions));
-  localStorage.setItem("lastInputValues", JSON.stringify(lastInputValues));
-  localStorage.setItem("lastToggleStates", JSON.stringify(lastToggleStates));
-  localStorage.setItem("visitedRoutes", JSON.stringify(visitedRoutes));
+  localStorage.setItem("userActions", JSON.stringify(window.userActions));
+  localStorage.setItem(
+    "lastInputValues",
+    JSON.stringify(window.lastInputValues)
+  );
+  localStorage.setItem(
+    "lastToggleStates",
+    JSON.stringify(window.lastToggleStates)
+  );
+  localStorage.setItem("visitedRoutes", JSON.stringify(window.visitedRoutes));
 }
 
 function logAction(eventType, details) {
@@ -25,7 +34,7 @@ function logAction(eventType, details) {
     details: details,
     timestamp: new Date().toISOString(),
   };
-  userActions.push(entry);
+  window.userActions.push(entry);
   saveToLocalStorage();
 }
 
@@ -34,18 +43,12 @@ function logRouteChange(newUrl) {
     url: newUrl,
     timestamp: new Date().toISOString(),
   };
-  visitedRoutes.push(entry);
+  window.visitedRoutes.push(entry);
   logAction("route_change", entry);
 }
 
 function isClickInPopup(target) {
   return currentPopupElements.some((popup) => popup.contains(target));
-}
-
-function registerPopupElement(el) {
-  if (el && !currentPopupElements.includes(el)) {
-    currentPopupElements.push(el);
-  }
 }
 
 function sanitizeForFirestore(data) {
@@ -63,25 +66,21 @@ function sanitizeForFirestore(data) {
   );
 }
 
-export async function uploadLogToFirebase() {
+export async function uploadLogToFirebase(taskID = null) {
   try {
     const payload = {
-      userActions,
-      lastInputValues,
-      lastToggleStates,
-      visitedRoutes, // 上传完整 URL 访问记录
+      userActions: window.userActions,
+      lastInputValues: window.lastInputValues,
+      lastToggleStates: window.lastToggleStates,
+      visitedRoutes: window.visitedRoutes, // 上传完整 URL 访问记录
       uploadedAt: new Date().toISOString(),
       userAgent: navigator.userAgent,
+      taskID: taskID, // 添加任务ID
     };
     const sanitizedPayload = sanitizeForFirestore(payload);
 
     const docRef = await addDoc(collection(db, "userLogs"), sanitizedPayload);
-    console.log("日志已上传，ID:", docRef.id);
-
-    localStorage.removeItem("userActions");
-    localStorage.removeItem("lastInputValues");
-    localStorage.removeItem("lastToggleStates");
-    localStorage.removeItem("visitedRoutes");
+    console.log("日志已上传，ID:", docRef.id, "任务ID:", taskID);
   } catch (error) {
     console.error("上传失败:", error);
   }
@@ -111,31 +110,19 @@ function generateSelector(el) {
   return path.join(" > ");
 }
 
-export function initLogger(filename = "activity_log.json") {
-  if (!sessionStorage.getItem("loggerInitialized")) {
-    localStorage.removeItem("userActions");
-    localStorage.removeItem("lastInputValues");
-    localStorage.removeItem("lastToggleStates");
-    localStorage.removeItem("visitedRoutes");
+export function initLogger() {
+  // 每次初始化时都清空本地存储，确保每个任务的日志数据独立
+  localStorage.removeItem("userActions");
+  localStorage.removeItem("lastInputValues");
+  localStorage.removeItem("lastToggleStates");
+  localStorage.removeItem("visitedRoutes");
 
-    userActions = [];
-    lastInputValues = {};
-    lastToggleStates = {};
-    visitedRoutes = [];
+  window.userActions = [];
+  window.lastInputValues = {};
+  window.lastToggleStates = {};
+  window.visitedRoutes = [];
 
-    sessionStorage.setItem("loggerInitialized", "true");
-  } else {
-    userActions = JSON.parse(localStorage.getItem("userActions") || "[]");
-    lastInputValues = JSON.parse(
-      localStorage.getItem("lastInputValues") || "{}"
-    );
-    lastToggleStates = JSON.parse(
-      localStorage.getItem("lastToggleStates") || "{}"
-    );
-    visitedRoutes = JSON.parse(localStorage.getItem("visitedRoutes") || "[]");
-  }
-
-  logFilename = filename;
+  sessionStorage.setItem("loggerInitialized", "true");
 
   // 记录当前初始 URL
   logRouteChange(window.location.href);
@@ -194,7 +181,7 @@ export function initLogger(filename = "activity_log.json") {
     ) {
       const id = getInputIdentifier(target);
       const value = target.value;
-      lastInputValues[id] = value;
+      window.lastInputValues[id] = value;
     }
   });
 
@@ -203,7 +190,7 @@ export function initLogger(filename = "activity_log.json") {
     if (target.tagName.toLowerCase() === "select") {
       const id = getInputIdentifier(target);
       const value = target.value;
-      lastInputValues[id] = value;
+      window.lastInputValues[id] = value;
       logAction("select", {
         fieldId: id,
         selectedValue: value,
@@ -225,7 +212,7 @@ export function initLogger(filename = "activity_log.json") {
         name: target.name || "none",
         checked: checked,
       });
-      lastToggleStates[toggleId] = checked;
+      window.lastToggleStates[toggleId] = checked;
     }
   });
 }
