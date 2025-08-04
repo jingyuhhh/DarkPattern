@@ -51,7 +51,7 @@ function isClickInPopup(target) {
   return currentPopupElements.some((popup) => popup.contains(target));
 }
 
-function sanitizeForFirestore(data) {
+export function sanitizeForFirestore(data) {
   return JSON.parse(
     JSON.stringify(data, (key, value) => {
       if (
@@ -77,6 +77,7 @@ export async function uploadLogToFirebase(taskID = null) {
       userAgent: navigator.userAgent,
       taskID: taskID, // 添加任务ID
     };
+    console.log(payload);
     const sanitizedPayload = sanitizeForFirestore(payload);
 
     const docRef = await addDoc(collection(db, "userLogs"), sanitizedPayload);

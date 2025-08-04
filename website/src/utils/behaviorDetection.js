@@ -55,13 +55,13 @@ export const detectAvoidBehavior = (
       const emotionalProducts = products.filter(
         (product) => product.emotional === true
       );
-
       // 检查用户是否购买了emotional为true的产品
       const boughtEmotional = cartState.items.some((item) =>
-        emotionalProducts.some((product) => item.name.includes(product.name))
+        emotionalProducts.some((product) => item.id === product.id)
       );
+      console.log(boughtEmotional);
 
-      return boughtEmotional;
+      return !boughtEmotional;
     }
 
     case "7": {
@@ -83,7 +83,7 @@ export const detectAvoidBehavior = (
         socialProofProducts.some((product) => item.name.includes(product.name))
       );
 
-      return boughtSocialProof;
+      return !boughtSocialProof;
     }
 
     case "9": {

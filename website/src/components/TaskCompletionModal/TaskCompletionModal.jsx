@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Button,
@@ -20,6 +20,8 @@ import { likertQuestions } from "./components/Survey/Survey";
 import { detectAvoidBehavior } from "../../utils/behaviorDetection";
 import { resetCart } from "../../store/cart";
 import { useDispatch } from "react-redux";
+import { usePopup } from "../../Provider/usePopup";
+import { sanitizeForFirestore } from "../../logger";
 
 const TaskCompletionModal = ({
   id,
@@ -31,6 +33,7 @@ const TaskCompletionModal = ({
   const navigate = usePreserveQueryNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const { notifyTaskCompletionModalOpen } = usePopup();
   const searchParams = new URLSearchParams(location.search);
   const isAgent = searchParams.get("agent") === "true";
   const userID = searchParams.get("userID") || 1;
@@ -46,6 +49,13 @@ const TaskCompletionModal = ({
   // Snackbar 状态
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const isEnd = currentTaskIndex === 13;
+
+  // 通知PopupProvider TaskCompletionModal的打开状态
+  useEffect(() => {
+    if (notifyTaskCompletionModalOpen) {
+      notifyTaskCompletionModalOpen(open);
+    }
+  }, [open, notifyTaskCompletionModalOpen]);
 
   const handleNextTask = async () => {
     if (likertAnswers.some((a) => a === null) || yesNoMaybe === null) {
@@ -89,10 +99,11 @@ const TaskCompletionModal = ({
           skipReason: formData.skipReason,
         }),
     };
-
+    console.log(surveyData);
+    const sanitizedPayload = sanitizeForFirestore(surveyData);
     try {
-      await addDoc(collection(db, "surveyResponses"), surveyData);
-      console.log("Survey and logs submitted to Firebase:", surveyData);
+      await addDoc(collection(db, "surveyResponses"), sanitizedPayload);
+      console.log("Survey and logs submitted to Firebase:", sanitizedPayload);
     } catch (err) {
       console.error("Error saving survey:", err);
     }

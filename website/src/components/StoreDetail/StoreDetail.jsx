@@ -136,7 +136,7 @@ const StoreDetail = () => {
             >
               <Terms
                 extraClause={
-                  id == 8
+                  id == 12
                     ? "By subscribing, you allow us to share your personal information with our partners for service improvement. You acknowledge and agree that subscription fees are subject to change at any time at our sole discretion."
                     : null
                 }

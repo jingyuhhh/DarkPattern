@@ -77,7 +77,6 @@ const Nav = () => {
     if (cancelStep < 4) {
       setCancelStep(cancelStep + 1);
     } else {
-      // TODO 密码校验
       if (password === PII.password) {
         handleCancelSuccess();
       } else {
