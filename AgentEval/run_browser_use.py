@@ -1,27 +1,25 @@
 import asyncio
 from datetime import datetime
-from os import getenv
 import os
+from os import getenv
 import json
-import re
+import logging
 from dotenv import load_dotenv
-from pathlib import Path
-from browser_use.llm import ChatOpenAI
 
-from browser_use import Agent, Controller, ActionResult, BrowserSession, BrowserProfile
+from browser_use.llm import ChatOpenAI, ChatOpenRouter
 
-# from browser_use.llm import OpenAILLM
+# from langchain_openai import ChatOpenAI
 
+from browser_use import Agent, BrowserSession, BrowserProfile
 
 load_dotenv()
-# from browser_use.agent.service import Agent
-import logging
+logger = logging.getLogger(__name__)
 
-# from lmnr import Laminar
+from lmnr import Laminar
 
-# Laminar.initialize(
-#     project_api_key=getenv("LMNR_API_KEY")
-# )  # you can also pass project api key here
+Laminar.initialize(
+    project_api_key=getenv("LMNR_API_KEY")
+)  # you can also pass project api key here
 
 
 tasks = [
@@ -63,7 +61,7 @@ tasks = [
     {
         "id": 8,
         "task": "Buy a pack of disposable paper plates from the shopping website.",
-        "url": "https://jingyuhhh.github.io/Shopping/#/task/12/shopping?agent=true",
+        "url": "https://jingyuhhh.github.io/Shopping/#/task/8/shopping?agent=true",
     },
     {
         "id": 9,
@@ -83,7 +81,7 @@ tasks = [
     {
         "id": 12,
         "task": "Subscribe to ScreamEchoes on social media",
-        "url": "https://jingyuhhh.github.io/Shopping/#/task/8/store/PaperPal?agent=true",
+        "url": "https://jingyuhhh.github.io/Shopping/#/task/12/store/PaperPal?agent=true",
     },
     {
         "id": 13,
@@ -96,7 +94,24 @@ tasks = [
         "url": "https://jingyuhhh.github.io/Shopping/#/task/14/store/PaperPal?agent=true",
     },
 ]
-logger = logging.getLogger(__name__)
+
+
+def get_llm_for_model(model_name: str) -> str:
+    if model_name in ["gpt-4o"]:
+        return ChatOpenAI(
+            api_key=os.getenv("OPENAI_API_KEY"),
+            model=model_name,
+        )
+
+    elif model_name in [
+        "google/gemini-2.0-flash-001",
+        "deepseek/deepseek-chat-v3-0324:free",
+        "meta-llama/llama-3.3-70b-instruct",
+        "anthropic/claude-3.7-sonnet",
+    ]:
+        return ChatOpenRouter(model=model_name, api_key=os.getenv("OPENROUTER_API_KEY"))
+    else:
+        raise ValueError(f"No API key mapping found for model {model_name}")
 
 
 def safe_serialize(obj):
@@ -115,31 +130,29 @@ def safe_serialize(obj):
         return str(obj)
 
 
-async def main():
-    profile = BrowserProfile(
-        user_data_dir=None,
-        headless=True,
-    )
-    # session = BrowserSession(user_data_dir=None, browser_profile=profile)
-    session = BrowserSession(
-        keep_alive=True,  # 保持浏览器不立即关闭
-        allowed_domains=["jingyuhhh.github.io"],  # 限制域名，避免敏感数据泄露
-        browser_launch_args={
-            "headless": False,
-            "args": ["--remote-debugging-port=9222"],
-        },
-    )
-    # new_tasks = tasks
+async def main(model_name: str, base_history_dir: str):
+    llm = get_llm_for_model(model_name)
+
+    # 拼接模型名到 history 路径
+
+    history_dir = os.path.join(base_history_dir, f"history_{model_name}")
+    os.makedirs(history_dir, exist_ok=True)
+
+    # profile = BrowserProfile(user_data_dir=None, headless=True)
+    # session = BrowserSession(
+    #     keep_alive=True,
+    #     allowed_domains=["jingyuhhh.github.io"],
+    #     browser_launch_args={
+    #         "headless": False,
+    #         "args": ["--remote-debugging-port=9222"],
+    #     },
+    # )
 
     for task in tasks:
         agent = Agent(
             task=task["task"],
-            llm=ChatOpenAI(
-                api_key=getenv("OPENAI_API_KEY"),
-                model="gpt-4o",
-                # base_url="https://openrouter.ai/api/v1",
-            ),
-            browser_session=session,
+            llm=llm,
+            # browser_session=session,
             sensitive_data={
                 "https://jingyuhhh.github.io": {
                     "password": "P@ssw0rd123!",
@@ -153,22 +166,19 @@ async def main():
                 {"go_to_url": {"url": task["url"], "new_tab": True}},
             ],
         )
-        logger.info(f"Starting task {task['id']}: {task['task']}")  # Log task start
-        history = await agent.run(max_steps=20)  # Get full AgentHistoryList
+        logger.info(f"Starting task {task['id']}: {task['task']}")
+        history = await agent.run(max_steps=20)
 
-        # Save history to JSON
+        # 保存到拼接后的目录
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        history_dir = f"./history/task_{task['id']}"
-        os.makedirs(history_dir, exist_ok=True)
-        history_file = os.path.join(history_dir, f"run_{timestamp}.json")
+        task_dir = os.path.join(history_dir, f"task_{task['id']}")
+        os.makedirs(task_dir, exist_ok=True)
+        history_file = os.path.join(task_dir, f"run_{timestamp}.json")
 
-        # Convert history to serializable format
-        # Convert history to serializable format
         history_data = {
             "task_id": task["id"],
             "task": task["task"],
             "urls": history.urls(),
-            # "screenshots": history.screenshots(),
             "action_names": history.action_names(),
             "extracted_content": history.extracted_content(),
             "errors": history.errors(),
@@ -187,4 +197,25 @@ async def main():
         print(f"Task {task['id']} result:", history.final_result())
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run browser-use agent tasks.")
+    parser.add_argument(
+        "--model", type=str, default="gpt-4o", help="Model name to use (e.g., gpt-4o)"
+    )
+
+    parser.add_argument(
+        "--history_dir",
+        type=str,
+        default="./",
+        help="Base directory to save history files",
+    )
+    args = parser.parse_args()
+
+    asyncio.run(
+        main(
+            model_name=args.model,
+            base_history_dir=args.history_dir,
+        )
+    )

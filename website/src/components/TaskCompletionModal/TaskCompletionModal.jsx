@@ -62,6 +62,62 @@ const TaskCompletionModal = ({
       notifyTaskCompletionModalOpen(open);
     }
   }, [open, notifyTaskCompletionModalOpen]);
+  // Agent 模式自动提交
+  useEffect(() => {
+    if (isAgent && open) {
+      const autoSubmit = async () => {
+        const userActions = window.userActions || [];
+        const avoided = detectAvoidBehavior(
+          id,
+          userActions,
+          cartState,
+          formData
+        );
+        const timestamp = Date.now();
+
+        const userIDInt = parseInt(userID);
+        const docId = `agent_${tasks[currentTaskIndex].id}_${timestamp}`;
+        const surveyData = {
+          userID: userIDInt,
+          taskID: tasks[currentTaskIndex].id,
+          avoided: avoided,
+          createdAt: serverTimestamp(),
+          userActions: userActions,
+          lastInputValues: window.lastInputValues || {},
+          lastToggleStates: window.lastToggleStates || {},
+          visitedRoutes: window.visitedRoutes || [],
+          uploadedAt: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          ...(formData &&
+            formData.skipReason && {
+              skipped: true,
+              skipReason: formData.skipReason,
+            }),
+        };
+
+        const sanitizedPayload = sanitizeForFirestore(surveyData);
+        try {
+          await setDoc(doc(db, "surveyResponses", docId), sanitizedPayload);
+          console.log("Agent data submitted to Firebase:", docId);
+        } catch (err) {
+          console.error("Error saving survey:", err);
+        }
+
+        // 清理 & 跳转
+        localStorage.removeItem("userActions");
+        localStorage.removeItem("lastInputValues");
+        localStorage.removeItem("lastToggleStates");
+        localStorage.removeItem("visitedRoutes");
+        dispatch(resetCart());
+
+        if (onClose) onClose();
+        if (isEnd) navigate("/task/0");
+        else navigate(`/task/${nextTask.id}`);
+      };
+
+      autoSubmit();
+    }
+  }, [isAgent, open]);
 
   const handleNextTask = async () => {
     if (likertAnswers.some((a) => a === null) || yesNoMaybe === null) {
@@ -78,12 +134,13 @@ const TaskCompletionModal = ({
       acc[q.key] = likertAnswers[idx];
       return acc;
     }, {});
+    const timestamp = Date.now();
 
     // 获取当前任务的日志数据
     const lastInputValues = window.lastInputValues || {};
     const lastToggleStates = window.lastToggleStates || {};
     const visitedRoutes = window.visitedRoutes || [];
-    const docId = `${userIDInt}_${tasks[currentTaskIndex].id}`;
+    const docId = `${userIDInt}_${tasks[currentTaskIndex].id}_${timestamp}`;
 
     const surveyData = {
       userID: userIDInt,

@@ -2257,32 +2257,32 @@ export const getProducts = (id) => {
 };
 
 // Doraemon
-import dola1 from "../../public/assets/dola_1.jpeg";
-import dola2 from "../../public/assets/dola_2.jpeg";
-import dola3 from "../../public/assets/dola_3.jpeg";
-import dola4 from "../../public/assets/dola_4.jpeg";
-import dolaAvatar from "../../public/assets/dola_avatar.jpeg";
+import dola1 from "/src/assets/dola_1.jpeg";
+import dola2 from "/src/assets/dola_2.jpeg";
+import dola3 from "/src/assets/dola_3.jpeg";
+import dola4 from "/src/assets/dola_4.jpeg";
+import dolaAvatar from "/src/assets/dola_avatar.jpeg";
 
 // Painting
-import painting1 from "../../public/assets/painting_1.jpeg";
-import painting2 from "../../public/assets/painting_2.jpeg";
-import painting3 from "../../public/assets/painting_3.jpeg";
-import painting4 from "../../public/assets/painting_4.jpeg";
-import paintingAvatar from "../../public/assets/painting_avatar.png";
+import painting1 from "/src/assets/painting_1.jpeg";
+import painting2 from "/src/assets/painting_2.jpeg";
+import painting3 from "/src/assets/painting_3.jpeg";
+import painting4 from "/src/assets/painting_4.jpeg";
+import paintingAvatar from "/src/assets/painting_avatar.png";
 
 // Scream
-import nahan1 from "../../public/assets/nahan_1.jpeg";
-import nahan2 from "../../public/assets/nahan_2.jpeg";
-import nahan3 from "../../public/assets/nahan_3.jpeg";
-import nahan4 from "../../public/assets/nahan_4.jpeg";
-import nahanAvatar from "../../public/assets/nahan_avatar.jpeg";
+import nahan1 from "/src/assets/nahan_1.jpeg";
+import nahan2 from "/src/assets/nahan_2.jpeg";
+import nahan3 from "/src/assets/nahan_3.jpeg";
+import nahan4 from "/src/assets/nahan_4.jpeg";
+import nahanAvatar from "/src/assets/nahan_avatar.jpeg";
 
 // Building
-import building1 from "../../public/assets/building_1.jpeg";
-import building2 from "../../public/assets/building_2.jpeg";
-import building3 from "../../public/assets/building_3.jpeg";
-import building4 from "../../public/assets/building_4.jpeg";
-import buildingAvatar from "../../public/assets/building_avatar.jpeg";
+import building1 from "/src/assets/building_1.jpeg";
+import building2 from "/src/assets/building_2.jpeg";
+import building3 from "/src/assets/building_3.jpeg";
+import building4 from "/src/assets/building_4.jpeg";
+import buildingAvatar from "/src/assets/building_avatar.jpeg";
 
 const dolaAmeng = [dola1, dola2, dola3, dola4];
 const drawing = [painting1, painting2, painting3, painting4];
