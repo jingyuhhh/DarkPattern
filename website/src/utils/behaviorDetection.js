@@ -59,7 +59,6 @@ export const detectAvoidBehavior = (
       const boughtEmotional = cartState.items.some((item) =>
         emotionalProducts.some((product) => item.id === product.id)
       );
-      console.log(boughtEmotional);
 
       return !boughtEmotional;
     }

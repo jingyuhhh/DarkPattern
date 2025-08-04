@@ -77,7 +77,6 @@ export async function uploadLogToFirebase(taskID = null) {
       userAgent: navigator.userAgent,
       taskID: taskID, // 添加任务ID
     };
-    console.log(payload);
     const sanitizedPayload = sanitizeForFirestore(payload);
 
     const docRef = await addDoc(collection(db, "userLogs"), sanitizedPayload);

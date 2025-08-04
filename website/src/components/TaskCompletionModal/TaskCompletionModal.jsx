@@ -15,7 +15,13 @@ import { useSelector } from "react-redux";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 import Survey from "./components/Survey/Survey";
 import { db } from "../../firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { likertQuestions } from "./components/Survey/Survey";
 import { detectAvoidBehavior } from "../../utils/behaviorDetection";
 import { resetCart } from "../../store/cart";
@@ -77,6 +83,7 @@ const TaskCompletionModal = ({
     const lastInputValues = window.lastInputValues || {};
     const lastToggleStates = window.lastToggleStates || {};
     const visitedRoutes = window.visitedRoutes || [];
+    const docId = `${userIDInt}_${tasks[currentTaskIndex].id}`;
 
     const surveyData = {
       userID: userIDInt,
@@ -102,8 +109,8 @@ const TaskCompletionModal = ({
     console.log(surveyData);
     const sanitizedPayload = sanitizeForFirestore(surveyData);
     try {
-      await addDoc(collection(db, "surveyResponses"), sanitizedPayload);
-      console.log("Survey and logs submitted to Firebase:", sanitizedPayload);
+      await setDoc(doc(db, "surveyResponses", docId), sanitizedPayload);
+      console.log("Survey and logs submitted to Firebase:", docId);
     } catch (err) {
       console.error("Error saving survey:", err);
     }
