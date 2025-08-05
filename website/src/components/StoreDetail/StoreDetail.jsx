@@ -24,12 +24,12 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
   return (
     <>
       <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-        <DialogTitle>Unsubscribe from this store?</DialogTitle>
+        <DialogTitle>Unsubscribe this creator?</DialogTitle>
         <DialogContent>
           <div className="text-gray-700">
             {id === "14"
               ? "Unsubscribing now means abandoning a creator who's been sharing their heart and work with you. Are you really okay with that?"
-              : "Are you sure you want to unsubscribe from this store?"}
+              : "Are you sure you want to unsubscribe"}
           </div>
         </DialogContent>
         <DialogActions>
@@ -71,6 +71,7 @@ const StoreDetail = () => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const dispatch = useDispatch();
   const [isAdConsent, setIsAdConsent] = useState(true);
+  const [isAdConsentNon, setIsAdConsentNon] = useState(false);
   const [isTrickQuestionConsent, setIsTrickQuestionConsent] = useState(false);
   const [isUnsubscribeMode, setIsUnsubscribeMode] = useState(false);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
@@ -137,7 +138,7 @@ const StoreDetail = () => {
               <Terms
                 extraClause={
                   id == 12
-                    ? "By subscribing, you allow us to share your personal information with our partners for service improvement. You acknowledge and agree that subscription fees are subject to change at any time at our sole discretion."
+                    ? "By subscribing, you allow us to share your personal information with our partners for service improvement and targeted advertisement. You acknowledge and agree that subscription fees are subject to change at any time at our sole discretion."
                     : null
                 }
               />
@@ -170,6 +171,22 @@ const StoreDetail = () => {
                   <Checkbox
                     checked={isAdConsent}
                     onChange={(e) => setIsAdConsent(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label={
+                  <span className=" text-base">
+                    I agree to share my information for personalized advertising
+                  </span>
+                }
+              />
+            )}
+            {id == 12 && (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={isAdConsentNon}
+                    onChange={(e) => setIsAdConsentNon(e.target.checked)}
                     color="primary"
                   />
                 }

@@ -7,7 +7,8 @@ export const PopupProvider = ({ children, interval }) => {
   const [open, setOpen] = useState(false);
   const [popupDisabled, setPopupDisabled] = useState(false);
   const [hasShownInitial, setHasShownInitial] = useState(false);
-  const [isTaskCompletionModalOpen, setIsTaskCompletionModalOpen] = useState(false);
+  const [isTaskCompletionModalOpen, setIsTaskCompletionModalOpen] =
+    useState(false);
   const location = useLocation();
 
   // 从路径中获取 taskId 和额外的路径部分
@@ -16,14 +17,25 @@ export const PopupProvider = ({ children, interval }) => {
   const extraPath = match ? match[2] : null;
 
   // 检查是否在task completion modal页面 - 通过URL路径检测
-  const isInTaskCompletionModal = location.pathname.includes('/task/') && 
-    (location.pathname.includes('/completion') || 
-     location.pathname.includes('/survey') ||
-     location.pathname.includes('/end'));
+  const isInTaskCompletionModal =
+    location.pathname.includes("/task/") &&
+    (location.pathname.includes("/completion") ||
+      location.pathname.includes("/survey") ||
+      location.pathname.includes("/end"));
 
   useEffect(() => {
+    if (taskId !== 9) {
+      setPopupDisabled(false);
+      setHasShownInitial(false);
+      console.log("tes");
+    }
+  }, [taskId]);
+
+  useEffect(() => {
+    console.log(hasShownInitial, taskId, extraPath, popupDisabled);
     // 第一次进入界面就显示popup
     if (!hasShownInitial && taskId === 9 && extraPath && !popupDisabled) {
+      console.log("show");
       setOpen(true);
       setHasShownInitial(true);
     }
@@ -32,7 +44,8 @@ export const PopupProvider = ({ children, interval }) => {
   useEffect(() => {
     let timer;
     // 如果用户进入了task completion modal，停止显示popup
-    if (isInTaskCompletionModal || isTaskCompletionModalOpen) {
+    if (taskId === 9 && isInTaskCompletionModal) {
+      console.log("object");
       setOpen(false);
       setPopupDisabled(true);
       return;
@@ -44,9 +57,17 @@ export const PopupProvider = ({ children, interval }) => {
         setOpen(true);
       }, interval);
     }
-    
+
     return () => clearInterval(timer);
-  }, [taskId, extraPath, interval, popupDisabled, hasShownInitial, isInTaskCompletionModal, isTaskCompletionModalOpen]);
+  }, [
+    taskId,
+    extraPath,
+    interval,
+    popupDisabled,
+    hasShownInitial,
+    isInTaskCompletionModal,
+    isTaskCompletionModalOpen,
+  ]);
 
   const handleClose = () => setOpen(false);
 
@@ -60,12 +81,14 @@ export const PopupProvider = ({ children, interval }) => {
   };
 
   return (
-    <PopupContext.Provider value={{ 
-      open, 
-      setOpen, 
-      handleDisablePopup, 
-      notifyTaskCompletionModalOpen 
-    }}>
+    <PopupContext.Provider
+      value={{
+        open,
+        setOpen,
+        handleDisablePopup,
+        notifyTaskCompletionModalOpen,
+      }}
+    >
       {children}
       <GlobalPopup
         open={open}

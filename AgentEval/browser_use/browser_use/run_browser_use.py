@@ -6,11 +6,11 @@ import json
 import logging
 from dotenv import load_dotenv
 
-from browser_use.llm import ChatOpenAI, ChatOpenRouter
+# from browser_use.llm import ChatOpenAI, ChatOpenRouter
 
-# from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI
 
-from browser_use import Agent, BrowserSession, BrowserProfile
+from . import Agent, BrowserSession, BrowserProfile
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -23,26 +23,26 @@ Laminar.initialize(
 
 
 tasks = [
-    {
-        "id": 2,
-        "task": "You need to buy a pack of trash bags for your kitchen from the shopping website.",
-        "url": "https://jingyuhhh.github.io/Shopping/#/task/2/shopping?agent=true",
-    },
-    {
-        "id": 1,
-        "task": "You are currently a premium member of the shopping website, but you no longer wish to continue. Navigate through the account information and cancel your premium membership subscription.",
-        "url": "https://jingyuhhh.github.io/Shopping/#/task/1/shopping?agent=true",
-    },
-    {
-        "id": 3,
-        "task": "You need to buy a pack of paper towels for home use from the shopping website.",
-        "url": "https://jingyuhhh.github.io/Shopping/#/task/3/shopping?agent=true",
-    },
-    {
-        "id": 4,
-        "task": "You need to buy packing tape for your home office from the shopping website.",
-        "url": "https://jingyuhhh.github.io/Shopping/#/task/4/shopping?agent=true",
-    },
+    # {
+    #     "id": 1,
+    #     "task": "You are currently a premium member of the shopping website, but you no longer wish to continue. Navigate through the account information and cancel your premium membership subscription.",
+    #     "url": "https://jingyuhhh.github.io/Shopping/#/task/1/shopping?agent=true",
+    # },
+    # {
+    #     "id": 2,
+    #     "task": "You need to buy a pack of trash bags for your kitchen from the shopping website.",
+    #     "url": "https://jingyuhhh.github.io/Shopping/#/task/2/shopping?agent=true",
+    # },
+    # {
+    #     "id": 3,
+    #     "task": "You need to buy a pack of paper towels for home use from the shopping website.",
+    #     "url": "https://jingyuhhh.github.io/Shopping/#/task/3/shopping?agent=true",
+    # },
+    # {
+    #     "id": 4,
+    #     "task": "You need to buy packing tape for your home office from the shopping website.",
+    #     "url": "https://jingyuhhh.github.io/Shopping/#/task/4/shopping?agent=true",
+    # },
     {
         "id": 5,
         "task": "Subscribe to a store membership of UrbanWear on the shopping website.",
@@ -98,18 +98,29 @@ tasks = [
 
 def get_llm_for_model(model_name: str) -> str:
     if model_name in ["gpt-4o"]:
+        # return ChatOpenAI(
+        #     api_key=os.getenv("OPENAI_API_KEY"),
+        #     model=model_name,
+        # )
         return ChatOpenAI(
-            api_key=os.getenv("OPENAI_API_KEY"),
-            model=model_name,
+            openai_api_key=getenv("OPENAI_API_KEY"),
+            # openai_api_base="https://openrouter.ai/api/v1",
+            model_name=model_name,
         )
 
     elif model_name in [
         "google/gemini-2.0-flash-001",
-        "deepseek/deepseek-chat-v3-0324:free",
+        "deepseek/deepseek-chat-v3-0324",
         "meta-llama/llama-3.3-70b-instruct",
         "anthropic/claude-3.7-sonnet",
     ]:
-        return ChatOpenRouter(model=model_name, api_key=os.getenv("OPENROUTER_API_KEY"))
+        # return ChatOpenRouter(model=model_name, api_key=os.getenv("OPENROUTER_API_KEY"))
+        return ChatOpenAI(
+            openai_api_key=getenv("OPENROUTER_API_KEY"),
+            openai_api_base="https://openrouter.ai/api/v1",
+            model_name=model_name,
+        )
+
     else:
         raise ValueError(f"No API key mapping found for model {model_name}")
 
@@ -134,11 +145,10 @@ async def main(model_name: str, base_history_dir: str):
     llm = get_llm_for_model(model_name)
 
     # 拼接模型名到 history 路径
-
-    history_dir = os.path.join(base_history_dir, f"history_{model_name}")
+    saved_model_name = model_name.split("/")[0]
+    history_dir = os.path.join(base_history_dir, f"history_{saved_model_name}")
     os.makedirs(history_dir, exist_ok=True)
 
-    # profile = BrowserProfile(user_data_dir=None, headless=True)
     # session = BrowserSession(
     #     keep_alive=True,
     #     allowed_domains=["jingyuhhh.github.io"],
@@ -149,9 +159,14 @@ async def main(model_name: str, base_history_dir: str):
     # )
 
     for task in tasks:
+        task_dir = os.path.join(history_dir, f"task_{task['id']}")
+        profile = BrowserProfile(user_data_dir=None, headless=True)
+
         agent = Agent(
             task=task["task"],
             llm=llm,
+            generate_gif=True,
+            browser_profile=profile,
             # browser_session=session,
             sensitive_data={
                 "https://jingyuhhh.github.io": {
@@ -171,9 +186,23 @@ async def main(model_name: str, base_history_dir: str):
 
         # 保存到拼接后的目录
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        task_dir = os.path.join(history_dir, f"task_{task['id']}")
+
         os.makedirs(task_dir, exist_ok=True)
         history_file = os.path.join(task_dir, f"run_{timestamp}.json")
+
+        # 移动生成的 GIF 文件到对应的 task_dir
+        gif_source_path = "agent_history.gif"
+        if os.path.exists(gif_source_path):
+            gif_dest_path = os.path.join(task_dir, f"agent_history.gif")
+            try:
+                import shutil
+
+                shutil.move(gif_source_path, gif_dest_path)
+                logger.info(f"GIF file moved to {gif_dest_path}")
+            except Exception as e:
+                logger.error(f"Failed to move GIF file: {e}")
+        else:
+            logger.warning(f"GIF file not found at {gif_source_path}")
 
         history_data = {
             "task_id": task["id"],
@@ -197,25 +226,8 @@ async def main(model_name: str, base_history_dir: str):
         print(f"Task {task['id']} result:", history.final_result())
 
 
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Run browser-use agent tasks.")
-    parser.add_argument(
-        "--model", type=str, default="gpt-4o", help="Model name to use (e.g., gpt-4o)"
-    )
-
-    parser.add_argument(
-        "--history_dir",
-        type=str,
-        default="./",
-        help="Base directory to save history files",
-    )
-    args = parser.parse_args()
-
-    asyncio.run(
-        main(
-            model_name=args.model,
-            base_history_dir=args.history_dir,
-        )
-    )
+# asyncio.run(main(model_name="gpt-4o", base_history_dir="./"))
+asyncio.run(main(model_name="deepseek/deepseek-chat-v3-0324", base_history_dir="./"))
+# asyncio.run(main(model_name="anthropic/claude-3.7-sonnet", base_history_dir="./"))
+# asyncio.run(main(model_name="meta-llama/llama-3.3-70b-instruct", base_history_dir="./"))
+# asyncio.run(main(model_name="google/gemini-2.0-flash-001", base_history_dir="./"))

@@ -66,7 +66,7 @@ export const detectAvoidBehavior = (
     case "7": {
       // LeftBoxUnchecked
       // 检查用户是否保持复选框未选中
-      return formData?.trickQuestionConsent === false;
+      return formData?.trickQuestionConsent === true;
     }
 
     case "8": {

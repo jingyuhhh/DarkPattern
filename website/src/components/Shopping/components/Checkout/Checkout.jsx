@@ -77,121 +77,124 @@ const Checkout = () => {
       <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* 左侧：收货地址 & 配送方式 */}
         <div className="md:col-span-8 space-y-6">
-          <Paper className="p-4 rounded-xl bg-white border border-gray-100">
-            <Typography variant="subtitle1" className="font-semibold mb-2">
-              Shipping Address<span>*</span>
-            </Typography>
-            <div className="flex flex-col gap-3">
-              <TextField
-                label="Name"
-                name="name"
-                value={address.name}
-                onChange={handleInputChange}
-                size="small"
-                required
-              />
-              <TextField
-                label="Phone"
-                name="phone"
-                value={address.phone}
-                onChange={handleInputChange}
-                size="small"
-                required
-              />
-              <TextField
-                label="Address"
-                name="address"
-                value={address.address}
-                onChange={handleInputChange}
-                size="small"
-                required
-                multiline
-                minRows={2}
-              />
-            </div>
-          </Paper>
-          <Paper className="p-4 rounded-xl bg-white border border-gray-100">
-            <FormControl component="fieldset">
-              <Typography variant="subtitle1" className="font-semibold mb-2">
-                Shipping Method <span>*</span>
-              </Typography>
-
-              <Typography variant="subtitle2" className="font-semibold mb-2">
-                Please select your preferred shipping method:
-              </Typography>
-              <div className="grid gap-3">
-                {sortedShippingOptions.map((opt) => {
-                  const highlightPremium =
-                    parseInt(id) === 4 && opt.value === "premium";
-                  return (
-                    <div
-                      key={opt.value}
-                      className={`relative flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all
-            ${
-              highlightPremium
-                ? "border-blue-500 bg-blue-50 shadow-md"
-                : "border-gray-200 hover:border-gray-300 bg-white"
-            }`}
-                      onClick={() => setShipping(opt.value)}
-                    >
-                      {/* 推荐徽标 */}
-                      {highlightPremium && (
-                        <div className="absolute -top-2 right-2">
-                          <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full shadow">
-                            Recommended
-                          </span>
-                        </div>
-                      )}
-                      <div className="flex items-center gap-3">
-                        <Radio
-                          checked={shipping === opt.value}
-                          value={opt.value}
-                        />
-                        <div>
-                          <Typography
-                            variant="subtitle1"
-                            className={`font-extrabold ${
-                              highlightPremium
-                                ? "text-blue-700"
-                                : "text-gray-800"
-                            }`}
-                            style={{
-                              fontSize: parseInt(id) === 4 ? "1.2rem" : "1rem", // id=4时加大 Fast / Standard
-                              fontWeight:
-                                parseInt(id) === 4 ? "bold" : "normal",
-                            }}
-                          >
-                            {opt.label}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            style={{
-                              fontSize: parseInt(id) === 4 ? "1rem" : "1rem", // id=4时加大天数描述
-                              fontWeight:
-                                parseInt(id) === 4 ? "bold" : "normal",
-                            }}
-                          >
-                            {opt.value === "premium"
-                              ? "Faster delivery (1-2 days)"
-                              : "Standard shipping (3-5 days)"}
-                          </Typography>
-
-                          <Typography
-                            variant="subtitle1"
-                            className={`font-bold "text-gray-700"`}
-                            style={{
-                              fontSize: parseInt(id) === 4 ? "0.7rem" : "1rem", // id=4时缩小 +2 / Free
-                            }}
-                          >
-                            Cost ${opt.price}
-                          </Typography>
+          <Paper className="p-4 rounded-xl bg-white border border-gray-100 space-y-6">
+            {/* Shipping Method */}
+            <div>
+              <FormControl component="fieldset">
+                <Typography variant="subtitle1" className="font-semibold mb-2">
+                  Shipping Method <span>*</span>
+                </Typography>
+                <Typography variant="subtitle2" className="font-semibold mb-2">
+                  Please select your preferred shipping method:
+                </Typography>
+                <div className="grid gap-3">
+                  {sortedShippingOptions.map((opt) => {
+                    const highlightPremium =
+                      parseInt(id) === 4 && opt.value === "premium";
+                    return (
+                      <div
+                        key={opt.value}
+                        className={`relative flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all
+                ${
+                  highlightPremium
+                    ? "border-blue-500 bg-blue-50 shadow-md"
+                    : "border-gray-200 hover:border-gray-300 bg-white"
+                }`}
+                        onClick={() => setShipping(opt.value)}
+                      >
+                        {highlightPremium && (
+                          <div className="absolute -top-2 right-2">
+                            <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full shadow">
+                              Recommended
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-3">
+                          <Radio
+                            checked={shipping === opt.value}
+                            value={opt.value}
+                          />
+                          <div>
+                            <Typography
+                              variant="subtitle1"
+                              className={`font-extrabold ${
+                                highlightPremium
+                                  ? "text-blue-700"
+                                  : "text-gray-800"
+                              }`}
+                              style={{
+                                fontSize:
+                                  parseInt(id) === 4 ? "1.2rem" : "1rem",
+                                fontWeight:
+                                  parseInt(id) === 4 ? "bold" : "normal",
+                              }}
+                            >
+                              {opt.label}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              style={{
+                                fontSize: parseInt(id) === 4 ? "1rem" : "1rem",
+                                fontWeight:
+                                  parseInt(id) === 4 ? "bold" : "normal",
+                              }}
+                            >
+                              {opt.value === "premium"
+                                ? "Faster delivery (1-2 days)"
+                                : "Standard shipping (3-5 days)"}
+                            </Typography>
+                            <Typography
+                              variant="subtitle1"
+                              className={`font-bold "text-gray-700"`}
+                              style={{
+                                fontSize:
+                                  parseInt(id) === 4 ? "0.7rem" : "1rem",
+                              }}
+                            >
+                              Cost ${opt.price}
+                            </Typography>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+              </FormControl>
+            </div>
+            {/* Shipping Address */}
+            <div>
+              <Typography variant="subtitle1" className="font-semibold mb-2">
+                Shipping Address<span>*</span>
+              </Typography>
+              <div className="flex flex-col gap-3">
+                <TextField
+                  label="Name"
+                  name="name"
+                  value={address.name}
+                  onChange={handleInputChange}
+                  size="small"
+                  required
+                />
+                <TextField
+                  label="Phone"
+                  name="phone"
+                  value={address.phone}
+                  onChange={handleInputChange}
+                  size="small"
+                  required
+                />
+                <TextField
+                  label="Address"
+                  name="address"
+                  value={address.address}
+                  onChange={handleInputChange}
+                  size="small"
+                  required
+                  multiline
+                  minRows={2}
+                />
               </div>
-            </FormControl>
+            </div>
           </Paper>
         </div>
 

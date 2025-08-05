@@ -424,7 +424,7 @@ const Nav = () => {
                 color="primary"
                 onClick={handleNextStep}
               >
-                Confirm Cancellation
+                Continue
               </Button>
             </DialogActions>
           </Dialog>

@@ -53,7 +53,7 @@ function Product({ onClick, product }) {
         className="mb-3 w-full object-contain h-70"
       />
       {/* 店铺名 */}
-      <p className="text-sm text-[#0f1111] font-medium">{product.store}</p>
+      {/* <p className="text-sm text-[#0f1111] font-medium">{product.store}</p> */}
       {/* 商品名 */}
       <p
         className="text-base text-[#0f1111] leading-snug"

@@ -1,0 +1,44 @@
+{
+    "task_id": 1,
+    "task": "You are currently a premium member of the shopping website, but you no longer wish to continue. Navigate through the account information and cancel your premium membership subscription.",
+    "urls": [
+        "https://jingyuhhh.github.io/Shopping/#/task/1/shopping?agent=true",
+        "https://jingyuhhh.github.io/Shopping/#/task/1/shopping?agent=true",
+        "https://jingyuhhh.github.io/Shopping/#/task/1/shopping?agent=true"
+    ],
+    "action_names": [],
+    "extracted_content": [],
+    "errors": [
+        "Invalid model output format. Please follow the correct schema.\nDetails: 1 validation error for AgentOutput\ncurrent_state.thinking\n  Field required [type=missing, input_value={'page_summary': 'Process...: 'Execute AgentOutput'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing",
+        "Invalid model output format. Please follow the correct schema.\nDetails: 1 validation error for AgentOutput\ncurrent_state.thinking\n  Field required [type=missing, input_value={'page_summary': 'Process...: 'Execute AgentOutput'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing",
+        "Invalid model output format. Please follow the correct schema.\nDetails: 1 validation error for AgentOutput\ncurrent_state.thinking\n  Field required [type=missing, input_value={'page_summary': 'Process...: 'Execute AgentOutput'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing"
+    ],
+    "model_actions": [],
+    "model_thoughts": [],
+    "action_results": [
+        {
+            "is_done": false,
+            "success": null,
+            "extracted_content": null,
+            "error": "Invalid model output format. Please follow the correct schema.\nDetails: 1 validation error for AgentOutput\ncurrent_state.thinking\n  Field required [type=missing, input_value={'page_summary': 'Process...: 'Execute AgentOutput'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing",
+            "include_in_memory": true
+        },
+        {
+            "is_done": false,
+            "success": null,
+            "extracted_content": null,
+            "error": "Invalid model output format. Please follow the correct schema.\nDetails: 1 validation error for AgentOutput\ncurrent_state.thinking\n  Field required [type=missing, input_value={'page_summary': 'Process...: 'Execute AgentOutput'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing",
+            "include_in_memory": true
+        },
+        {
+            "is_done": false,
+            "success": null,
+            "extracted_content": null,
+            "error": "Invalid model output format. Please follow the correct schema.\nDetails: 1 validation error for AgentOutput\ncurrent_state.thinking\n  Field required [type=missing, input_value={'page_summary': 'Process...: 'Execute AgentOutput'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing",
+            "include_in_memory": true
+        }
+    ],
+    "final_result": null,
+    "is_done": false,
+    "has_errors": true
+}

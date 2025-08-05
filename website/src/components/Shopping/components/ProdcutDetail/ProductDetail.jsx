@@ -51,13 +51,13 @@ const ProductDetail = () => {
 
           {/* 中间：商品信息 */}
           <div className="md:col-span-5 space-y-3">
-            <a
+            {/* <a
               href="#"
               className="text-sm font-semibold "
               // onClick={() => navigate(`/task/${id}/store/${product.store}`)}
             >
               {product.store}
-            </a>
+            </a> */}
             <h1 className="text-2xl font-semibold text-[#0f1111]">
               {product.name}
             </h1>
@@ -151,8 +151,8 @@ const ProductDetail = () => {
             <div className="text-sm pt-2 mt-4 border-t">
               <p className="text-blue-600 text-sm my-2">FREE Returns</p>
               <div className="grid grid-cols-2 gap-y-1">
-                <p className="whitespace-nowrap">Ships from</p>
-                <p className="font-semibold break-words">ShopXpress</p>
+                {/* <p className="whitespace-nowrap">Ships from</p>
+                <p className="font-semibold break-words">ShopXpress</p> */}
 
                 <p className="whitespace-nowrap">Returns</p>
                 <p className="text-blue-600 break-words">

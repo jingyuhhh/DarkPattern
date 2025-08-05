@@ -15,3 +15,4 @@ echo "Running with model: $MODEL_NAME"
 echo "History will be saved in: ${BASE_HISTORY_DIR}history_${MODEL_NAME}/"
 
 python run_browser_use.py --model "$MODEL_NAME" --history_dir "$BASE_HISTORY_DIR"
+# python run_browser_use.py --model "google/gemini-2.0-flash-001" --history_dir "./"
