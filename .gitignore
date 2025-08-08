@@ -29,3 +29,5 @@ dist-ssr
 sdk_2.json
 
 export.py
+
+.history
