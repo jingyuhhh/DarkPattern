@@ -107,15 +107,16 @@ export const tasks = [
     domain: DomainType.SocialMedia,
   },
   {
-    id: 16,
-    title: "Close personalized recommendation",
+    id: 8,
+    title:
+      "You're using a video streaming platform that has the access to your location. Navigate the settings and turn off location sharing.",
     taskType: TaskType.CancelRecommendation,
     tye: DarkPatternType.ChoiceOverload,
     domain: DomainType.VideoStream,
     avoidBehavior: AvoidBehaviors.CancelRecommendation,
   },
   {
-    id: 8,
+    id: 9,
     title: "Buy a pack of disposable paper plates from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.SocialProof,
@@ -123,23 +124,16 @@ export const tasks = [
     domain: DomainType.ECommerce,
   },
   {
-    id: 9,
-    title: "Watch a video",
+    id: 10,
+    title:
+      "You start watching a 30-second video about nature on a streaming platform. Watch the full video until it ends.",
     taskType: TaskType.WatchVideo,
     type: DarkPatternType.Nagging,
     avoidBehavior: AvoidBehaviors.AlwaysSelectedYes,
     domain: DomainType.VideoStream,
   },
   {
-    id: 15,
-    title: "Comment on a video",
-    taskType: TaskType.WatchVideo,
-    domain: DomainType.VideoStream,
-    type: DarkPatternType.ForcedRegistration,
-    avoidBehavior: AvoidBehaviors.SkipTask,
-  },
-  {
-    id: 10,
+    id: 11,
     title: "Subscribe to HiddenHandsStudio on social media",
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.ForcedCommunicationOrDisclosure,
@@ -147,7 +141,7 @@ export const tasks = [
     domain: DomainType.SocialMedia,
   },
   {
-    id: 11,
+    id: 12,
     title: "Purchase a pack of staples from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.ScarcityAndPopularityClaims,
@@ -155,7 +149,16 @@ export const tasks = [
     domain: DomainType.ECommerce,
   },
   {
-    id: 12,
+    id: 13,
+    title:
+      "You are watching a video on a streaming platform. Leave the comment 'Unforgettable!' under the video.",
+    taskType: TaskType.WatchVideo,
+    domain: DomainType.VideoStream,
+    type: DarkPatternType.ForcedRegistration,
+    avoidBehavior: AvoidBehaviors.SkipTask,
+  },
+  {
+    id: 14,
     title: "Subscribe to ScreamEchoes on social media",
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.HiddenInformation,
@@ -163,7 +166,7 @@ export const tasks = [
     domain: DomainType.SocialMedia,
   },
   {
-    id: 13,
+    id: 15,
     title: "Purchase a set of paperclips from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.Urgency,
@@ -171,7 +174,7 @@ export const tasks = [
     domain: DomainType.ECommerce,
   },
   {
-    id: 14,
+    id: 16,
     title: "Cancel your subscription of CornerMuse on social media.",
     taskType: TaskType.CancelSubscription,
     type: DarkPatternType.Shaming,
@@ -179,7 +182,6 @@ export const tasks = [
     domain: DomainType.SocialMedia,
   },
 ];
-
 export const getTasks = (userID) => {
   const n = tasks.length;
   const userIndex = parseInt(userID, 10);

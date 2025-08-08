@@ -20,9 +20,14 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { resetCart } from "../../store/cart.js";
-import { getTasks } from "../../data/tasks.js";
+import { getTasks, DomainType } from "../../data/tasks.js";
 import { useDispatch } from "react-redux";
-import { PII } from "../../data/PII.js";
+import {
+  PII,
+  ecommercePII,
+  socialMediaPII,
+  videoStreamPII,
+} from "../../data/PII.js";
 import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal.jsx";
 
 const QuestionMark = () => {
@@ -46,6 +51,22 @@ const QuestionMark = () => {
   };
 
   const currentTask = getCurrentTask();
+
+  // 根据domain获取相应的PII信息
+  const getPIIByDomain = (domain) => {
+    switch (domain) {
+      case DomainType.ECommerce:
+        return ecommercePII;
+      case DomainType.SocialMedia:
+        return socialMediaPII;
+      case DomainType.VideoStream:
+        return videoStreamPII;
+      default:
+        return PII;
+    }
+  };
+
+  const currentPII = getPIIByDomain(currentTask?.domain);
 
   const handleClick = () => setDialogOpen(true);
   const handleClose = () => {
@@ -100,18 +121,50 @@ const QuestionMark = () => {
               <Typography variant="h6" gutterBottom color="primary">
                 Current Task: {currentTask.title}
               </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Domain: {currentTask.domain}
+              </Typography>
             </Box>
           )}
 
           <Box sx={{ mb: 3, p: 2, bgcolor: "grey.100", borderRadius: 1 }}>
             <Typography variant="h6" gutterBottom color="secondary">
-              Personal Information:
+              Personal Information ({currentTask?.domain}):
             </Typography>
-            <Typography>Email: {PII.email}</Typography>
-            <Typography>Phone: {PII.phone}</Typography>
-            <Typography>Address: {PII.address}</Typography>
-            <Typography>Name: {PII.name}</Typography>
-            <Typography>Payment Password: {PII.password}</Typography>
+            {currentTask?.domain === DomainType.ECommerce && (
+              <>
+                <Typography>Full Name: {currentPII.fullname}</Typography>
+                <Typography>Email: {currentPII.email}</Typography>
+                <Typography>Phone: {currentPII.phone}</Typography>
+                <Typography>Address: {currentPII.address}</Typography>
+                <Typography>Payment Password: {currentPII.password}</Typography>
+                <Typography>Card Number: {currentPII.cardNumber}</Typography>
+                <Typography>Expiry Date: {currentPII.expiryDate}</Typography>
+                <Typography>CVV: {currentPII.cvv}</Typography>
+              </>
+            )}
+            {currentTask?.domain === DomainType.SocialMedia && (
+              <>
+                <Typography>Full Name: {currentPII.fullname}</Typography>
+                <Typography>Username: {currentPII.username}</Typography>
+                <Typography>Email: {currentPII.email}</Typography>
+                <Typography>Password: {currentPII.password}</Typography>
+                <Typography>Birthday: {currentPII.birthday}</Typography>
+                <Typography>Bio: {currentPII.bio}</Typography>
+              </>
+            )}
+            {currentTask?.domain === DomainType.VideoStream && (
+              <>
+                <Typography>Full Name: {currentPII.fullname}</Typography>
+                <Typography>Username: {currentPII.username}</Typography>
+                <Typography>Email: {currentPII.email}</Typography>
+                <Typography>Birthday: {currentPII.birthday}</Typography>
+                <Typography>Password: {currentPII.password}</Typography>
+                <Typography>
+                  Profile Picture: {currentPII.profilePicture}
+                </Typography>
+              </>
+            )}
           </Box>
 
           <FormControl component="fieldset" fullWidth>

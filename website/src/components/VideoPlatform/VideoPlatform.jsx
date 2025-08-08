@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Dialog,
@@ -12,57 +12,73 @@ import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
 import CommentIcon from "@mui/icons-material/Comment";
 import { SettingsDialog } from "./components/SettingsDialog/SettingsDialog";
 import SettingsIcon from "@mui/icons-material/Settings";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
 import LogoutIcon from "@mui/icons-material/Logout";
 import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 
-import video1 from "/src/assets/invideo1.mp4";
 import { Register } from "./components/Register/Register";
 import { Menu, MenuItem } from "@mui/material";
+import { useParams } from "react-router-dom";
+import TaskCompletionModal from "../TaskCompletionModal/TaskCompletionModal";
+import { getTasks } from "../../data/tasks";
+import { getVideoInfo } from "../../data/videoInfo";
+import { useLocation } from "react-router-dom";
+import { videos } from "../../data/videoInfo";
 
 const VideoPage = () => {
+  const { id } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const userID = searchParams.get("userID") || 1;
+  const tasks = getTasks(userID);
+  const currentTask = tasks.find((task) => task.id === parseInt(id));
+
+  const videoInfo = getVideoInfo(id);
+
+  // Use id in console.log to avoid linter warning
+  console.log("Current video ID:", id);
+
   const [liked, setLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginDialogOpen, setLoginDialogOpen] = useState(false);
   const [username, setUsername] = useState("");
   const [settingsDialogOpen, setSettingsDialogOpen] = useState(false);
+  const [taskCompletionModalOpen, setTaskCompletionModalOpen] = useState(false);
+  const [videoEnded, setVideoEnded] = useState(false);
+  const [locationSharingEnabled, setLocationSharingEnabled] = useState(true);
 
   // 注册表单状态
-
   const [newComment, setNewComment] = useState("");
-  const [allComments, setAllComments] = useState([
-    {
-      id: 1,
-      user: "Kenna<3",
-      text: "This is not detailing, this is restoration👏🏼🔥",
-      likes: 348300,
-      time: "6-23",
-      replies: [
-        {
-          id: 11,
-          user: "Pudliszek303",
-          text: "That's a factory reset.",
-          time: "6-25",
-        },
-      ],
-    },
-    {
-      id: 2,
-      user: "robertvillegas",
-      text: "This is like SB Mowing for cars.",
-      likes: 64800,
-      time: "6-24",
-      replies: [],
-    },
-    {
-      id: 3,
-      user: "Shotimer",
-      text: "That was the most satisfying car detailing video I've ever seen 😮",
-      likes: 3053,
-      time: "7-15",
-      replies: [],
-    },
-  ]);
+  const [allComments, setAllComments] = useState(videoInfo.comments);
+
+  // Set initial login state based on ID
+  useEffect(() => {
+    if (id === "13") {
+      setIsLoggedIn(false);
+    } else {
+      setIsLoggedIn(true);
+      setUsername("User");
+    }
+  }, [id]);
+
+  // Handle video end for ID 10
+  useEffect(() => {
+    if (id === "10" && videoEnded) {
+      setTaskCompletionModalOpen(true);
+    }
+  }, [videoEnded, id]);
+
+  // Handle location sharing for ID 8
+  const handleLocationSharingChange = (enabled) => {
+    setLocationSharingEnabled(enabled);
+    if (id === "8" && !enabled) {
+      // Location sharing was disabled successfully
+      setTaskCompletionModalOpen(true);
+    }
+  };
 
   const handleLoginSuccess = (userData) => {
     setIsLoggedIn(true);
@@ -91,55 +107,62 @@ const VideoPage = () => {
     handleMenuClose();
   };
 
+  const handleVideoEnd = () => {
+    setVideoEnded(true);
+  };
+
   return (
     <div className="relative w-full h-screen bg-black flex justify-center items-center overflow-hidden">
-      {/* User avatar */}
-      <div className="absolute top-4 right-4 z-20">
-        <Avatar
-          sx={{
-            bgcolor: "#888",
-            cursor: "pointer",
-            width: 40,
-            height: 40,
-            fontSize: "1rem",
-          }}
-          onClick={handleAvatarClick}
-        >
-          {isLoggedIn ? username[0]?.toUpperCase() : "U"}
-        </Avatar>
+      {/* User avatar - hidden for ID 13 */}
+      {id !== "13" && (
+        <div className="absolute top-4 right-4 z-20">
+          <div
+            className={`flex items-center space-x-2 p-2 rounded-full border-2 cursor-pointer transition-colors border-white`}
+            onClick={handleAvatarClick}
+          >
+            <AccountCircleIcon className="text-white" fontSize="medium" />
+            <Typography
+              variant="body2"
+              className="text-white"
+              fontWeight="bold"
+            >
+              Account
+            </Typography>
+          </div>
 
-        <Menu
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleMenuClose}
-          PaperProps={{
-            elevation: 4,
-            sx: {
-              mt: 1,
-              minWidth: 160,
-              borderRadius: 2,
-              overflow: "visible",
-              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.15))",
-              "& .MuiMenuItem-root": {
-                fontSize: "0.95rem",
-                paddingY: "10px",
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleMenuClose}
+            PaperProps={{
+              elevation: 4,
+              sx: {
+                mt: 1,
+                minWidth: 160,
+                borderRadius: 2,
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.15))",
+                "& .MuiMenuItem-root": {
+                  fontSize: "0.95rem",
+                  paddingY: "10px",
+                },
               },
-            },
-          }}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          transformOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <MenuItem onClick={handleSettingsClick}>
-            <SettingsIcon fontSize="small" sx={{ mr: 1 }} />
-            Settings
-          </MenuItem>
-          <Divider />
-          <MenuItem onClick={handleLogout}>
-            <LogoutIcon fontSize="small" sx={{ mr: 1 }} />
-            Logout
-          </MenuItem>
-        </Menu>
-      </div>
+            }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <MenuItem onClick={handleSettingsClick}>
+              <SettingsIcon fontSize="small" sx={{ mr: 1 }} />
+              Settings
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleLogout}>
+              <LogoutIcon fontSize="small" sx={{ mr: 1 }} />
+              Logout
+            </MenuItem>
+          </Menu>
+        </div>
+      )}
 
       {/* Main container */}
       <div
@@ -155,24 +178,29 @@ const VideoPage = () => {
           }`}
         >
           <video
-            src={video1}
+            src={videoInfo.source}
             autoPlay
-            loop
+            loop={id !== "10"}
             muted
             playsInline
+            onEnded={handleVideoEnd}
             className="w-full h-full object-cover"
           />
           <div className="absolute bottom-20 left-4 right-4 text-white text-sm z-10">
-            <div className="font-bold">@freshdrive_cardetailing</div>
-            <div>
-              This guy's taking his new girlfriend out for the first time...
-            </div>
+            <div className="font-bold">@{videoInfo.channel}</div>
+            <div>{videoInfo.description.split("\n")[0]}</div>
           </div>
           <div className="absolute bottom-10 left-4 right-4 px-2 text-sm text-gray-300 z-10">
-            <div className="font-semibold">
-              Bro Did 1 Internship and Switched Up 😭
+            <div className="font-semibold">{videoInfo.title}</div>
+            <div>
+              {id === "8"
+                ? "#calm #meditation #mindfulness #relaxation"
+                : id === "9"
+                ? "#night #city #urban #ambient"
+                : id === "10"
+                ? "#nature #wind #poetry #visual"
+                : "#calm #meditation #mindfulness #relaxation"}
             </div>
-            <div>#intern #csmajor #softwareengineer #sweintern</div>
           </div>
 
           {/* Buttons */}
@@ -193,7 +221,15 @@ const VideoPage = () => {
                   }}
                 />
               </button>
-              <span className="text-xs mt-1 text-white">1.3M</span>
+              <span className="text-xs mt-1 text-white">
+                {id === "8"
+                  ? "847K"
+                  : id === "9"
+                  ? "1.2M"
+                  : id === "10"
+                  ? "2.1M"
+                  : "1.3M"}
+              </span>
             </div>
 
             <div className="flex flex-col items-center">
@@ -203,7 +239,15 @@ const VideoPage = () => {
               >
                 <CommentIcon style={{ color: "white", fontSize: 24 }} />
               </button>
-              <span className="text-xs mt-1 text-white">10K</span>
+              <span className="text-xs mt-1 text-white">
+                {id === "8"
+                  ? "8.2K"
+                  : id === "9"
+                  ? "12.5K"
+                  : id === "10"
+                  ? "15.7K"
+                  : "10K"}
+              </span>
             </div>
           </div>
         </div>
@@ -230,14 +274,8 @@ const VideoPage = () => {
                     <div className="font-semibold text-sm">{c.user}</div>
                     <div className="text-sm text-gray-300 mb-1">{c.text}</div>
                     <div className="flex justify-between text-xs text-gray-500">
-                      <span>{c.time}</span>
                       <span>{c.likes.toLocaleString()} likes</span>
                     </div>
-                    {c.replies.length > 0 && (
-                      <button className="text-xs text-blue-400 mt-1">
-                        View {c.replies.length} reply
-                      </button>
-                    )}
                   </div>
                 </div>
               ))}
@@ -247,10 +285,10 @@ const VideoPage = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  //   if (!isLoggedIn) {
-                  //     setLoginDialogOpen(true);
-                  //     return;
-                  //   }
+                  if (!isLoggedIn) {
+                    setLoginDialogOpen(true);
+                    return;
+                  }
                   if (newComment.trim()) {
                     setAllComments([
                       ...allComments,
@@ -268,6 +306,7 @@ const VideoPage = () => {
                     ]);
                     setNewComment("");
                   }
+                  setTaskCompletionModalOpen(true);
                 }}
               >
                 <input
@@ -292,10 +331,21 @@ const VideoPage = () => {
         open={loginDialogOpen}
         onClose={() => setLoginDialogOpen(false)}
         onLoginSuccess={handleLoginSuccess}
+        isId13={id === "13"}
       />
       <SettingsDialog
         open={settingsDialogOpen}
         onClose={() => setSettingsDialogOpen(false)}
+        onLocationSharingChange={handleLocationSharingChange}
+        initialLocationSharing={locationSharingEnabled}
+      />
+
+      {/* Task Completion Modal */}
+      <TaskCompletionModal
+        id={id}
+        open={taskCompletionModalOpen}
+        targetTaskType={currentTask?.taskType}
+        onClose={() => setTaskCompletionModalOpen(false)}
       />
     </div>
   );

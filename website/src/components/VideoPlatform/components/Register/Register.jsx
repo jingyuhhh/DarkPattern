@@ -64,7 +64,7 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
           paddingTop: "2rem",
         }}
       >
-        Register to Comment
+        Create your Account
       </DialogTitle>
 
       <DialogContent
@@ -204,7 +204,7 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
             },
           }}
         >
-          Register
+          Register and Sign in
         </Button>
       </DialogActions>
     </Dialog>

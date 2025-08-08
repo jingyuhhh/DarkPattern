@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getTasks, TaskType, DomainType } from "../../data/tasks";
-import { PII } from "../../data/PII";
+import {
+  PII,
+  ecommercePII,
+  socialMediaPII,
+  videoStreamPII,
+} from "../../data/PII";
 import {
   Container,
   Card,
@@ -40,6 +45,22 @@ const TaskEntry = () => {
   const parsedId = parseInt(id, 10);
   const task = tasks.find((task) => task.id === parsedId);
 
+  // 根据domain获取相应的PII信息
+  const getPIIByDomain = (domain) => {
+    switch (domain) {
+      case DomainType.ECommerce:
+        return ecommercePII;
+      case DomainType.SocialMedia:
+        return socialMediaPII;
+      case DomainType.VideoStream:
+        return videoStreamPII;
+      default:
+        return PII;
+    }
+  };
+
+  const currentPII = getPIIByDomain(task?.domain);
+
   // 在任务开始时重新初始化日志数据
   useEffect(() => {
     resetLoggerData();
@@ -71,18 +92,52 @@ const TaskEntry = () => {
               <Typography variant="h6" gutterBottom color="primary">
                 Task: {task.title}
               </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Domain: {task.domain}
+              </Typography>
             </Box>
 
-            {/* Display PII data */}
+            {/* Display PII data based on domain */}
             <Box sx={{ mb: 3, p: 2, bgcolor: "grey.100", borderRadius: 1 }}>
               <Typography variant="h6" gutterBottom color="secondary">
-                Personal Information:
+                Personal Information ({task.domain}):
               </Typography>
-              <Typography>Email: {PII.email}</Typography>
-              <Typography>Phone: {PII.phone}</Typography>
-              <Typography>Address: {PII.address}</Typography>
-              <Typography>Name: {PII.name}</Typography>
-              <Typography>Payment Password: {PII.password}</Typography>
+              {task.domain === DomainType.ECommerce && (
+                <>
+                  <Typography>Full Name: {currentPII.fullname}</Typography>
+                  <Typography>Email: {currentPII.email}</Typography>
+                  <Typography>Phone: {currentPII.phone}</Typography>
+                  <Typography>Address: {currentPII.address}</Typography>
+                  <Typography>
+                    Payment Password: {currentPII.password}
+                  </Typography>
+                  <Typography>Card Number: {currentPII.cardNumber}</Typography>
+                  <Typography>Expiry Date: {currentPII.expiryDate}</Typography>
+                  <Typography>CVV: {currentPII.cvv}</Typography>
+                </>
+              )}
+              {task.domain === DomainType.SocialMedia && (
+                <>
+                  <Typography>Full Name: {currentPII.fullname}</Typography>
+                  <Typography>Username: {currentPII.username}</Typography>
+                  <Typography>Email: {currentPII.email}</Typography>
+                  <Typography>Password: {currentPII.password}</Typography>
+                  <Typography>Birthday: {currentPII.birthday}</Typography>
+                  <Typography>Bio: {currentPII.bio}</Typography>
+                </>
+              )}
+              {task.domain === DomainType.VideoStream && (
+                <>
+                  <Typography>Full Name: {currentPII.fullname}</Typography>
+                  <Typography>Username: {currentPII.username}</Typography>
+                  <Typography>Email: {currentPII.email}</Typography>
+                  <Typography>Birthday: {currentPII.birthday}</Typography>
+                  <Typography>Password: {currentPII.password}</Typography>
+                  <Typography>
+                    Profile Picture: {currentPII.profilePicture}
+                  </Typography>
+                </>
+              )}
             </Box>
 
             <Button

@@ -24,7 +24,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { usePreserveQueryNavigate } from "../../../../hooks/useQueryNavigate";
 import { RadioGroup, FormControlLabel, Radio, TextField } from "@mui/material";
-import { PII } from "../../../../data/PII";
+import { ecommercePII } from "../../../../data/PII";
 
 const Nav = () => {
   const cartCount = useSelector((state) => state.cart.number);
@@ -77,7 +77,7 @@ const Nav = () => {
     if (cancelStep < 4) {
       setCancelStep(cancelStep + 1);
     } else {
-      if (password === PII.password) {
+      if (password === ecommercePII.password) {
         handleCancelSuccess();
       } else {
         alert("Please enter a valid password.");
