@@ -121,9 +121,6 @@ const QuestionMark = () => {
               <Typography variant="h6" gutterBottom color="primary">
                 Current Task: {currentTask.title}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Domain: {currentTask.domain}
-              </Typography>
             </Box>
           )}
 
