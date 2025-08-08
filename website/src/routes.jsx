@@ -7,6 +7,7 @@ import Checkout from "./components/Shopping/components/Checkout/Checkout";
 import StoreDetail from "./components/StoreDetail/StoreDetail";
 import TaskEntry from "./components/TaskEntry/TaskEntry";
 import QuestionMark from "./components/QuestionMark/QuestionMark";
+import VideoPlatform from "./components/VideoPlatform/VideoPlatform";
 import { End } from "./components/TaskCompletionModal/components/End/End";
 import { PopupProvider } from "./Provider/PopupProvider";
 
@@ -23,7 +24,7 @@ const PageWrapper = ({ children }) => {
 };
 
 const AppRoutes = () => (
-  <PopupProvider interval={15000}>
+  <PopupProvider interval={45000}>
     <Routes>
       <Route path="/task/0" element={<End />} />
       <Route path="/task/:id" element={<TaskEntry />} />
@@ -64,6 +65,14 @@ const AppRoutes = () => (
         element={
           <PageWrapper>
             <StoreDetail />
+          </PageWrapper>
+        }
+      />
+      <Route
+        path="/task/:id/video"
+        element={
+          <PageWrapper>
+            <VideoPlatform />
           </PageWrapper>
         }
       />

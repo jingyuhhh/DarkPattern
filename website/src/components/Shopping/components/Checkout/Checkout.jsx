@@ -9,7 +9,7 @@ import {
   TextField,
   FormControl,
 } from "@mui/material";
-import Nav from "../../../Nav/Nav";
+import Nav from "../Nav/Nav";
 import { useParams } from "react-router-dom";
 import { TaskType } from "../../../../data/tasks";
 import TaskCompletionModal from "../../../TaskCompletionModal/TaskCompletionModal";
@@ -87,80 +87,74 @@ const Checkout = () => {
                 <Typography variant="subtitle2" className="font-semibold mb-2">
                   Please select your preferred shipping method:
                 </Typography>
-                <div className="grid gap-3">
+                <div className="flex gap-8 flex-wrap">
                   {sortedShippingOptions.map((opt) => {
                     const highlightPremium =
                       parseInt(id) === 4 && opt.value === "premium";
                     return (
-                      <div
+                      <label
                         key={opt.value}
-                        className={`relative flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all
-                ${
-                  highlightPremium
-                    ? "border-blue-500 bg-blue-50 shadow-md"
-                    : "border-gray-200 hover:border-gray-300 bg-white"
-                }`}
-                        onClick={() => setShipping(opt.value)}
+                        className="flex items-start gap-2 cursor-pointer relative"
                       >
-                        {highlightPremium && (
-                          <div className="absolute -top-2 right-2">
-                            <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full shadow">
-                              Recommended
-                            </span>
-                          </div>
-                        )}
-                        <div className="flex items-center gap-3">
-                          <Radio
-                            checked={shipping === opt.value}
-                            value={opt.value}
-                          />
-                          <div>
+                        <Radio
+                          checked={shipping === opt.value}
+                          onChange={() => setShipping(opt.value)}
+                          value={opt.value}
+                        />
+                        <div>
+                          <div className="flex items-center gap-2">
                             <Typography
                               variant="subtitle1"
-                              className={`font-extrabold ${
+                              className={`font-medium ${
                                 highlightPremium
-                                  ? "text-blue-700"
-                                  : "text-gray-800"
+                                  ? "text-blue-700 font-bold"
+                                  : ""
                               }`}
                               style={{
-                                fontSize:
-                                  parseInt(id) === 4 ? "1.2rem" : "1rem",
-                                fontWeight:
-                                  parseInt(id) === 4 ? "bold" : "normal",
+                                fontSize: highlightPremium ? "1.1rem" : "1rem",
                               }}
                             >
                               {opt.label}
                             </Typography>
-                            <Typography
-                              variant="body2"
-                              style={{
-                                fontSize: parseInt(id) === 4 ? "1rem" : "1rem",
-                                fontWeight:
-                                  parseInt(id) === 4 ? "bold" : "normal",
-                              }}
-                            >
-                              {opt.value === "premium"
-                                ? "Faster delivery (1-2 days)"
-                                : "Standard shipping (3-5 days)"}
-                            </Typography>
-                            <Typography
-                              variant="subtitle1"
-                              className={`font-bold "text-gray-700"`}
-                              style={{
-                                fontSize:
-                                  parseInt(id) === 4 ? "0.7rem" : "1rem",
-                              }}
-                            >
-                              Cost ${opt.price}
-                            </Typography>
+                            {highlightPremium && (
+                              <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">
+                                Recommended
+                              </span>
+                            )}
                           </div>
+                          {/* 配送描述（大字体 for id==4） */}
+                          <Typography
+                            variant="body2"
+                            style={{
+                              fontSize: parseInt(id) === 4 ? "1rem" : "0.9rem",
+                              // fontWeight:
+                              // parseInt(id) === 4 ? "bold" : "normal",
+                            }}
+                            color="textSecondary"
+                          >
+                            {opt.value === "premium"
+                              ? "Faster delivery (1-2 days)"
+                              : "Standard shipping (3-5 days)"}
+                          </Typography>
+                          {/* 价格（小字体 for id==4） */}
+                          <Typography
+                            variant="body2"
+                            style={{
+                              fontSize:
+                                parseInt(id) === 4 ? "0.75rem" : "0.9rem",
+                              color: "#555",
+                            }}
+                          >
+                            Cost ${opt.price}
+                          </Typography>
                         </div>
-                      </div>
+                      </label>
                     );
                   })}
                 </div>
               </FormControl>
             </div>
+
             {/* Shipping Address */}
             <div>
               <Typography variant="subtitle1" className="font-semibold mb-2">

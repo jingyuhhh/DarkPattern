@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import Nav from "../../../Nav/Nav";
+import Nav from "../Nav/Nav";
 import { getProducts } from "../../../../data/productInfo";
 import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";

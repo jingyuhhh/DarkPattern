@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Button, Checkbox, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import Nav from "../../../Nav/Nav";
+import Nav from "../Nav/Nav";
 import { usePreserveQueryNavigate } from "../../../../hooks/useQueryNavigate";
 import { addToCart } from "../../../../store/cart";
 import { useNavigate, useParams } from "react-router-dom";

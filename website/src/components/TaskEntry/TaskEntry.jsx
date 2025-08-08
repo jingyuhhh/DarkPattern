@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getTasks, TaskType } from "../../data/tasks";
+import { getTasks, TaskType, DomainType } from "../../data/tasks";
 import { PII } from "../../data/PII";
 import {
   Container,
@@ -46,12 +46,16 @@ const TaskEntry = () => {
   }, [id]);
 
   const handleContinue = () => {
-    if (
+    if (task.domain === DomainType.VideoStream) {
+      navigate(`/task/${id}/video`);
+    } else if (
       task.taskType === TaskType.CancelSubscription ||
       task.taskType === TaskType.SignSubscription
     ) {
       navigate(`/task/${id}/store/1`);
-    } else navigate(`/task/${id}/shopping`);
+    } else {
+      navigate(`/task/${id}/shopping`);
+    }
   };
 
   return (

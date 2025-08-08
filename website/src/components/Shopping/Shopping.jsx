@@ -1,5 +1,5 @@
 import Product from "./components/Product/Product.jsx";
-import Nav from "../Nav/Nav.jsx";
+import Nav from "./components/Nav/Nav.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate.js";
 import { getProducts } from "../../data/productInfo.js";

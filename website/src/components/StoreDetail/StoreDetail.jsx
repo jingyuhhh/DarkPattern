@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import Nav from "../Nav/Nav";
 import { useState, useEffect, useRef } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -151,6 +150,10 @@ const StoreDetail = () => {
                   onChange={(e) => setAgreeTerms(e.target.checked)}
                   color="primary"
                   disabled={!canCheckTerms}
+                  sx={{
+                    transform: "scale(1.5)", // 放大
+                    padding: "8px", // 增加点击区域
+                  }}
                 />
               }
               label={
@@ -172,6 +175,10 @@ const StoreDetail = () => {
                     checked={isAdConsent}
                     onChange={(e) => setIsAdConsent(e.target.checked)}
                     color="primary"
+                    sx={{
+                      transform: "scale(1.5)", // 放大
+                      padding: "8px", // 增加点击区域
+                    }}
                   />
                 }
                 label={
@@ -188,11 +195,15 @@ const StoreDetail = () => {
                     checked={isAdConsentNon}
                     onChange={(e) => setIsAdConsentNon(e.target.checked)}
                     color="primary"
+                    sx={{
+                      transform: "scale(1.5)", // 放大
+                      padding: "8px", // 增加点击区域
+                    }}
                   />
                 }
                 label={
                   <span className=" text-base">
-                    I agree to share my information for personalized advertising
+                    I confirm that I am over 18 years old
                   </span>
                 }
               />
@@ -205,6 +216,10 @@ const StoreDetail = () => {
                     onChange={(e) =>
                       setIsTrickQuestionConsent(e.target.checked)
                     }
+                    sx={{
+                      transform: "scale(1.5)", // 放大
+                      padding: "8px", // 增加点击区域
+                    }}
                     color="primary"
                   />
                 }
@@ -224,7 +239,12 @@ const StoreDetail = () => {
               </div>
             )}
           </DialogContent>
-          <DialogActions>
+          <DialogActions
+            sx={{
+              justifyContent: "center", // 居中
+              gap: 10, // 按钮之间间距
+            }}
+          >
             <Button
               onClick={() => {
                 setShowModal(false);
@@ -232,6 +252,10 @@ const StoreDetail = () => {
               }}
               color="inherit"
               variant="outlined"
+              sx={{
+                fontSize: "1rem",
+                padding: "12px 24px", // 变大
+              }}
             >
               Cancel
             </Button>
@@ -240,11 +264,15 @@ const StoreDetail = () => {
                 setIsSubscribed(true);
                 setShowModal(false);
                 setAgreeTerms(false);
-                setShowCompletionModal(true); // ✅ 订阅成功后弹出 TaskCompletionModal
+                setShowCompletionModal(true);
               }}
-              color="amazon"
-              variant="contained"
+              color="inherit"
+              variant="outlined"
               disabled={!agreeTerms}
+              sx={{
+                fontSize: "1rem",
+                padding: "12px 24px", // 变大
+              }}
             >
               Confirm
             </Button>
@@ -288,7 +316,8 @@ const StoreDetail = () => {
                       border: "1px solid #eff1f4",
                       color: "#000",
                       backgroundColor: "#eff1f4",
-                      padding: "4px 16px",
+                      padding: "10px 28px", // 放大按钮
+                      fontSize: "1rem", // 增大文字
                     }}
                   >
                     Following
@@ -304,7 +333,8 @@ const StoreDetail = () => {
                       border: "1px solid #eff1f4",
                       color: "#000",
                       backgroundColor: "#eff1f4",
-                      padding: "4px 16px",
+                      padding: "10px 28px", // 放大按钮
+                      fontSize: "1rem", // 增大文字
                     }}
                   >
                     Message
@@ -326,7 +356,8 @@ const StoreDetail = () => {
                       border: "1px solid #eff1f4",
                       color: "#000",
                       backgroundColor: "#eff1f4",
-                      padding: "4px 16px",
+                      padding: "10px 28px", // 放大按钮
+                      fontSize: "1rem", // 增大文字
                     }}
                   >
                     {isSubscribed ? "Cancel Subscription" : "Subscribe"}

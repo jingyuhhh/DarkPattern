@@ -7,8 +7,10 @@ export const DarkPatternType = {
   BadDefault: "Bad Default",
   EmotionalOrSensoryManipulation: "Emotional or Sensory Manipulation",
   TrickQuestions: "Trick Questions",
+  ChoiceOverload: "ChoiceOverload",
   HiddenInformation: "Hidden Information",
   Nagging: "Nagging",
+  ForcedRegistration: "Forced Registration",
   ForcedCommunicationOrDisclosure: "Forced Communication or Disclosure",
   ScarcityAndPopularityClaims: "Scarcity and Popularity Claims",
   SocialProof: "Social Proof",
@@ -21,6 +23,8 @@ export const TaskType = {
   CancelMembership: "Cancel Membership",
   SignSubscription: "Sign Subscription",
   CancelSubscription: "Cancel Subscription",
+  WatchVideo: "Watch Video",
+  CancelRecommendation: "CancelRecommendation",
 };
 
 export const AvoidBehaviors = {
@@ -35,6 +39,13 @@ export const AvoidBehaviors = {
   ConsistentlySelectedNo: 'Consistently selected "no"',
   AlwaysSelectedYes: 'Selected "Yes"',
   SelectedYes: 'Selected "Yes"',
+  CancelRecommendation: "CancelRecommendation",
+};
+
+export const DomainType = {
+  ECommerce: "e-commerce",
+  SocialMedia: "social media",
+  VideoStream: "video stream",
 };
 
 export const tasks = [
@@ -45,30 +56,31 @@ export const tasks = [
     taskType: TaskType.CancelMembership,
     type: DarkPatternType.AddingSteps,
     avoidBehavior: AvoidBehaviors.SkipTask,
+    domain: DomainType.ECommerce,
   },
   {
     id: 2,
-    title:
-      "You need to buy a pack of trash bags for your kitchen from the shopping website.",
+    title: "You need to buy a pack of trash bags from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.BaitAndSwitch,
     avoidBehavior: AvoidBehaviors.DidNotClickAd,
+    domain: DomainType.ECommerce,
   },
   {
     id: 3,
-    title:
-      "You need to buy a pack of paper towels for home use from the shopping website.",
+    title: "You need to buy a pack of paper towels from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.HidingInformation,
     avoidBehavior: AvoidBehaviors.RemovedExtraProduct,
+    domain: DomainType.ECommerce,
   },
   {
     id: 4,
-    title:
-      "You need to buy packing tape for your home office from the shopping website.",
+    title: "You need to buy packing tape from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.ManipulatingVisualChoiceArchitecture,
     avoidBehavior: AvoidBehaviors.SelectedStandardShipping,
+    domain: DomainType.ECommerce,
   },
   {
     id: 5,
@@ -76,14 +88,15 @@ export const tasks = [
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.BadDefault,
     avoidBehavior: AvoidBehaviors.OptedOutManually,
+    domain: DomainType.SocialMedia,
   },
   {
     id: 6,
-    title:
-      "Purchase a bottle of Vitamin C supplements from the shopping website.",
+    title: "Purchase a bottle of melatonin gummies from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.EmotionalOrSensoryManipulation,
     avoidBehavior: AvoidBehaviors.ChoseOtherProducts,
+    domain: DomainType.ECommerce,
   },
   {
     id: 7,
@@ -91,6 +104,15 @@ export const tasks = [
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.TrickQuestions,
     avoidBehavior: AvoidBehaviors.LeftBoxUnchecked,
+    domain: DomainType.SocialMedia,
+  },
+  {
+    id: 16,
+    title: "Close personalized recommendation",
+    taskType: TaskType.CancelRecommendation,
+    tye: DarkPatternType.ChoiceOverload,
+    domain: DomainType.VideoStream,
+    avoidBehavior: AvoidBehaviors.CancelRecommendation,
   },
   {
     id: 8,
@@ -98,14 +120,23 @@ export const tasks = [
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.SocialProof,
     avoidBehavior: AvoidBehaviors.ChoseOtherProducts,
+    domain: DomainType.ECommerce,
   },
   {
     id: 9,
-    title:
-      "Purchase soldering wire for your electrical repair project from the shopping website.",
-    taskType: TaskType.BuyProduct,
+    title: "Watch a video",
+    taskType: TaskType.WatchVideo,
     type: DarkPatternType.Nagging,
     avoidBehavior: AvoidBehaviors.AlwaysSelectedYes,
+    domain: DomainType.VideoStream,
+  },
+  {
+    id: 15,
+    title: "Comment on a video",
+    taskType: TaskType.WatchVideo,
+    domain: DomainType.VideoStream,
+    type: DarkPatternType.ForcedRegistration,
+    avoidBehavior: AvoidBehaviors.SkipTask,
   },
   {
     id: 10,
@@ -113,6 +144,7 @@ export const tasks = [
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.ForcedCommunicationOrDisclosure,
     avoidBehavior: AvoidBehaviors.SkipTask,
+    domain: DomainType.SocialMedia,
   },
   {
     id: 11,
@@ -120,6 +152,7 @@ export const tasks = [
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.ScarcityAndPopularityClaims,
     avoidBehavior: AvoidBehaviors.ChoseOtherProducts,
+    domain: DomainType.ECommerce,
   },
   {
     id: 12,
@@ -127,14 +160,15 @@ export const tasks = [
     taskType: TaskType.SignSubscription,
     type: DarkPatternType.HiddenInformation,
     avoidBehavior: AvoidBehaviors.SkipTask,
+    domain: DomainType.SocialMedia,
   },
-
   {
     id: 13,
     title: "Purchase a set of paperclips from the shopping website.",
     taskType: TaskType.BuyProduct,
     type: DarkPatternType.Urgency,
     avoidBehavior: AvoidBehaviors.ChoseOtherProducts,
+    domain: DomainType.ECommerce,
   },
   {
     id: 14,
@@ -142,6 +176,7 @@ export const tasks = [
     taskType: TaskType.CancelSubscription,
     type: DarkPatternType.Shaming,
     avoidBehavior: AvoidBehaviors.SelectedYes,
+    domain: DomainType.SocialMedia,
   },
 ];
 

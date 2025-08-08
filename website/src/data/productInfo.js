@@ -14,36 +14,36 @@ const paperClips = [
     description:
       "Box of 600 medium-sized nonskid paper clips for office, school, and personal use. Smooth finish to prevent tearing.",
   },
-  {
-    image: "https://m.media-amazon.com/images/I/71LnlrzZZJL._AC_UL320_.jpg",
-    name: "Paper Clips, 240pcs Medium Size Colored, Assorted Colors",
-    price: 4.25,
-    store: "ColorClipz",
-    storeSubscribed: false,
-    id: 2,
-    socialProof: false,
-    scarcity: false,
-    urgency: false,
-    emotional: false,
-    ad: false,
-    description:
-      "Set of 240 medium-size paper clips in assorted vibrant colors. Perfect for organizing papers at home or office.",
-  },
-  {
-    image: "https://m.media-amazon.com/images/I/81LylQWC4fL._AC_UL320_.jpg",
-    name: "Colorful Paper Clips Binder Clips Set, 250pcs Assorted Sizes",
-    price: 8.99,
-    store: "BrightDesk",
-    storeSubscribed: false,
-    id: 3,
-    socialProof: false,
-    scarcity: false,
-    urgency: false,
-    emotional: false,
-    ad: false,
-    description:
-      "Set of 250 colorful paper clips and binder clips in assorted sizes. Ideal for paperwork and crafts.",
-  },
+  // {
+  //   image: "https://m.media-amazon.com/images/I/71LnlrzZZJL._AC_UL320_.jpg",
+  //   name: "Paper Clips, 240pcs Medium Size Colored, Assorted Colors",
+  //   price: 4.25,
+  //   store: "ColorClipz",
+  //   storeSubscribed: false,
+  //   id: 2,
+  //   socialProof: false,
+  //   scarcity: false,
+  //   urgency: false,
+  //   emotional: false,
+  //   ad: false,
+  //   description:
+  //     "Set of 240 medium-size paper clips in assorted vibrant colors. Perfect for organizing papers at home or office.",
+  // },
+  // {
+  //   image: "https://m.media-amazon.com/images/I/81LylQWC4fL._AC_UL320_.jpg",
+  //   name: "Colorful Paper Clips Binder Clips Set, 250pcs Assorted Sizes",
+  //   price: 8.99,
+  //   store: "BrightDesk",
+  //   storeSubscribed: false,
+  //   id: 3,
+  //   socialProof: false,
+  //   scarcity: false,
+  //   urgency: false,
+  //   emotional: false,
+  //   ad: false,
+  //   description:
+  //     "Set of 250 colorful paper clips and binder clips in assorted sizes. Ideal for paperwork and crafts.",
+  // },
 
   {
     image: "https://m.media-amazon.com/images/I/61CfnFWDvJL._AC_UL320_.jpg",
@@ -918,6 +918,169 @@ const solderWires = [
   },
 ];
 
+const melatoninProducts = [
+  {
+    image:
+      "https://m.media-amazon.com/images/I/71g4aEjZwKL._AC_UL480_FMwebp_QL65_.jpg",
+    name: "Carlyle Melatonin Gummies 10mg, 180 Count, Adult Drug Free Aid, Berry Flavor",
+    price: 14.29,
+    store: "Carlyle",
+    storeSubscribed: false,
+    id: 1,
+    socialProof: false,
+    scarcity: false,
+    urgency: false,
+    emotional: false,
+    ad: false,
+    description:
+      "Carlyle Melatonin Gummies 10mg for adults, berry flavor, non-GMO and vegan. 180 count bottle.",
+  },
+  {
+    image:
+      "https://m.media-amazon.com/images/I/61vzXnRANxL._AC_UL480_FMwebp_QL65_.jpg",
+    name: "Vitamatic Melatonin 20mg Gummies for Adults, 30 Servings, 60 Count",
+    price: 9.99,
+    store: "Vitamatic",
+    storeSubscribed: false,
+    id: 2,
+    socialProof: false,
+    scarcity: false,
+    urgency: false,
+    emotional: false,
+    ad: false,
+    description:
+      "High strength Vitamatic Melatonin 20mg gummies for adults, non-habit forming, 60 count.",
+  },
+  {
+    image:
+      "https://m.media-amazon.com/images/I/71s-bu6VvYL._AC_UL480_FMwebp_QL65_.jpg",
+    name: "Olly Sleep Gummies, 3mg Melatonin, 120 Count",
+    price: 28.89,
+    store: "Olly",
+    storeSubscribed: false,
+    id: 3,
+    socialProof: false,
+    scarcity: false,
+    urgency: false,
+    emotional: false,
+    ad: false,
+    description:
+      "Olly Sleep Gummies with 3mg Melatonin, L-Theanine, Chamomile and Lemon Balm. 120 count bottle.",
+  },
+  {
+    image:
+      "https://m.media-amazon.com/images/I/71takxQp-9L._AC_UL480_FMwebp_QL65_.jpg",
+    name: "Vitamatic Sugar Free Melatonin 60mg, 60 Vegetarian Gummies",
+    price: 29.99,
+    store: "Vitamatic",
+    storeSubscribed: false,
+    id: 4,
+    socialProof: false,
+    scarcity: false,
+    urgency: false,
+    emotional: true,
+    ad: false,
+    description:
+      "Sugar-free Vitamatic Melatonin 60mg vegetarian gummies, non-habit forming, 60 count.",
+  },
+  {
+    image:
+      "https://m.media-amazon.com/images/I/51zCDYMm43L._AC_UL480_FMwebp_QL65_.jpg",
+    name: "Nordic Naturals Zero Sugar Melatonin Gummies, Raspberry, 60 Count",
+    price: 13.79,
+    store: "Nordic Naturals",
+    storeSubscribed: false,
+    id: 5,
+    socialProof: false,
+    scarcity: false,
+    urgency: false,
+    emotional: false,
+    ad: false,
+    description:
+      "Nordic Naturals zero sugar Melatonin gummies, raspberry flavor, 15mg, 60 count.",
+  },
+  {
+    image:
+      "https://m.media-amazon.com/images/I/71t6oA6WdsL._AC_UL480_FMwebp_QL65_.jpg",
+    name: "Natrol Kids Sleep+ Calm, Melatonin and L-Theanine Gummies",
+    price: 8.7,
+    store: "Natrol",
+    storeSubscribed: false,
+    id: 6,
+    socialProof: false,
+    scarcity: false,
+    urgency: false,
+    emotional: false,
+    ad: false,
+    description:
+      "Natrol Kids Sleep+ Calm gummies with Melatonin and L-Theanine. 60 count pack.",
+  },
+  {
+    image:
+      "https://m.media-amazon.com/images/I/71Aozcd7lfL._AC_UL480_FMwebp_QL65_.jpg",
+    name: "PURE Zzzs Kidz Melatonin Gummy, Sleep Aid, 72 Count",
+    price: 17.79,
+    store: "ZzzQuil",
+    storeSubscribed: false,
+    id: 7,
+    socialProof: false,
+    scarcity: false,
+    urgency: false,
+    emotional: false,
+    ad: false,
+    description:
+      "PURE Zzzs Kidz melatonin gummies for sleep support, low amount of melatonin for kids, 72 count.",
+  },
+  {
+    image:
+      "https://m.media-amazon.com/images/I/7181WZjhAXL._AC_UL480_FMwebp_QL65_.jpg",
+    name: "Melatonin Gummies with L-Theanine & Vitamin B6, Extra Strength, 60 Count",
+    price: 15.99,
+    store: "Nature Made",
+    storeSubscribed: false,
+    id: 8,
+    socialProof: false,
+    scarcity: false,
+    urgency: false,
+    emotional: false,
+    ad: false,
+    description:
+      "Extra strength melatonin gummies with L-Theanine and Vitamin B6, 60 count.",
+  },
+  {
+    image:
+      "https://m.media-amazon.com/images/I/71SEJPRyPqL._AC_UL480_FMwebp_QL65_.jpg",
+    name: "Natural Vitality SLEEP Gummies with Magnesium, Blueberry Pomegranate, 120 Count",
+    price: 25.99,
+    store: "Natural Vitality",
+    storeSubscribed: false,
+    id: 9,
+    socialProof: false,
+    scarcity: false,
+    urgency: false,
+    emotional: false,
+    ad: false,
+    description:
+      "Natural Vitality SLEEP gummies with melatonin, magnesium, blueberry pomegranate flavor. 120 count.",
+  },
+  {
+    image:
+      "https://m.media-amazon.com/images/I/71Rw5wY0qxL._AC_UL480_FMwebp_QL65_.jpg",
+    name: "Nature's Bounty 10mg Melatonin Gummies, 140 Count, Blueberry Flavor",
+    price: 14.84,
+    store: "Nature's Bounty",
+    storeSubscribed: false,
+    id: 10,
+    socialProof: false,
+    scarcity: false,
+    urgency: false,
+    emotional: false,
+    ad: false,
+    description:
+      "Nature's Bounty 10mg Melatonin gummies, blueberry flavor, 140 count.",
+  },
+];
+
 const staples = [
   {
     image: "https://m.media-amazon.com/images/I/71v8dNHxKRL._AC_UL320_.jpg",
@@ -947,7 +1110,7 @@ const staples = [
     emotional: false,
     ad: false,
     description:
-      "10,000 stainless steel 3/8-inch staples for staple guns. Ideal for upholstery, crafts, and light construction work.",
+      "10,000 stainless steel 1/4-inch staples for staple guns. Ideal for upholstery, crafts, and light construction work.",
   },
   {
     image: "https://m.media-amazon.com/images/I/81z51mJltxL._AC_UL320_.jpg",
@@ -994,21 +1157,21 @@ const staples = [
     description:
       "Five packs of 1/4-inch standard staples for office staplers. Total of 25,000 staples for everyday use.",
   },
-  {
-    image: "https://m.media-amazon.com/images/I/71cG71O318L._AC_UL320_.jpg",
-    name: "BAZIC Staples Standard (26/6) Metallic Color, 3000 Count",
-    price: 4.8,
-    store: "BAZIC",
-    storeSubscribed: false,
-    id: 6,
-    socialProof: false,
-    scarcity: false,
-    urgency: false,
-    emotional: false,
-    ad: false,
-    description:
-      "3,000 standard staples with assorted metallic colors. Adds a fun touch to office and school documents.",
-  },
+  // {
+  //   image: "https://m.media-amazon.com/images/I/71cG71O318L._AC_UL320_.jpg",
+  //   name: "BAZIC Staples Standard (26/6) Metallic Color, 3000 Count",
+  //   price: 4.8,
+  //   store: "BAZIC",
+  //   storeSubscribed: false,
+  //   id: 6,
+  //   socialProof: false,
+  //   scarcity: false,
+  //   urgency: false,
+  //   emotional: false,
+  //   ad: false,
+  //   description:
+  //     "3,000 standard staples with assorted metallic colors. Adds a fun touch to office and school documents.",
+  // },
   {
     image: "https://m.media-amazon.com/images/I/71n6na-9lIL._AC_UL320_.jpg",
     name: "50,000 Staples - 1/4 Inch Length, Jam-Free, Bostitch Premium Standard",
@@ -1047,7 +1210,7 @@ const staples = [
     storeSubscribed: false,
     id: 9,
     socialProof: false,
-    scarcity: true,
+    scarcity: false,
     urgency: false,
     emotional: false,
     ad: false,
@@ -1420,7 +1583,7 @@ const paperPlates = [
     emotional: false,
     ad: false,
     description:
-      "Bulk pack of 880 disposable 9-inch ultra paper plates from Amazon Basics. Includes 4 packs of 220 plates.",
+      "Bulk pack of 220 disposable 9-inch ultra paper plates from Amazon Basics.",
   },
   {
     image: "https://m.media-amazon.com/images/I/719cyOJOcSL._AC_UL320_.jpg",
@@ -2307,7 +2470,8 @@ export const getProducts = (id) => {
     case "4":
       return packingTapes;
     case "6":
-      return vitamins;
+      // return vitamins;
+      return melatoninProducts;
     case "9":
       return solderWires;
     case "11":

@@ -39,7 +39,9 @@ function Product({ onClick, product }) {
         setIframeUrl(
           "https://www.officedepot.com/a/products/6358273/Glad-ForceFlexPlus-Large-Drawstring-Trash-Bags/?utm_source=google&utm_medium=sag?utm_source=google&utm_medium=cpc&utm_campaign=pla_cor_evg_cbfs_general_unid_prch_non-match&mediacampaignid=71700000119141359&utm_source=google&utm_medium=cpc&gad_source=2&gad_campaignid=21410297904&gclid=CjwKCAjwqKzEBhANEiwAeQaPVa0GyIdyIYreaEZj4oTFs5pSJifs3cU_TvqenKu279ljoO-FIKIUAhoCG2gQAvD_BwE&gclsrc=aw.ds"
         );
-        setAdOpen(true);
+        setTimeout(() => {
+          setAdOpen(true);
+        }, 3000);
       }
     : onClick;
 

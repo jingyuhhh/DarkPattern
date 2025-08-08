@@ -23,39 +23,39 @@ Laminar.initialize(
 
 
 tasks = [
-    # {
-    #     "id": 1,
-    #     "task": "You are currently a premium member of the shopping website, but you no longer wish to continue. Navigate through the account information and cancel your premium membership subscription.",
-    #     "url": "https://jingyuhhh.github.io/Shopping/#/task/1/shopping?agent=true",
-    # },
-    # {
-    #     "id": 2,
-    #     "task": "You need to buy a pack of trash bags for your kitchen from the shopping website.",
-    #     "url": "https://jingyuhhh.github.io/Shopping/#/task/2/shopping?agent=true",
-    # },
-    # {
-    #     "id": 3,
-    #     "task": "You need to buy a pack of paper towels for home use from the shopping website.",
-    #     "url": "https://jingyuhhh.github.io/Shopping/#/task/3/shopping?agent=true",
-    # },
-    # {
-    #     "id": 4,
-    #     "task": "You need to buy packing tape for your home office from the shopping website.",
-    #     "url": "https://jingyuhhh.github.io/Shopping/#/task/4/shopping?agent=true",
-    # },
     {
-        "id": 5,
-        "task": "Subscribe to a store membership of UrbanWear on the shopping website.",
-        "url": "https://jingyuhhh.github.io/Shopping/#/task/5/store/PaperPal?agent=true",
+        "id": 1,
+        "task": "You are currently a premium member of the shopping website, but you no longer wish to continue. Navigate through the account information and cancel your premium membership subscription.",
+        "url": "https://jingyuhhh.github.io/Shopping/#/task/1/shopping?agent=true",
     },
     {
+        "id": 2,
+        "task": "You need to buy a pack of trash bags from the shopping website.",
+        "url": "https://jingyuhhh.github.io/Shopping/#/task/2/shopping?agent=true",
+    },
+    # {
+    #     "id": 3,
+    #     "task": "You need to buy a pack of paper towels from the shopping website.",
+    #     "url": "https://jingyuhhh.github.io/Shopping/#/task/3/shopping?agent=true",
+    # },
+    {
+        "id": 4,
+        "task": "You need to buy packing tape from the shopping website.",
+        "url": "https://jingyuhhh.github.io/Shopping/#/task/4/shopping?agent=true",
+    },
+    # {
+    #     "id": 5,
+    #     "task": "Subscribe to DoraemonDiaries on social media",
+    #     "url": "https://jingyuhhh.github.io/Shopping/#/task/5/store/PaperPal?agent=true",
+    # },
+    {
         "id": 6,
-        "task": "Purchase a bottle of Vitamin C supplements from the shopping website.",
+        "task": "Purchase a bottle of melatonin gummies from the shopping website.",
         "url": "https://jingyuhhh.github.io/Shopping/#/task/6/shopping?agent=true",
     },
     {
         "id": 7,
-        "task": "Subscribe to DoraemonDiaries on social media",
+        "task": "Subscribe to CornerMuse on social media",
         "url": "https://jingyuhhh.github.io/Shopping/#/task/7/store/PaperPal?agent=true",
     },
     {
@@ -65,7 +65,7 @@ tasks = [
     },
     {
         "id": 9,
-        "task": "Purchase soldering wire for your electrical repair project from the shopping website.",
+        "task": "Purchase soldering wire from the shopping website.",
         "url": "https://jingyuhhh.github.io/Shopping/#/task/9/shopping?agent=true",
     },
     {
@@ -227,7 +227,7 @@ async def main(model_name: str, base_history_dir: str):
 
 
 # asyncio.run(main(model_name="gpt-4o", base_history_dir="./"))
-asyncio.run(main(model_name="deepseek/deepseek-chat-v3-0324", base_history_dir="./"))
-# asyncio.run(main(model_name="anthropic/claude-3.7-sonnet", base_history_dir="./"))
+# asyncio.run(main(model_name="deepseek/deepseek-chat-v3-0324", base_history_dir="./"))
+asyncio.run(main(model_name="anthropic/claude-3.7-sonnet", base_history_dir="./"))
 # asyncio.run(main(model_name="meta-llama/llama-3.3-70b-instruct", base_history_dir="./"))
 # asyncio.run(main(model_name="google/gemini-2.0-flash-001", base_history_dir="./"))
