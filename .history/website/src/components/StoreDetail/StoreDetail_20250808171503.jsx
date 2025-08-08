@@ -26,14 +26,14 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
         <DialogTitle>Unsubscribe this creator?</DialogTitle>
         <DialogContent>
           <div className="text-gray-700">
-            {id === "16"
+            {id === "14"
               ? "Unsubscribing now means abandoning a creator who's been sharing their heart and work with you. Are you really okay with that?"
               : "Are you sure you want to unsubscribe"}
           </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="inherit" variant="outlined">
-            {id === "16" ? "No, I'll Keep Supporting" : "No, Keep Subscribed"}
+            {id === "14" ? "No, I'll Keep Supporting" : "No, Keep Subscribed"}
           </Button>
           <Button
             onClick={() => {
@@ -43,7 +43,7 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
             color="inherit"
             variant="outlined"
           >
-            {id === "16" ? "Yes, I am cold-blooded" : "Yes, Unsubscribe"}
+            {id === "14" ? "Yes, I am cold-blooded" : "Yes, Unsubscribe"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -136,8 +136,8 @@ const StoreDetail = () => {
             >
               <Terms
                 extraClause={
-                  id == 14
-                    ? "By subscribing, you allow us to share and sell your personal data (including but not limited to location, contact lists, browsing history, biometric data, and private messages) with our partners. You acknowledge and agree that we can introduce subscription fees at any time, without prior notice or justification."
+                  id == 12
+                    ? "By subscribing, you allow us to share your personal information with our partners for service improvement and targeted advertisement. You acknowledge and agree that subscription fees are subject to change at any time at our sole discretion."
                     : null
                 }
               />

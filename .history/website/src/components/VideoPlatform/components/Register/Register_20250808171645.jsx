@@ -15,7 +15,6 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [birthday, setBirthday] = useState("");
   const [passwordError, setPasswordError] = useState(false);
-  const [email, setEmail] = useState("");
 
   const handleRegister = () => {
     if (
@@ -92,7 +91,7 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
           }}
         />
         <TextField
-          label="Username"
+          label="Username / Email"
           placeholder="Enter your email"
           variant="filled"
           size="small"
@@ -107,13 +106,13 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
           }}
         />
         <TextField
-          label="Email"
+          label="Username / Email"
           placeholder="Enter your email"
           variant="filled"
           size="small"
           fullWidth
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           InputProps={{
             sx: {
               borderRadius: "8px",

@@ -57,13 +57,11 @@ export const SettingsDialog = ({
   initialLocationSharing = true,
 }) => {
   const [selected, setSelected] = useState(menuItems[0]);
-  const [email, setEmail] = useState("john.doe@example.com");
+  const [email, setEmail] = useState("user@example.com");
   const [phone, setPhone] = useState("+1 (555) 123-4567");
   const [fullName, setFullName] = useState("John Doe");
-  const [username, setUsername] = useState("johndoe123");
-  const [location, setLocation] = useState(
-    "1234 Elm Street, Springfield, IL 62704, USA"
-  );
+  const [username, setUsername] = useState("johndoe");
+  const [location, setLocation] = useState("New York, NY");
   const [birthDate, setBirthDate] = useState("1990-05-15");
   const [twoFactor, setTwoFactor] = useState(true);
   const [allowTracking, setAllowTracking] = useState(false);
@@ -210,6 +208,7 @@ export const SettingsDialog = ({
                 <Chip label="Active" color="success" />
                 <Chip label="Email Verified" color="primary" />
                 <Chip label="Phone Verified" color="primary" />
+                <Chip label="Premium Member" color="warning" />
               </Box>
             </Box>
           </>
@@ -293,6 +292,35 @@ export const SettingsDialog = ({
             </Box>
 
             {/* Data Retention */}
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
+                Data Retention Policy
+              </Typography>
+
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Data Retention Period</InputLabel>
+                <Select
+                  value={dataRetention}
+                  onChange={(e) => setDataRetention(e.target.value)}
+                  label="Data Retention Period"
+                >
+                  <MenuItem value="1">1 year</MenuItem>
+                  <MenuItem value="2">2 years</MenuItem>
+                  <MenuItem value="5">5 years</MenuItem>
+                  <MenuItem value="10">10 years</MenuItem>
+                  <MenuItem value="indefinite">Until account deletion</MenuItem>
+                </Select>
+              </FormControl>
+
+              <Typography
+                variant="body2"
+                sx={{ color: "text.secondary", mb: 2 }}
+              >
+                Your personal data will be retained for the selected period
+                unless you request deletion earlier. After this period, your
+                data will be automatically anonymized or deleted.
+              </Typography>
+            </Box>
 
             {/* GDPR Rights */}
             <Box sx={{ mb: 3 }}>
@@ -691,6 +719,65 @@ export const SettingsDialog = ({
               </FormGroup>
             </Box>
 
+            {/* Content Preferences */}
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
+                Content Preferences
+              </Typography>
+
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Content Language</InputLabel>
+                <Select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  label="Content Language"
+                >
+                  <MenuItem value="en">English</MenuItem>
+                  <MenuItem value="es">Spanish</MenuItem>
+                  <MenuItem value="zh">Chinese</MenuItem>
+                  <MenuItem value="fr">French</MenuItem>
+                  <MenuItem value="de">German</MenuItem>
+                  <MenuItem value="ja">Japanese</MenuItem>
+                  <MenuItem value="ko">Korean</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={adPersonalization}
+                    onChange={(e) => setAdPersonalization(e.target.checked)}
+                  />
+                }
+                label="Personalized Content Recommendations"
+              />
+              <Typography
+                variant="caption"
+                display="block"
+                sx={{ ml: 4, color: "text.secondary", mb: 2 }}
+              >
+                Use your activity and preferences to suggest relevant content.
+              </Typography>
+
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={darkMode}
+                    onChange={(e) => setDarkMode(e.target.checked)}
+                  />
+                }
+                label="Dark Mode"
+              />
+              <Typography
+                variant="caption"
+                display="block"
+                sx={{ ml: 4, color: "text.secondary" }}
+              >
+                Switch to dark theme for better viewing experience in low-light
+                conditions.
+              </Typography>
+            </Box>
+
             {/* Content Categories */}
             <Box sx={{ mb: 3 }}>
               <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
@@ -735,12 +822,7 @@ export const SettingsDialog = ({
                 control={
                   <Switch
                     checked={locationSharing}
-                    onChange={(e) => {
-                      setLocationSharing(e.target.checked);
-                      if (onLocationSharingChange) {
-                        onLocationSharingChange(e.target.checked);
-                      }
-                    }}
+                    onChange={(e) => setLocationSharing(e.target.checked)}
                   />
                 }
                 label="Share my location"

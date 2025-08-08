@@ -74,7 +74,7 @@ function Product({ onClick, product }) {
           Only 3 left in stock — order soon.
         </span>
       )}
-      {id === "15" && product.urgency && (
+      {id === "13" && product.urgency && (
         <div className="flex items-center space-x-2 my-1">
           <span className="bg-[#7fda69] text-black text-xs font-semibold px-2 py-1 ">
             Save 30%

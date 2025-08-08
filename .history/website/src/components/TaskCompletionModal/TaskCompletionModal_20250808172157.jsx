@@ -54,7 +54,7 @@ const TaskCompletionModal = ({
 
   // Snackbar 状态
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const isEnd = currentTaskIndex === 15;
+  const isEnd = currentTaskIndex === 13;
 
   // 通知PopupProvider TaskCompletionModal的打开状态
   useEffect(() => {

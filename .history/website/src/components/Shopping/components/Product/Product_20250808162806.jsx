@@ -69,12 +69,12 @@ function Product({ onClick, product }) {
           300+ bought in past month
         </span>
       )}
-      {id === "12" && product.scarcity && (
+      {id === "11" && product.scarcity && (
         <span className="text-red-600 text-sm font-semibold">
           Only 3 left in stock — order soon.
         </span>
       )}
-      {id === "15" && product.urgency && (
+      {id === "13" && product.urgency && (
         <div className="flex items-center space-x-2 my-1">
           <span className="bg-[#7fda69] text-black text-xs font-semibold px-2 py-1 ">
             Save 30%

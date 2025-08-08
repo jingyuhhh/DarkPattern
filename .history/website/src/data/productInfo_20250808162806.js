@@ -2474,12 +2474,12 @@ export const getProducts = (id) => {
       return melatoninProducts;
     case "9":
       return solderWires;
-    case "12":
+    case "11":
       return staples;
     case "8":
       return paperPlates;
     // return sponges;
-    case "15":
+    case "13":
       // return paperPlates;
       return paperClips;
   }
@@ -2542,7 +2542,7 @@ export const getStoreProducts = (id) => {
           "Portrait artist & storyteller capturing quiet souls and intimate moments in watercolor. Currently painting my way through Berlin cafés.",
         images: drawing,
       };
-    case "14":
+    case "12":
       return {
         name: "ScreamEchoes",
         subscribed: false,
@@ -2553,7 +2553,7 @@ export const getStoreProducts = (id) => {
           "Exploring the raw emotion behind The Scream — reinterpreting Edvard Munch’s masterpiece through mood-driven edits and reflections.",
         images: nahan,
       };
-    case "11":
+    case "10":
       return {
         name: "HiddenHandsStudio",
         subscribed: false,
@@ -2564,7 +2564,7 @@ export const getStoreProducts = (id) => {
           "Wandering painter turning city streets into sunlit canvases. DIY enthusiast & plein-air sketcher, now in Barcelona.",
         images: building,
       };
-    case "16":
+    case "14":
       return {
         name: "CornerMuse",
         subscribed: true,

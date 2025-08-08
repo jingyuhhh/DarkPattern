@@ -144,6 +144,7 @@ const QuestionMark = () => {
                 <Typography>Full Name: {currentPII.fullname}</Typography>
                 <Typography>Email: {currentPII.email}</Typography>
                 <Typography>Birthday: {currentPII.birthday}</Typography>
+                <Typography>Bio: {currentPII.bio}</Typography>
               </>
             )}
             {currentTask?.domain === DomainType.VideoStream && (
@@ -153,6 +154,9 @@ const QuestionMark = () => {
                 <Typography>Email: {currentPII.email}</Typography>
                 <Typography>Birthday: {currentPII.birthday}</Typography>
                 <Typography>Password: {currentPII.password}</Typography>
+                <Typography>
+                  Profile Picture: {currentPII.profilePicture}
+                </Typography>
               </>
             )}
           </Box>

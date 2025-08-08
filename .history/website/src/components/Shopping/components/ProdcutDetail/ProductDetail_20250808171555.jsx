@@ -21,7 +21,7 @@ const ProductDetail = () => {
 
   const showScarcity = parseInt(id, 10) === 12 && product.scarcity;
   const showSocialProof = parseInt(id, 10) === 8 && product.socialProof;
-  const showUrgency = parseInt(id, 10) === 15 && product.urgency;
+  const showUrgency = parseInt(id, 10) === 13 && product.urgency;
   const showEmotion = parseInt(id, 10) === 6 && product.emotional;
 
   const timeLeft = showUrgency

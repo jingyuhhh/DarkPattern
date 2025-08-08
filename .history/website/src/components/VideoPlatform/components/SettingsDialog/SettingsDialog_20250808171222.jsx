@@ -691,6 +691,65 @@ export const SettingsDialog = ({
               </FormGroup>
             </Box>
 
+            {/* Content Preferences */}
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
+                Content Preferences
+              </Typography>
+
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Content Language</InputLabel>
+                <Select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  label="Content Language"
+                >
+                  <MenuItem value="en">English</MenuItem>
+                  <MenuItem value="es">Spanish</MenuItem>
+                  <MenuItem value="zh">Chinese</MenuItem>
+                  <MenuItem value="fr">French</MenuItem>
+                  <MenuItem value="de">German</MenuItem>
+                  <MenuItem value="ja">Japanese</MenuItem>
+                  <MenuItem value="ko">Korean</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={adPersonalization}
+                    onChange={(e) => setAdPersonalization(e.target.checked)}
+                  />
+                }
+                label="Personalized Content Recommendations"
+              />
+              <Typography
+                variant="caption"
+                display="block"
+                sx={{ ml: 4, color: "text.secondary", mb: 2 }}
+              >
+                Use your activity and preferences to suggest relevant content.
+              </Typography>
+
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={darkMode}
+                    onChange={(e) => setDarkMode(e.target.checked)}
+                  />
+                }
+                label="Dark Mode"
+              />
+              <Typography
+                variant="caption"
+                display="block"
+                sx={{ ml: 4, color: "text.secondary" }}
+              >
+                Switch to dark theme for better viewing experience in low-light
+                conditions.
+              </Typography>
+            </Box>
+
             {/* Content Categories */}
             <Box sx={{ mb: 3 }}>
               <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>

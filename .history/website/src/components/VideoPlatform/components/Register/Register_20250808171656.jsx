@@ -15,7 +15,6 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [birthday, setBirthday] = useState("");
   const [passwordError, setPasswordError] = useState(false);
-  const [email, setEmail] = useState("");
 
   const handleRegister = () => {
     if (
@@ -113,7 +112,7 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
           size="small"
           fullWidth
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
           InputProps={{
             sx: {
               borderRadius: "8px",

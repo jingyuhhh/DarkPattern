@@ -2564,7 +2564,7 @@ export const getStoreProducts = (id) => {
           "Wandering painter turning city streets into sunlit canvases. DIY enthusiast & plein-air sketcher, now in Barcelona.",
         images: building,
       };
-    case "16":
+    case "14":
       return {
         name: "CornerMuse",
         subscribed: true,

@@ -26,14 +26,14 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
         <DialogTitle>Unsubscribe this creator?</DialogTitle>
         <DialogContent>
           <div className="text-gray-700">
-            {id === "16"
+            {id === "14"
               ? "Unsubscribing now means abandoning a creator who's been sharing their heart and work with you. Are you really okay with that?"
               : "Are you sure you want to unsubscribe"}
           </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="inherit" variant="outlined">
-            {id === "16" ? "No, I'll Keep Supporting" : "No, Keep Subscribed"}
+            {id === "14" ? "No, I'll Keep Supporting" : "No, Keep Subscribed"}
           </Button>
           <Button
             onClick={() => {
@@ -43,7 +43,7 @@ const UnsubscribeDialog = ({ open, onClose, onConfirm }) => {
             color="inherit"
             variant="outlined"
           >
-            {id === "16" ? "Yes, I am cold-blooded" : "Yes, Unsubscribe"}
+            {id === "14" ? "Yes, I am cold-blooded" : "Yes, Unsubscribe"}
           </Button>
         </DialogActions>
       </Dialog>

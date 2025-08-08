@@ -102,18 +102,25 @@ const TaskEntry = () => {
               {task.domain === DomainType.ECommerce && (
                 <>
                   <Typography>Full Name: {currentPII.fullname}</Typography>
+                  <Typography>Email: {currentPII.email}</Typography>
                   <Typography>Phone: {currentPII.phone}</Typography>
                   <Typography>Address: {currentPII.address}</Typography>
                   <Typography>
                     Payment Password: {currentPII.password}
                   </Typography>
+                  <Typography>Card Number: {currentPII.cardNumber}</Typography>
+                  <Typography>Expiry Date: {currentPII.expiryDate}</Typography>
+                  <Typography>CVV: {currentPII.cvv}</Typography>
                 </>
               )}
               {task.domain === DomainType.SocialMedia && (
                 <>
                   <Typography>Full Name: {currentPII.fullname}</Typography>
+                  <Typography>Username: {currentPII.username}</Typography>
                   <Typography>Email: {currentPII.email}</Typography>
+                  <Typography>Password: {currentPII.password}</Typography>
                   <Typography>Birthday: {currentPII.birthday}</Typography>
+                  <Typography>Bio: {currentPII.bio}</Typography>
                 </>
               )}
               {task.domain === DomainType.VideoStream && (
@@ -123,6 +130,9 @@ const TaskEntry = () => {
                   <Typography>Email: {currentPII.email}</Typography>
                   <Typography>Birthday: {currentPII.birthday}</Typography>
                   <Typography>Password: {currentPII.password}</Typography>
+                  <Typography>
+                    Profile Picture: {currentPII.profilePicture}
+                  </Typography>
                 </>
               )}
             </Box>

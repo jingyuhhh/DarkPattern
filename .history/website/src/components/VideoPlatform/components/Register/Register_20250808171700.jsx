@@ -15,7 +15,6 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [birthday, setBirthday] = useState("");
   const [passwordError, setPasswordError] = useState(false);
-  const [email, setEmail] = useState("");
 
   const handleRegister = () => {
     if (
