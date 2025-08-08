@@ -13,6 +13,7 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [birthday, setBirthday] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [email, setEmail] = useState("");
 
@@ -22,7 +23,8 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
       username &&
       password &&
       confirmPassword &&
-      password === confirmPassword
+      password === confirmPassword &&
+      birthday
     ) {
       onLoginSuccess({ username, fullName });
       // Reset form
@@ -30,6 +32,7 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
       setUsername("");
       setPassword("");
       setConfirmPassword("");
+      setBirthday("");
       setPasswordError(false);
     }
   };
@@ -41,6 +44,7 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
     setUsername("");
     setPassword("");
     setConfirmPassword("");
+    setBirthday("");
     setPasswordError(false);
   };
 
@@ -119,6 +123,22 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
         />
 
         <TextField
+          label="Birthday"
+          type="date"
+          variant="filled"
+          size="small"
+          fullWidth
+          value={birthday}
+          onChange={(e) => setBirthday(e.target.value)}
+          InputLabelProps={{ shrink: true }}
+          InputProps={{
+            sx: {
+              borderRadius: "8px",
+              backgroundColor: "#f0f6ff",
+            },
+          }}
+        />
+        <TextField
           label="Password"
           type="password"
           placeholder="Enter your password"
@@ -188,7 +208,8 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
             !username ||
             !password ||
             !confirmPassword ||
-            password !== confirmPassword
+            password !== confirmPassword ||
+            !birthday
           }
           onClick={handleRegister}
           sx={{

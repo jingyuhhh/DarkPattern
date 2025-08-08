@@ -22,7 +22,7 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
       username &&
       password &&
       confirmPassword &&
-      password === confirmPassword
+      password === confirmPassword &&
     ) {
       onLoginSuccess({ username, fullName });
       // Reset form
@@ -118,6 +118,7 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
           }}
         />
 
+       
         <TextField
           label="Password"
           type="password"
@@ -188,7 +189,8 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
             !username ||
             !password ||
             !confirmPassword ||
-            password !== confirmPassword
+            password !== confirmPassword ||
+            !birthday
           }
           onClick={handleRegister}
           sx={{

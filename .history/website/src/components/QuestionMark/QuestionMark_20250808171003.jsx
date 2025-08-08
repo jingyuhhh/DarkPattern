@@ -151,6 +151,7 @@ const QuestionMark = () => {
                 <Typography>Full Name: {currentPII.fullname}</Typography>
                 <Typography>Username: {currentPII.username}</Typography>
                 <Typography>Email: {currentPII.email}</Typography>
+                <Typography>Birthday: {currentPII.birthday}</Typography>
                 <Typography>Password: {currentPII.password}</Typography>
               </>
             )}

@@ -36,5 +36,6 @@ export const videoPII = {
   fullname: "John Doe",
   username: "johndoe123",
   email: "john.doe@example.com",
+  birthday: "1990-05-15",
   password: "P@ssw0rd123!",
 };
