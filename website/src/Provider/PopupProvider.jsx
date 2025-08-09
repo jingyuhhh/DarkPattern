@@ -48,7 +48,7 @@ export const PopupProvider = ({ children, interval }) => {
     }
 
     // 只有在没有禁用且已经显示过初始popup的情况下才启动定时器
-    if (!popupDisabled && hasShownInitial && taskId === 9 && extraPath) {
+    if (!popupDisabled && hasShownInitial && taskId === 10 && extraPath) {
       timer = setInterval(() => {
         setOpen(true);
       }, interval);

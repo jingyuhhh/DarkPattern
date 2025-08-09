@@ -2471,13 +2471,15 @@ export const getProducts = (id) => {
       return packingTapes;
     case "6":
       // return vitamins;
+
       return melatoninProducts;
     case "9":
-      return solderWires;
+      return paperPlates;
+    // return solderWires;
     case "12":
       return staples;
-    case "8":
-      return paperPlates;
+    // case "8":
+    //   return paperPlates;
     // return sponges;
     case "15":
       // return paperPlates;

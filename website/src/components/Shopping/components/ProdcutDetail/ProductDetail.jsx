@@ -20,7 +20,7 @@ const ProductDetail = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const showScarcity = parseInt(id, 10) === 12 && product.scarcity;
-  const showSocialProof = parseInt(id, 10) === 8 && product.socialProof;
+  const showSocialProof = parseInt(id, 10) === 9 && product.socialProof;
   const showUrgency = parseInt(id, 10) === 15 && product.urgency;
   const showEmotion = parseInt(id, 10) === 6 && product.emotional;
 
