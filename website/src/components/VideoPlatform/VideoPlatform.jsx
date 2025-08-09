@@ -38,7 +38,6 @@ const VideoPage = () => {
   const videoInfo = getVideoInfo(id);
 
   // Use id in console.log to avoid linter warning
-  console.log("Current video ID:", id);
 
   const [liked, setLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -76,7 +75,6 @@ const VideoPage = () => {
     setLocationSharingEnabled(enabled);
     if (id === "8" && !enabled) {
       // Location sharing was disabled successfully
-      console.log("object");
       setTaskCompletionModalOpen(true);
     }
   };
@@ -309,6 +307,7 @@ const VideoPage = () => {
                   }
                   setTaskCompletionModalOpen(true);
                 }}
+                className="flex items-center space-x-2"
               >
                 <input
                   type="text"
@@ -319,8 +318,20 @@ const VideoPage = () => {
                     if (!isLoggedIn && !loginDialogOpen)
                       setLoginDialogOpen(true);
                   }}
-                  className="w-full bg-transparent border border-neutral-700 rounded-full px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none"
+                  className="flex-1 bg-transparent border border-neutral-700 rounded-full px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none"
+                  aria-label="Add a comment"
                 />
+
+                {/* 只有输入内容时才显示提交按钮 */}
+                {
+                  <button
+                    type="submit"
+                    className="px-4 py-2 text-sm font-medium rounded-full border border-white text-white hover:bg-white hover:text-black transition-colors"
+                    aria-label="Submit comment"
+                  >
+                    Submit
+                  </button>
+                }
               </form>
             </div>
           </div>

@@ -16,8 +16,9 @@ import {
   Box,
 } from "@mui/material";
 import { useLocation } from "react-router-dom";
-
+import { IconButton } from "@mui/material";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 // 重新初始化日志数据的函数
 const resetLoggerData = () => {
@@ -85,6 +86,20 @@ const TaskEntry = () => {
         <CardContent>
           <Typography variant="h4" component="h1" gutterBottom>
             Task Information
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+          >
+            You can check the information later during task by clicking
+            <HelpOutlineIcon
+              sx={{
+                fontSize: 20,
+                verticalAlign: "middle",
+                // color: "primary.main",
+              }}
+            />
+            on top left corner
           </Typography>
 
           <Box sx={{ mt: 3 }}>

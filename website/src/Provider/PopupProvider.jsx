@@ -24,18 +24,15 @@ export const PopupProvider = ({ children, interval }) => {
       location.pathname.includes("/end"));
 
   useEffect(() => {
-    if (taskId !== 9) {
+    if (taskId !== 10) {
       setPopupDisabled(false);
       setHasShownInitial(false);
-      console.log("tes");
     }
   }, [taskId]);
 
   useEffect(() => {
-    console.log(hasShownInitial, taskId, extraPath, popupDisabled);
     // 第一次进入界面就显示popup
-    if (!hasShownInitial && taskId === 9 && extraPath && !popupDisabled) {
-      console.log("show");
+    if (!hasShownInitial && taskId === 10 && extraPath && !popupDisabled) {
       setOpen(true);
       setHasShownInitial(true);
     }
@@ -44,8 +41,7 @@ export const PopupProvider = ({ children, interval }) => {
   useEffect(() => {
     let timer;
     // 如果用户进入了task completion modal，停止显示popup
-    if (taskId === 9 && isInTaskCompletionModal) {
-      console.log("object");
+    if (taskId === 10 && isInTaskCompletionModal) {
       setOpen(false);
       setPopupDisabled(true);
       return;
