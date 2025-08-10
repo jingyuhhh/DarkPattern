@@ -144,6 +144,7 @@ const StoreDetail = () => {
             </div>
 
             <FormControlLabel
+              className="mb-2"
               control={
                 <Checkbox
                   checked={agreeTerms}
@@ -188,7 +189,7 @@ const StoreDetail = () => {
                 }
               />
             )}
-            {id == 12 && (
+            {id == 14 && (
               <FormControlLabel
                 control={
                   <Checkbox

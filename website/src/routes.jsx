@@ -8,6 +8,7 @@ import StoreDetail from "./components/StoreDetail/StoreDetail";
 import TaskEntry from "./components/TaskEntry/TaskEntry";
 import QuestionMark from "./components/QuestionMark/QuestionMark";
 import VideoPlatform from "./components/VideoPlatform/VideoPlatform";
+
 import { End } from "./components/TaskCompletionModal/components/End/End";
 import { PopupProvider } from "./Provider/PopupProvider";
 

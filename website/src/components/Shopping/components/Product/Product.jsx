@@ -20,7 +20,7 @@ function Product({ onClick, product }) {
     `product_${String(product.id)}`,
     5 * 54 * 60
   );
-  const shouldShowCountdown = id === "13" && product.urgency;
+  const shouldShowCountdown = id === "15" && product.urgency;
   const displayTimeLeft = shouldShowCountdown ? timeLeft : 0;
 
   const formatTime = (seconds) => {

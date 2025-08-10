@@ -1,18 +1,16 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Nav from "../Nav/Nav";
 import { getProducts } from "../../../../data/productInfo";
 import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../../store/cart";
-import { useState } from "react";
-import { usePreserveQueryNavigate } from "../../../../hooks/useQueryNavigate";
+import { useEffect, useState } from "react";
 import useGlobalCountdown from "../../../../hooks/useGlobalCountdown";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
 const ProductDetail = () => {
   const { id, productId } = useParams();
-  const navigate = usePreserveQueryNavigate();
   const dispatch = useDispatch();
   const products = getProducts(id);
   const product = products.find((item) => item.id === parseInt(productId, 10));
@@ -21,12 +19,19 @@ const ProductDetail = () => {
 
   const showScarcity = parseInt(id, 10) === 12 && product.scarcity;
   const showSocialProof = parseInt(id, 10) === 9 && product.socialProof;
-  const showUrgency = parseInt(id, 10) === 15 && product.urgency;
+  const showUrgency = parseInt(id, 10) === 13 && product.urgency;
   const showEmotion = parseInt(id, 10) === 6 && product.emotional;
 
-  const timeLeft = showUrgency
-    ? useGlobalCountdown(`product_${String(product.id)}`, 3 * 60 * 60)
-    : 0;
+  // 始终调用hook，但根据条件决定是否使用返回值
+  const timeLeft = useGlobalCountdown(
+    `product_${String(product.id)}`,
+    5 * 54 * 60
+  );
+  const displayTimeLeft = showUrgency ? timeLeft : 0;
+
+  useEffect(() => {
+    console.log(timeLeft);
+  }, [timeLeft]);
 
   const formatTime = (seconds) => {
     const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
@@ -83,7 +88,7 @@ const ProductDetail = () => {
                   Save 30%
                 </span>
                 <span className="text-red-600 text-sm font-semibold">
-                  Deal ends in {formatTime(timeLeft)}
+                  Deal ends in {formatTime(displayTimeLeft)}
                 </span>
               </div>
             )}
