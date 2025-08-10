@@ -1,12 +1,12 @@
-import video1 from "/src/assets/invideo1.mp4";
-import video2 from "/src/assets/invideo2.mp4";
-import video3 from "/src/assets/invideo4.mp4";
+// import video1 from "/src/assets/invideo1.mp4";
+// import video2 from "/src/assets/invideo2.mp4";
+// import video3 from "/src/assets/invideo4.mp4";
 
 export const videos = [
   {
     title: "8 Minutes of Calm | Everyday Objects, Beautifully Observed",
     channel: "stillhours",
-    source: video1,
+    source: "/Shopping/videos/invideo1.mp4", // 不再 import,
     description: `A kettle bubbling. Curtains dancing. Shadows slowly shifting across a sunlit floor.
   
   “Corners of Time” is a soft observational diary—a collection of micro-moments from a quiet life. No words, no faces. Just small sounds and visuals that remind us to slow down.
@@ -51,7 +51,7 @@ export const videos = [
   {
     title: "When the City Sleeps | Night Walk Through an Empty World",
     channel: "afterhours.cities",
-    source: video2,
+    source: "/Shopping/videos/invideo2.mp4",
     description: `What do cities look like when no one is watching?
   
   “Urban Stillness Atlas” captures quiet spaces between stories: neon reflections, empty crossings, mechanical movements continuing with no human presence. It’s both eerie and comforting.
@@ -96,7 +96,7 @@ export const videos = [
   {
     title: "Where the Wind Goes | A Visual Poem with No People",
     channel: "windletter",
-    source: video3,
+    source: "/Shopping/videos/invideo4.mp4",
     description: `Wind performing on the stage of nature.
   
   “Still Life Theatre of Wind” explores how air moves the world—through trees, water, leaves, fabric, and forgotten objects. Each scene is a poem with no words.
