@@ -52,7 +52,7 @@ function Product({ onClick, product }) {
         src={product.image}
         alt="Product"
         onClick={handleClick}
-        className="mb-3 w-full object-contain h-70"
+        className="mb-3 w-full object-contain h-16 sm:h-20 md:h-24 lg:h-28 xl:h-70"
       />
       {/* 店铺名 */}
       {/* <p className="text-sm text-[#0f1111] font-medium">{product.store}</p> */}

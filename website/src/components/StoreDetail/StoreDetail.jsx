@@ -252,8 +252,8 @@ const StoreDetail = () => {
                 setShowModal(false);
                 setAgreeTerms(false);
               }}
-              color="inherit"
-              variant="outlined"
+              color="primary"
+              variant="contained"
               sx={{
                 fontSize: "1rem",
                 padding: "12px 24px", // 变大
@@ -268,8 +268,8 @@ const StoreDetail = () => {
                 setAgreeTerms(false);
                 setShowCompletionModal(true);
               }}
-              color="inherit"
-              variant="outlined"
+              color="primary"
+              variant="contained"
               disabled={!agreeTerms}
               sx={{
                 fontSize: "1rem",

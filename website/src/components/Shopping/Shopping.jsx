@@ -1,6 +1,6 @@
 import Product from "./components/Product/Product.jsx";
 import Nav from "./components/Nav/Nav.jsx";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate.js";
 import { getProducts } from "../../data/productInfo.js";
 
@@ -26,12 +26,12 @@ function Shopping() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gridTemplateColumns: "repeat(5, 1fr)",
             gap: "16px",
           }}
           className="p-2"
         >
-          {products.map((item, index) => (
+          {products.map((item) => (
             <Product
               key={item.id}
               onClick={() => navigate(`/task/${id}/productDetail/${item.id}`)}

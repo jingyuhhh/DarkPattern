@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Avatar,
   Dialog,
@@ -36,6 +36,7 @@ const VideoPage = () => {
   const currentTask = tasks.find((task) => task.id === parseInt(id));
 
   const videoInfo = getVideoInfo(id);
+  const videoRef = useRef(null);
 
   // Use id in console.log to avoid linter warning
 
@@ -48,6 +49,7 @@ const VideoPage = () => {
   const [taskCompletionModalOpen, setTaskCompletionModalOpen] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
   const [locationSharingEnabled, setLocationSharingEnabled] = useState(true);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   // 注册表单状态
   const [newComment, setNewComment] = useState("");
@@ -62,6 +64,11 @@ const VideoPage = () => {
       setUsername("User");
     }
   }, [id]);
+
+  // Handle video loading
+  const handleVideoLoad = () => {
+    setVideoLoaded(true);
+  };
 
   // Handle video end for ID 10
   // useEffect(() => {
@@ -108,6 +115,22 @@ const VideoPage = () => {
 
   const handleVideoEnd = () => {
     setVideoEnded(true);
+  };
+
+  // Get thumbnail image based on video ID
+  const getThumbnailImage = () => {
+    switch (id) {
+      case "8":
+        return "/src/assets/building_1.jpeg";
+      case "9":
+        return "/src/assets/building_2.jpeg";
+      case "10":
+        return "/src/assets/building_3.jpeg";
+      case "13":
+        return "/src/assets/building_4.jpeg";
+      default:
+        return "/src/assets/building_1.jpeg";
+    }
   };
 
   return (
@@ -176,15 +199,36 @@ const VideoPage = () => {
             showComments ? "ml-0 mr-auto" : "mx-auto"
           }`}
         >
+          {/* Thumbnail image - shown while video is loading */}
+          {!videoLoaded && (
+            <div className="absolute inset-0 z-10">
+              <img
+                src={getThumbnailImage()}
+                alt="Video thumbnail"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                <div className="text-white text-center">
+                  <div className="text-2xl mb-2">▶</div>
+                  <div className="text-sm">Loading video...</div>
+                </div>
+              </div>
+            </div>
+          )}
+
           <video
+            ref={videoRef}
             src={videoInfo.source}
             autoPlay
             loop={id !== "10"}
             muted
             playsInline
             onEnded={handleVideoEnd}
+            onLoadedData={handleVideoLoad}
             className="w-full h-full object-cover"
+            style={{ opacity: videoLoaded ? 1 : 0 }}
           />
+
           <div className="absolute bottom-20 left-4 right-4 text-white text-sm z-10">
             <div className="font-bold">@{videoInfo.channel}</div>
             <div>{videoInfo.description.split("\n")[0]}</div>
@@ -252,8 +296,9 @@ const VideoPage = () => {
         </div>
         {/* Comments */}
         {showComments && (
-          <div className="w-[480px] h-full bg-black text-white z-30 px-6 py-6 overflow-y-auto border-l border-neutral-800">
-            <div className="flex justify-between items-center mb-4">
+          <div className="w-[480px] h-full bg-black text-white z-30 flex flex-col border-l border-neutral-800">
+            {/* Header */}
+            <div className="flex justify-between items-center p-6 pb-4 border-b border-neutral-800">
               <h2 className="text-lg font-bold">Comments</h2>
               <button
                 className="w-10 h-10 text-2xl text-white rounded-full hover:bg-[#2a2a2a] flex items-center justify-center transition duration-200"
@@ -263,24 +308,28 @@ const VideoPage = () => {
               </button>
             </div>
 
-            <div className="space-y-6">
-              {allComments.map((c) => (
-                <div key={c.id} className="flex space-x-3 items-start">
-                  <Avatar sx={{ width: 32, height: 32, bgcolor: "#666" }}>
-                    {c.user[0]}
-                  </Avatar>
-                  <div className="flex-1">
-                    <div className="font-semibold text-sm">{c.user}</div>
-                    <div className="text-sm text-gray-300 mb-1">{c.text}</div>
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span>{c.likes.toLocaleString()} likes</span>
+            {/* Comments List - Scrollable */}
+            <div className="flex-1 overflow-y-auto px-6 py-4">
+              <div className="space-y-6">
+                {allComments.map((c) => (
+                  <div key={c.id} className="flex space-x-3 items-start">
+                    <Avatar sx={{ width: 32, height: 32, bgcolor: "#666" }}>
+                      {c.user[0]}
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="font-semibold text-sm">{c.user}</div>
+                      <div className="text-sm text-gray-300 mb-1">{c.text}</div>
+                      <div className="flex justify-between text-xs text-gray-500">
+                        <span>{c.likes.toLocaleString()} likes</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
-            <div className="mt-6 border-t border-neutral-700 pt-4">
+            {/* Input Form - Fixed at bottom */}
+            <div className="p-6 pt-4 border-t border-neutral-700 bg-black">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();

@@ -9,7 +9,20 @@ import {
 
 const GlobalPopup = ({ open, onClose, onDisable }) => {
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={(event, reason) => {
+        // 阻止 backdrop 点击 和 ESC 键关闭
+        if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+          onClose();
+        }
+      }}
+      disableEscapeKeyDown
+      disableBackdropClick
+      sx={{
+        zIndex: 9999, // 设置很高的z-index值，确保显示在最上层
+      }}
+    >
       <DialogTitle>Share Your Data</DialogTitle>
       <DialogContent>
         <p>

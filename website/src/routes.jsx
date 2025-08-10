@@ -25,7 +25,7 @@ const PageWrapper = ({ children }) => {
 };
 
 const AppRoutes = () => (
-  <PopupProvider interval={20000}>
+  <PopupProvider interval={13000}>
     <Routes>
       <Route path="/task/0" element={<End />} />
       <Route path="/task/:id" element={<TaskEntry />} />
