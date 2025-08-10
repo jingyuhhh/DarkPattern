@@ -18,13 +18,11 @@ const useGlobalCountdown = (key, durationInSeconds) => {
         0,
         Math.floor((endTime - Date.now()) / 1000)
       );
-      console.log(`[${key}] remainingTime:`, remainingTime);
+      console.log(remainingTime);
       setTimeLeft(remainingTime);
     };
 
-    // 立即更新一次，确保初始状态正确
     updateTimer();
-
     const timer = setInterval(updateTimer, 1000);
 
     return () => clearInterval(timer);

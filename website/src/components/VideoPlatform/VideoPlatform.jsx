@@ -64,11 +64,11 @@ const VideoPage = () => {
   }, [id]);
 
   // Handle video end for ID 10
-  useEffect(() => {
-    if (id === "10" && videoEnded) {
-      setTaskCompletionModalOpen(true);
-    }
-  }, [videoEnded, id]);
+  // useEffect(() => {
+  //   if (id === "10" && videoEnded) {
+  //     setTaskCompletionModalOpen(true);
+  //   }
+  // }, [videoEnded, id]);
 
   // Handle location sharing for ID 8
   const handleLocationSharingChange = (enabled) => {

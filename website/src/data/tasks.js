@@ -126,7 +126,7 @@ export const tasks = [
   {
     id: 10,
     title:
-      "You start watching a 30-second video about nature on a streaming platform. Watch the full video until it ends.",
+      "You're using a video streaming platform. Navigate to the settings and enable auto-reporting for content that violates safety policies.",
     taskType: TaskType.WatchVideo,
     type: DarkPatternType.Nagging,
     avoidBehavior: AvoidBehaviors.AlwaysSelectedYes,

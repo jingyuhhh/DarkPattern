@@ -126,7 +126,7 @@ const StoreDetail = () => {
               ref={termsRef}
               onScroll={handleScroll}
               style={{
-                maxHeight: "350px",
+                maxHeight: "250px",
                 overflowY: "auto",
                 padding: "8px",
                 border: "1px solid #ccc",
@@ -189,6 +189,7 @@ const StoreDetail = () => {
                 }
               />
             )}
+            <br></br>
             {id == 14 && (
               <FormControlLabel
                 control={

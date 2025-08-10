@@ -40,13 +40,26 @@ import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { useParams } from "react-router-dom";
+import TaskCompletionModal from "../../../TaskCompletionModal/TaskCompletionModal";
+import { getTasks } from "../../../../data/tasks";
+import { useLocation } from "react-router-dom";
 
-const menuItems = [
+const initialmenuItems = [
   "Account",
   "Data Protection",
   "Safety",
   "Content",
   "Privacy",
+  // "Your Preferences",
+];
+
+const filteredMenuItems = [
+  "Account",
+  // "Data Protection",
+  "Safety",
+  // "Content",
+  // "Privacy",
   // "Your Preferences",
 ];
 
@@ -56,12 +69,20 @@ export const SettingsDialog = ({
   onLocationSharingChange,
   initialLocationSharing = true,
 }) => {
+  const { id } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const userID = searchParams.get("userID") || 1;
+  const tasks = getTasks(userID);
+  const currentTask = tasks.find((task) => task.id === parseInt(id));
+
+  const menuItems = id === "10" ? filteredMenuItems : initialmenuItems;
   const [selected, setSelected] = useState(menuItems[0]);
   const [email, setEmail] = useState("john.doe@example.com");
   const [phone, setPhone] = useState("+1 (555) 123-4567");
   const [fullName, setFullName] = useState("John Doe");
   const [username, setUsername] = useState("johndoe123");
-  const [location, setLocation] = useState(
+  const [userLocation, setUserLocation] = useState(
     "1234 Elm Street, Springfield, IL 62704, USA"
   );
   const [birthDate, setBirthDate] = useState("1990-05-15");
@@ -78,6 +99,7 @@ export const SettingsDialog = ({
   const [dataRetention, setDataRetention] = useState("2");
   const [marketingEmails, setMarketingEmails] = useState(false);
   const [thirdPartySharing, setThirdPartySharing] = useState(false);
+  const [taskCompletionModalOpen, setTaskCompletionModalOpen] = useState(false);
 
   const renderContent = () => {
     switch (selected) {
@@ -143,8 +165,8 @@ export const SettingsDialog = ({
                 <TextField
                   fullWidth
                   label="Location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  value={userLocation}
+                  onChange={(e) => setUserLocation(e.target.value)}
                   size="small"
                 />
                 <TextField
@@ -384,7 +406,13 @@ export const SettingsDialog = ({
                 control={
                   <Switch
                     checked={reportAbuse}
-                    onChange={(e) => setReportAbuse(e.target.checked)}
+                    onChange={(e) => {
+                      setReportAbuse(e.target.checked);
+                      // 如果id是10且启用了Auto-Reporting，弹出TaskCompletionModal
+                      if (id === "10" && e.target.checked) {
+                        setTaskCompletionModalOpen(true);
+                      }
+                    }}
                   />
                 }
                 label="Enable Auto-Reporting"
@@ -980,6 +1008,14 @@ export const SettingsDialog = ({
           {renderContent()}
         </Box>
       </DialogContent>
+
+      {/* Task Completion Modal */}
+      <TaskCompletionModal
+        id={id}
+        open={taskCompletionModalOpen}
+        targetTaskType={currentTask?.taskType}
+        onClose={() => setTaskCompletionModalOpen(false)}
+      />
     </Dialog>
   );
 };
