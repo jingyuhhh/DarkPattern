@@ -190,7 +190,7 @@ const StoreDetail = () => {
               />
             )}
             <br></br>
-            {id == 14 && (
+            {/* {id == 14 && (
               <FormControlLabel
                 control={
                   <Checkbox
@@ -209,7 +209,7 @@ const StoreDetail = () => {
                   </span>
                 }
               />
-            )}
+            )} */}
             {id == 7 && (
               <FormControlLabel
                 control={

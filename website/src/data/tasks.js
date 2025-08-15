@@ -204,9 +204,9 @@ export const shouldPlayVideo = (userID, taskIndex) => {
   console.log(taskIndex);
   if (config) {
     // 前8个任务播放视频
-    return taskIndex < 7;
+    return taskIndex < 8;
   } else {
     // 后8个任务播放视频
-    return taskIndex >= 7;
+    return taskIndex >= 8;
   }
 };

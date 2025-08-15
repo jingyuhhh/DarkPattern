@@ -89,7 +89,7 @@ export const Register = ({ open, onClose, onLoginSuccess }) => {
         />
         <TextField
           label="Username"
-          placeholder="Enter your email"
+          placeholder="Enter your username"
           variant="filled"
           size="small"
           fullWidth

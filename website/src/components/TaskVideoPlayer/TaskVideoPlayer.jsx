@@ -95,7 +95,6 @@ const TaskVideoPlayer = () => {
         <Box
           sx={{
             width: "100%",
-            maxWidth: "800px",
             position: "relative",
           }}
         >
@@ -153,7 +152,7 @@ const TaskVideoPlayer = () => {
       </Box>
 
       <Box sx={{ textAlign: "center", mb: 3 }}>
-        <Button
+        {/* <Button
           variant="contained"
           size="large"
           onClick={handlePlayPause}
@@ -161,18 +160,17 @@ const TaskVideoPlayer = () => {
           sx={{ mr: 2 }}
         >
           {isPlaying ? "Pause" : "Play"}
-        </Button>
+        </Button> */}
 
-        {showCompleteButton && (
-          <Button
-            variant="contained"
-            color="success"
-            size="large"
-            onClick={handleCompleteSurvey}
-          >
-            Complete Survey
-          </Button>
-        )}
+        <Button
+          variant="contained"
+          color="success"
+          size="large"
+          disabled={!showCompleteButton}
+          onClick={handleCompleteSurvey}
+        >
+          Complete Survey
+        </Button>
       </Box>
 
       {/* Task Completion Modal */}
