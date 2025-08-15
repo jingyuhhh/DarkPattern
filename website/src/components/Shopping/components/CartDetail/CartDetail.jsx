@@ -82,12 +82,12 @@ const CartDetail = () => {
                 key={item.id}
                 className="flex py-4 border-b items-start space-x-4"
               >
-                <Checkbox
+                {/* <Checkbox
                   checked={!!selectedItems[item.id]}
                   onChange={(e) =>
                     handleCheckboxChange(item.id, e.target.checked)
                   }
-                />
+                /> */}
                 <img
                   src={item.image}
                   alt={item.name}

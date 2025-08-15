@@ -16,12 +16,13 @@ export const PopupProvider = ({ children, interval }) => {
   const taskId = match ? parseInt(match[1], 10) : null;
   const extraPath = match ? match[2] : null;
 
-  // 检查是否在task completion modal页面 - 通过URL路径检测
+  // 检查是否在task completion modal页面或其他不需要popup的页面 - 通过URL路径检测
   const isInTaskCompletionModal =
     location.pathname.includes("/task/") &&
     (location.pathname.includes("/completion") ||
       location.pathname.includes("/survey") ||
-      location.pathname.includes("/end"));
+      location.pathname.includes("/end") ||
+      location.pathname.includes("/taskvideo"));
 
   useEffect(() => {
     if (taskId !== 10) {
@@ -40,7 +41,7 @@ export const PopupProvider = ({ children, interval }) => {
 
   useEffect(() => {
     let timer;
-    // 如果用户进入了task completion modal，停止显示popup
+    // 如果用户进入了task completion modal或其他不需要popup的页面，停止显示popup
     if (taskId === 10 && isInTaskCompletionModal) {
       setOpen(false);
       setPopupDisabled(true);

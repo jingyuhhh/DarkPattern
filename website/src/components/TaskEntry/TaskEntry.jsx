@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getTasks, TaskType, DomainType } from "../../data/tasks";
+import {
+  getTasks,
+  TaskType,
+  DomainType,
+  shouldPlayVideo,
+} from "../../data/tasks";
 import {
   PII,
   ecommercePII,
@@ -68,15 +73,23 @@ const TaskEntry = () => {
   }, [id]);
 
   const handleContinue = () => {
-    if (task.domain === DomainType.VideoStream) {
-      navigate(`/task/${id}/video`);
-    } else if (
-      task.taskType === TaskType.CancelSubscription ||
-      task.taskType === TaskType.SignSubscription
-    ) {
-      navigate(`/task/${id}/store/1`);
+    // 获取当前任务在用户任务列表中的索引
+    const taskIndex = tasks.findIndex((t) => t.id === task.id);
+
+    // 检查是否应该播放视频
+    if (shouldPlayVideo(userID, taskIndex)) {
+      navigate(`/task/${id}/taskvideo`);
     } else {
-      navigate(`/task/${id}/shopping`);
+      if (task.domain === DomainType.VideoStream) {
+        navigate(`/task/${id}/video`);
+      } else if (
+        task.taskType === TaskType.CancelSubscription ||
+        task.taskType === TaskType.SignSubscription
+      ) {
+        navigate(`/task/${id}/store/1`);
+      } else {
+        navigate(`/task/${id}/shopping`);
+      }
     }
   };
 
@@ -87,6 +100,25 @@ const TaskEntry = () => {
           <Typography variant="h4" component="h1" gutterBottom>
             Task Information
           </Typography>
+          {shouldPlayVideo(
+            userID,
+            tasks.findIndex((t) => t.id === task.id)
+          ) && (
+            <Box
+              sx={{
+                mb: 3,
+                p: 2,
+                bgcolor: "yellow.50",
+                borderRadius: 1,
+                border: "1px solid #f0ad4e",
+              }}
+            >
+              <Typography variant="body1" color="text.primary">
+                This task involves watching a GUI agent perform the task. If you
+                disagree with the agent’s choice, you may skip the task.
+              </Typography>
+            </Box>
+          )}
           <Typography
             variant="body1"
             sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
