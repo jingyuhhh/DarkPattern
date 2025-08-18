@@ -15,13 +15,7 @@ import { useSelector } from "react-redux";
 import { usePreserveQueryNavigate } from "../../hooks/useQueryNavigate";
 import Survey from "./components/Survey/Survey";
 import { db } from "../../firebase";
-import {
-  collection,
-  addDoc,
-  doc,
-  setDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { likertQuestions } from "./components/Survey/Survey";
 import { detectAvoidBehavior } from "../../utils/behaviorDetection";
 import { resetCart } from "../../store/cart";

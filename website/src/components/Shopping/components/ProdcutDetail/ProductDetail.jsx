@@ -25,7 +25,7 @@ const ProductDetail = () => {
   const showEmotion = parseInt(id, 10) === 6 && product.emotional;
 
   const timeLeft = showUrgency
-    ? useGlobalCountdown(`product_${String(product.id)}`, 5 * 54 * 60)
+    ? useGlobalCountdown(`product_${String(product.id)}`, 3 * 54 * 60)
     : 0;
 
   useEffect(() => {

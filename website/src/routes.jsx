@@ -1,5 +1,5 @@
 // routes.jsx
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Shopping from "./components/Shopping/Shopping";
 import ProductDetail from "./components/Shopping/components/ProdcutDetail/ProductDetail";
 import CartDetail from "./components/Shopping/components/CartDetail/CartDetail";
@@ -7,19 +7,19 @@ import Checkout from "./components/Shopping/components/Checkout/Checkout";
 import StoreDetail from "./components/StoreDetail/StoreDetail";
 import TaskEntry from "./components/TaskEntry/TaskEntry";
 import QuestionMark from "./components/QuestionMark/QuestionMark";
+import TaskInfoBanner from "./components/TaskInfoBanner/TaskInfoBanner";
 import VideoPlatform from "./components/VideoPlatform/VideoPlatform";
 import TaskVideoPlayer from "./components/TaskVideoPlayer/TaskVideoPlayer";
+import TaskStartRedirect from "./components/TaskStartRedirect";
 
 import { End } from "./components/TaskCompletionModal/components/End/End";
 import { PopupProvider } from "./Provider/PopupProvider";
 
 const PageWrapper = ({ children }) => {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const isAgent = searchParams.get("agent") === "true";
   return (
     <div style={{ position: "relative" }}>
-      {!isAgent && <QuestionMark />}
+      <TaskInfoBanner />
+      {/* <QuestionMark /> */}
       {children}
     </div>
   );
@@ -28,8 +28,15 @@ const PageWrapper = ({ children }) => {
 const AppRoutes = () => (
   <PopupProvider interval={25000}>
     <Routes>
-      <Route path="/task/0" element={<End />} />
-      <Route path="/task/:id" element={<TaskEntry />} />
+      <Route
+        path="/task/0"
+        element={
+          <PageWrapper>
+            <End />
+          </PageWrapper>
+        }
+      />
+      <Route path="/task/:id" element={<TaskStartRedirect />} />
       <Route
         path="/task/:id/shopping"
         element={

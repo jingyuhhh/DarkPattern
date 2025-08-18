@@ -18,7 +18,7 @@ function Product({ onClick, product }) {
   // Always call the hook, but only use the result when needed
   const timeLeft = useGlobalCountdown(
     `product_${String(product.id)}`,
-    5 * 54 * 60
+    3 * 54 * 60
   );
   const shouldShowCountdown = id === "15" && product.urgency;
   const displayTimeLeft = shouldShowCountdown ? timeLeft : 0;
