@@ -40,6 +40,17 @@ const TaskInfoBanner = () => {
 
   const currentTask = getCurrentTask();
 
+  // 获取当前任务在任务列表中的索引（从1开始计数）
+  const getCurrentTaskNumber = () => {
+    if (id) {
+      const taskIndex = tasks.findIndex((task) => task.id === parseInt(id));
+      return taskIndex !== -1 ? taskIndex + 1 : 1;
+    }
+    return 1;
+  };
+
+  const currentTaskNumber = getCurrentTaskNumber();
+
   const getPIIByDomain = (domain) => {
     switch (domain) {
       case DomainType.ECommerce:
@@ -77,7 +88,7 @@ const TaskInfoBanner = () => {
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 1200,
+          zIndex: 1400,
           bgcolor: "grey.100",
           borderBottom: "1px solid",
           borderColor: "grey.300",
@@ -94,13 +105,12 @@ const TaskInfoBanner = () => {
           color="primary"
           sx={{ fontWeight: 700, fontSize: 18 }}
         >
-          Task Information
+          Task {currentTaskNumber}/16
         </Typography>
-        {/* <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 0.5 }}> */}
         <Typography variant="body1" sx={{ fontSize: 16 }}>
-          <strong>Current Task:</strong> {currentTask.title}
+          <strong>Task :</strong> {currentTask.title}
         </Typography>
-        {/* </Box> */}
+
         <Typography
           variant="h6"
           color="primary"

@@ -32,7 +32,7 @@ export const likertQuestions = [
 ];
 
 const yesNoMaybeQuestion =
-  'Deceptive design strategies can be described as "user interface design choices that benefit an online service by coercing, steering, or deceiving users into making decisions that, if fully informed and capable of selecting alternatives, they might not make." Did you notice any deceptive design strategies during the previous task?';
+  "Deceptive design is when a website tries to push or trick you into doing something you wouldn’t normally choose. Did you see anything like that in the previous task?";
 
 const likertLabels = {
   1: "Strongly Disagree",

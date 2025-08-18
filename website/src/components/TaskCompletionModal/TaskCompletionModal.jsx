@@ -55,7 +55,14 @@ const TaskCompletionModal = ({
     if (notifyTaskCompletionModalOpen) {
       notifyTaskCompletionModalOpen(open);
     }
-  }, [open, notifyTaskCompletionModalOpen]);
+
+    // 组件卸载时通知关闭状态
+    return () => {
+      if (notifyTaskCompletionModalOpen) {
+        notifyTaskCompletionModalOpen(false);
+      }
+    };
+  }, [open]);
   // Agent 模式自动提交
   // useEffect(() => {
   //   if (isAgent && open) {
@@ -216,10 +223,13 @@ const TaskCompletionModal = ({
           open={open}
           fullWidth
           maxWidth="lg"
-          onClose={() => {
-            if (onClose) onClose();
-            if (isEnd) navigate("/completed");
-            else navigate(`/task/${nextTask.id}`);
+          disableEscapeKeyDown
+          onClose={() => {}}
+          sx={{
+            zIndex: 9999,
+            "& .MuiDialog-paper": {
+              zIndex: 9999,
+            },
           }}
         >
           <DialogTitle>

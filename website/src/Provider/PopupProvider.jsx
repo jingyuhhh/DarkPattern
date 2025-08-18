@@ -48,6 +48,12 @@ export const PopupProvider = ({ children, interval }) => {
       return;
     }
 
+    // 如果TaskCompletionModal打开，立即关闭popup并停止定时器
+    if (isTaskCompletionModalOpen) {
+      setOpen(false);
+      return;
+    }
+
     // 只有在没有禁用且已经显示过初始popup的情况下才启动定时器
     if (!popupDisabled && hasShownInitial && taskId === 10 && extraPath) {
       timer = setInterval(() => {
