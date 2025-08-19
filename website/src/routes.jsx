@@ -11,14 +11,18 @@ import TaskInfoBanner from "./components/TaskInfoBanner/TaskInfoBanner";
 import VideoPlatform from "./components/VideoPlatform/VideoPlatform";
 import TaskVideoPlayer from "./components/TaskVideoPlayer/TaskVideoPlayer";
 import TaskStartRedirect from "./components/TaskStartRedirect";
-
+import { useLocation } from "react-router-dom";
 import { End } from "./components/TaskCompletionModal/components/End/End";
 import { PopupProvider } from "./Provider/PopupProvider";
 
 const PageWrapper = ({ children }) => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const isAgent = searchParams.get("agent") === "true";
+
   return (
     <div style={{ position: "relative" }}>
-      <TaskInfoBanner />
+      {!isAgent && <TaskInfoBanner />}
       {/* <QuestionMark /> */}
       {children}
     </div>
