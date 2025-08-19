@@ -16,7 +16,7 @@ import TaskCompletionModal from "../../../TaskCompletionModal/TaskCompletionModa
 
 const SHIPPING_OPTIONS = [
   { label: "Standard", value: "standard", price: 0 },
-  { label: "Premium", value: "premium", price: 2 },
+  { label: "Premium", value: "premium", price: 6 },
 ];
 
 const Checkout = () => {

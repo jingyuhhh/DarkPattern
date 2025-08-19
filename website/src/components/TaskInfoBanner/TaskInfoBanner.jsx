@@ -1,15 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import {
-  Box,
-  Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-} from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { getTasks, DomainType } from "../../data/tasks.js";
 import {
   PII,
@@ -25,8 +16,6 @@ const TaskInfoBanner = () => {
   const searchParams = new URLSearchParams(location.search);
   const userID = searchParams.get("userID") || 1;
   const tasks = getTasks(userID);
-  const [skipOpen, setSkipOpen] = useState(false);
-  const [skipReason, setSkipReason] = useState("");
   const [completionModalOpen, setCompletionModalOpen] = useState(false);
   const bannerRef = useRef(null);
   const [bannerHeight, setBannerHeight] = useState(0);
@@ -215,52 +204,18 @@ const TaskInfoBanner = () => {
             variant="outlined"
             color="warning"
             size="small"
-            onClick={() => setSkipOpen(true)}
+            onClick={() => setCompletionModalOpen(true)}
           >
             Skip Task
           </Button>
         </Box>
-
-        <Dialog
-          open={skipOpen}
-          onClose={() => setSkipOpen(false)}
-          maxWidth="sm"
-          fullWidth
-        >
-          <DialogTitle>Skip Task</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              fullWidth
-              multiline
-              rows={3}
-              label="Please provide a reason for skipping"
-              value={skipReason}
-              onChange={(e) => setSkipReason(e.target.value)}
-              placeholder="Enter your reason here..."
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setSkipOpen(false)}>Cancel</Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                setSkipOpen(false);
-                setCompletionModalOpen(true);
-              }}
-              disabled={!skipReason.trim()}
-            >
-              Confirm
-            </Button>
-          </DialogActions>
-        </Dialog>
 
         <TaskCompletionModal
           id={id}
           open={completionModalOpen}
           targetTaskType={currentTask?.taskType}
           onClose={() => setCompletionModalOpen(false)}
-          formData={{ skipReason: skipReason || null }}
+          formData={{ skipReason: null }}
         />
       </Box>
       <Box sx={{ height: bannerHeight }} />
